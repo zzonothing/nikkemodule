@@ -668,7 +668,19 @@
                 // 장비 개조 시 초기 효과 생성 (슬롯별 확률 적용, 11티어 고정)
                 const usedEffects = [];
                 
+                // 기존에 잠긴 효과들을 사용된 효과 목록에 미리 추가
                 for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    if (cardLockStates[index][slotIndex] && cardEffects[index][slotIndex]) {
+                        usedEffects.push(cardEffects[index][slotIndex].name);
+                    }
+                }
+                
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    // 잠긴 슬롯은 건너뛰기
+                    if (cardLockStates[index][slotIndex]) {
+                        continue;
+                    }
+                    
                     const slotChance = Math.random() * 100;
                     
                     if (slotChance <= slotProbabilities[slotIndex]) {
