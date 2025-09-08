@@ -415,8 +415,13 @@
             </div>
         </div>
         
-        <div class="module-counter" style="text-align: center; font-size: 18px; font-weight: 500; color: #333; margin: 40px 0 20px 0;">
-            사용된 모듈 개수: <span id="moduleCount">0</span>개
+        <div style="text-align: center; margin: 40px 0 20px 0;">
+            <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background-color 0.2s ease;">
+                초기화
+            </button>
+            <div class="module-counter" style="font-size: 18px; font-weight: 500; color: #333;">
+                사용된 모듈 개수: <span id="moduleCount">0</span>개
+            </div>
         </div>
         <div class="option-summary" style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 40px;">
             <div style="text-align: center; font-size: 16px; font-weight: 600; color: #333; margin-bottom: 16px;">
@@ -811,6 +816,37 @@
                 
                 updateOptionSummary();
             });
+        });
+        
+        // 초기화 버튼 이벤트
+        document.getElementById('resetAllBtn').addEventListener('click', () => {
+            // 모든 카드의 효과 초기화
+            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
+                cardEffects[cardIndex] = [null, null, null];
+                cardLockStates[cardIndex] = [false, false, false];
+                // 모든 카드를 초기 상태로 변경
+                const cards = document.querySelectorAll('.card');
+                cards[cardIndex].classList.remove('expanded');
+            }
+            
+            // 모듈 개수 초기화
+            moduleCount = 0;
+            document.getElementById('moduleCount').textContent = moduleCount;
+            
+            // 화면 업데이트
+            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
+                updateEffectDisplay(cardIndex);
+            }
+            updateOptionSummary();
+        });
+        
+        // 초기화 버튼 호버 효과
+        document.getElementById('resetAllBtn').addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#c82333';
+        });
+        
+        document.getElementById('resetAllBtn').addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#dc3545';
         });
     </script>
 </body>
