@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Modern Grid Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 60px;
+            letter-spacing: -0.5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .center-square {
+            width: 120px;
+            height: 120px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .text-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            max-width: 240px;
+        }
+
+        .text-line {
+            height: 28px;
+            width: 240px;
+            background-color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            border: 2px solid black;
+            position: relative;
+        }
+        
+        .lock-icon {
+            position: absolute;
+            right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .lock-icon:hover {
+            opacity: 0.7;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .button {
+            width: 100px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .effect-btn {
+            background-color: #007bff;
+        }
+
+        .reset-btn {
+            background-color: #28a745;
+        }
+
+        .effect-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .effect-btn:active {
+            background-color: #004085;
+        }
+
+        .reset-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .reset-btn:active {
+            background-color: #155724;
+        }
+
+        .modify-btn {
+            background-color: #6c757d;
+            width: 100px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .modify-btn:hover {
+            background-color: #545b62;
+        }
+
+        .modify-btn:active {
+            background-color: #495057;
+        }
+
+        .button-container {
+            display: none;
+        }
+
+        .modify-container {
+            width: 100px;
+            display: block;
+        }
+
+        .card.expanded .button-container {
+            display: flex;
+        }
+
+        .card.expanded .modify-container {
+            display: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .module-counter {
+                font-size: 16px !important;
+                margin-bottom: 16px !important;
+            }
+            
+            .option-summary {
+                margin-bottom: 24px !important;
+                padding: 16px !important;
+            }
+            
+            .option-summary div:first-child {
+                font-size: 14px !important;
+                margin-bottom: 12px !important;
+            }
+            
+            .card {
+                padding: 16px;
+            }
+            
+            .card-content {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
+            }
+            
+            .center-square {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .text-lines {
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .text-line {
+                height: 32px;
+                width: 100%;
+                font-size: 12px;
+                padding: 0 8px;
+            }
+            
+            .button-container {
+                flex-direction: row;
+                gap: 8px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .button {
+                flex: 1;
+                height: 44px;
+                font-size: 14px;
+            }
+            
+            .modify-btn {
+                width: 80%;
+                height: 44px;
+                font-size: 16px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 16px 12px;
+            }
+            
+            .title {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+            
+            .module-counter {
+                font-size: 14px !important;
+                margin-bottom: 12px !important;
+            }
+            
+            .option-summary {
+                margin-bottom: 20px !important;
+                padding: 12px !important;
+            }
+            
+            .option-summary div:first-child {
+                font-size: 12px !important;
+                margin-bottom: 8px !important;
+            }
+            
+            .card {
+                padding: 12px;
+            }
+            
+            .center-square {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .text-line {
+                height: 28px;
+                font-size: 11px;
+                padding: 0 6px;
+            }
+            
+            .button {
+                flex: 1;
+                height: 40px;
+                font-size: 12px;
+            }
+            
+            .modify-btn {
+                width: 100%;
+                height: 40px;
+                font-size: 14px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">니케 모듈작 시뮬레이션</div>
+        
+        <div class="grid-container">
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="center-square image1" style="background-image: url('images/weapon-head.webp');">
+                    </div>
+                    <div class="text-lines">
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                    </div>
+                </div>
+                <div class="modify-container">
+                    <button class="modify-btn">장비 개조</button>
+                </div>
+                <div class="button-container">
+                    <button class="button effect-btn">효과 변경</button>
+                    <button class="button reset-btn">수치 재설정</button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="center-square image2" style="background-image: url('images/weapon-body.webp');">
+                    </div>
+                    <div class="text-lines">
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                    </div>
+                </div>
+                <div class="modify-container">
+                    <button class="modify-btn">장비 개조</button>
+                </div>
+                <div class="button-container">
+                    <button class="button effect-btn">효과 변경</button>
+                    <button class="button reset-btn">수치 재설정</button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="center-square image3" style="background-image: url('images/weapon-hand.webp');">
+                    </div>
+                    <div class="text-lines">
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                    </div>
+                </div>
+                <div class="modify-container">
+                    <button class="modify-btn">장비 개조</button>
+                </div>
+                <div class="button-container">
+                    <button class="button effect-btn">효과 변경</button>
+                    <button class="button reset-btn">수치 재설정</button>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="center-square image4" style="background-image: url('images/weapon-foot.webp');">
+                    </div>
+                    <div class="text-lines">
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                        <div class="text-line">효과 미획득</div>
+                    </div>
+                </div>
+                <div class="modify-container">
+                    <button class="modify-btn">장비 개조</button>
+                </div>
+                <div class="button-container">
+                    <button class="button effect-btn">효과 변경</button>
+                    <button class="button reset-btn">수치 재설정</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module-counter" style="text-align: center; font-size: 18px; font-weight: 500; color: #333; margin: 40px 0 20px 0;">
+            사용된 모듈 개수: <span id="moduleCount">0</span>개
+        </div>
+        <div class="option-summary" style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 40px;">
+            <div style="text-align: center; font-size: 16px; font-weight: 600; color: #333; margin-bottom: 16px;">
+                현재 옵션 총합
+            </div>
+            <div id="optionSummary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 14px;">
+                <!-- 옵션 총합이 여기에 표시됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 모듈 사용 개수 카운터
+        let moduleCount = 0;
+        
+        // 모듈 카운터 업데이트 함수
+        function updateModuleCounter() {
+            moduleCount++;
+            document.getElementById('moduleCount').textContent = moduleCount;
+        }
+        
+        // 옵션 총합 계산 및 업데이트 함수
+        function updateOptionSummary() {
+            const optionTotals = {};
+            const optionTiers = {}; // 각 옵션의 티어 정보를 저장
+            
+            // 모든 카드의 효과를 순회하여 총합 계산
+            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    const effect = cardEffects[cardIndex][slotIndex];
+                    if (effect) {
+                        if (optionTotals[effect.name]) {
+                            optionTotals[effect.name] += effect.value;
+                            optionTiers[effect.name].push(effect.tier);
+                        } else {
+                            optionTotals[effect.name] = effect.value;
+                            optionTiers[effect.name] = [effect.tier];
+                        }
+                    }
+                }
+            }
+            
+            // 총합 표시 업데이트
+            const summaryElement = document.getElementById('optionSummary');
+            summaryElement.innerHTML = '';
+            
+            const sortedOptions = Object.entries(optionTotals).sort(([nameA], [nameB]) => {
+                // 우선순위 설정: 우월코드 대미지 증가, 공격력 증가를 앞에 배치
+                const priorityOrder = ['우월코드 대미지 증가', '공격력 증가'];
+                const indexA = priorityOrder.indexOf(nameA);
+                const indexB = priorityOrder.indexOf(nameB);
+                
+                // 둘 다 우선순위 목록에 있는 경우
+                if (indexA !== -1 && indexB !== -1) {
+                    return indexA - indexB;
+                }
+                // A만 우선순위 목록에 있는 경우
+                if (indexA !== -1) {
+                    return -1;
+                }
+                // B만 우선순위 목록에 있는 경우
+                if (indexB !== -1) {
+                    return 1;
+                }
+                // 둘 다 우선순위 목록에 없는 경우 알파벳 순
+                return nameA.localeCompare(nameB);
+            });
+            
+            if (sortedOptions.length === 0) {
+                summaryElement.innerHTML = '<div style="text-align: center; color: #666; grid-column: 1 / -1;">활성화된 옵션이 없습니다</div>';
+            } else {
+                sortedOptions.forEach(([name, total]) => {
+                    const optionDiv = document.createElement('div');
+                    const tiers = optionTiers[name];
+                    
+                    // 티어에 따른 스타일 결정
+                    let backgroundColor = 'white';
+                    let nameColor = 'black';
+                    let valueColor = 'black';
+                    
+                    if (tiers.includes(15)) {
+                        // 15티어가 하나라도 있으면 15티어 스타일
+                        backgroundColor = 'black';
+                        nameColor = 'white';
+                        valueColor = 'rgb(17, 167, 238)';
+                    } else if (tiers.some(tier => tier >= 12 && tier <= 14)) {
+                        // 12-14티어가 하나라도 있으면 12-14티어 스타일
+                        backgroundColor = 'white';
+                        nameColor = 'black';
+                        valueColor = 'rgb(17, 167, 238)';
+                    }
+                    
+                    optionDiv.style.cssText = `background: ${backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd; text-align: center;`;
+                    optionDiv.innerHTML = `<span style="color: ${nameColor}; font-weight: 500;">[${name}]</span><br><span style="color: ${valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
+                    summaryElement.appendChild(optionDiv);
+                });
+            }
+        }
+        
+        // 효과 데이터 정의
+        const effects = [
+            { name: "우월코드 대미지 증가", probability: 10, tiers: [9.54, 10.94, 12.34, 13.75, 15.15, 16.55, 17.95, 19.35, 20.75, 22.15, 23.56, 24.96, 26.36, 27.76, 29.16] },
+            { name: "명중률 증가", probability: 12, tiers: [4.77, 5.47, 6.18, 6.88, 7.59, 8.29, 9.00, 9.70, 10.40, 11.11, 11.81, 12.52, 13.22, 13.93, 14.63] },
+            { name: "최대 장탄 수 증가", probability: 12, tiers: [27.84, 31.95, 36.06, 40.17, 44.28, 48.39, 52.50, 56.60, 60.71, 64.82, 68.93, 73.04, 77.15, 81.26, 85.37] },
+            { name: "공격력 증가", probability: 10, tiers: [4.77, 5.47, 6.18, 6.88, 7.59, 8.29, 9.00, 9.70, 10.40, 11.11, 11.81, 12.52, 13.22, 13.93, 14.63] },
+            { name: "차지 대미지 증가", probability: 12, tiers: [4.77, 5.47, 6.18, 6.88, 7.59, 8.29, 9.00, 9.70, 10.40, 11.11, 11.81, 12.52, 13.22, 13.93, 14.63] },
+            { name: "차지 속도 증가", probability: 12, tiers: [1.98, 2.28, 2.57, 2.86, 3.16, 3.45, 3.75, 4.04, 4.33, 4.63, 4.92, 5.21, 5.51, 5.80, 6.09] },
+            { name: "크리티컬 확률 증가", probability: 10, tiers: [2.30, 2.64, 2.98, 3.32, 3.66, 4.00, 4.35, 4.69, 5.03, 5.37, 5.71, 6.05, 6.39, 6.73, 7.07] },
+            { name: "방어력 증가", probability: 10, tiers: [4.77, 5.47, 6.18, 6.88, 7.59, 8.29, 9.00, 9.70, 10.40, 11.11, 11.81, 12.52, 13.22, 13.93, 14.63] },
+            { name: "크리티컬 대미지 증가", probability: 12, tiers: [6.64, 7.62, 8.60, 9.58, 10.56, 11.54, 12.52, 13.50, 14.48, 15.46, 16.44, 17.42, 18.40, 19.38, 20.36] }
+        ];
+
+        // 슬롯별 확률
+        const slotProbabilities = [100, 50, 30];
+
+        // 티어별 확률 정의
+        const tierProbabilities = [
+            12, 12, 12, 12, 12,  // 1~5티어: 각각 12%
+            7, 7, 7, 7, 7,       // 6~10티어: 각각 7%
+            1, 1, 1, 1, 1        // 11~15티어: 각각 1%
+        ];
+
+        // 랜덤 티어 선택 함수
+        function getRandomTier() {
+            const totalWeight = tierProbabilities.reduce((sum, prob) => sum + prob, 0);
+            const random = Math.random() * totalWeight;
+            
+            let currentWeight = 0;
+            for (let i = 0; i < tierProbabilities.length; i++) {
+                currentWeight += tierProbabilities[i];
+                if (random <= currentWeight) {
+                    return i; // 0-based index 반환
+                }
+            }
+            return 0; // 기본값
+        }
+
+        // 랜덤 효과 생성 함수
+        function generateRandomEffect(usedEffects = []) {
+            // 사용된 효과들을 제외한 효과 목록 생성
+            const availableEffects = effects.filter(effect => !usedEffects.includes(effect.name));
+            
+            if (availableEffects.length === 0) return null;
+
+            // 가중치 랜덤 선택
+            const totalWeight = availableEffects.reduce((sum, effect) => sum + effect.probability, 0);
+            const random = Math.random() * totalWeight;
+            
+            let currentWeight = 0;
+            for (const effect of availableEffects) {
+                currentWeight += effect.probability;
+                if (random <= currentWeight) {
+                    // 티어별 확률에 따른 랜덤 선택
+                    const tierIndex = getRandomTier();
+                    const value = effect.tiers[tierIndex];
+                    return {
+                        name: effect.name,
+                        value: value,
+                        tier: tierIndex + 1
+                    };
+                }
+            }
+            
+            return null;
+        }
+
+        // 카드별 효과 저장
+        const cardEffects = [
+            [null, null, null], // 카드 1
+            [null, null, null], // 카드 2  
+            [null, null, null], // 카드 3
+            [null, null, null]  // 카드 4
+        ];
+        
+        // 카드별 슬롯 잠금 상태 저장
+        const cardLockStates = [
+            [false, false, false], // 카드 1
+            [false, false, false], // 카드 2
+            [false, false, false], // 카드 3
+            [false, false, false]  // 카드 4
+        ];
+
+        // 자물쇠 아이콘 클릭 이벤트 핸들러
+        function toggleLock(cardIndex, slotIndex) {
+            const currentState = cardLockStates[cardIndex][slotIndex];
+            const currentEffect = cardEffects[cardIndex][slotIndex];
+            
+            if (!currentState && currentEffect) {
+                // 잠금 해제 -> 잠금: 모듈 비용 계산 및 차감
+                const lockedCount = cardLockStates[cardIndex].filter(state => state).length;
+                const cost = [2, 3, 4][lockedCount]; // 1번째: 2개, 2번째: 3개, 3번째: 4개
+                
+                cardLockStates[cardIndex][slotIndex] = true;
+                moduleCount += cost;
+                document.getElementById('moduleCount').textContent = moduleCount;
+            } else if (currentState) {
+                // 잠금 -> 잠금 해제
+                cardLockStates[cardIndex][slotIndex] = false;
+            }
+            
+            updateEffectDisplay(cardIndex);
+        }
+        
+        // 효과 텍스트 업데이트 함수
+        function updateEffectDisplay(cardIndex) {
+            const card = document.querySelectorAll('.card')[cardIndex];
+            const textLines = card.querySelectorAll('.text-line');
+            
+            for (let i = 0; i < 3; i++) {
+                const effect = cardEffects[cardIndex][i];
+                const isLocked = cardLockStates[cardIndex][i];
+                
+                if (effect) {
+                    // 소수점 2자리까지 고정 표시
+                    const formattedValue = effect.value.toFixed(2);
+                    
+                    let effectHTML = '';
+                    if (effect.tier == 15) {
+                        effectHTML = `<span style="color: white;">[${effect.name}]&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                        textLines[i].style.backgroundColor = 'black';
+                    }
+                    else if (effect.tier >= 12 && effect.tier <= 14) {
+                        effectHTML = `<span style="color: black;">[${effect.name}]&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                        textLines[i].style.backgroundColor = 'white';
+                    } else {
+                        effectHTML = `<span style="color: black;">[${effect.name}] ${formattedValue}%</span>`;
+                        textLines[i].style.backgroundColor = 'white';
+                    }
+                    
+                    // 자물쇠 아이콘 추가
+                    const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
+                    effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                    textLines[i].innerHTML = effectHTML;
+                    
+                } else {
+                    textLines[i].textContent = '효과 미획득';
+                    textLines[i].style.backgroundColor = 'white';
+                    textLines[i].style.color = '#666';
+                }
+            }
+        }
+
+        // 장비 개조 버튼 이벤트 (슬롯별 확률 적용, 11티어 고정)
+        document.querySelectorAll('.modify-btn').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const card = button.closest('.card');
+                card.classList.add('expanded');
+                
+                // 장비 개조 시 초기 효과 생성 (슬롯별 확률 적용, 11티어 고정)
+                const usedEffects = [];
+                
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    const slotChance = Math.random() * 100;
+                    
+                    if (slotChance <= slotProbabilities[slotIndex]) {
+                        const availableEffects = effects.filter(effect => !usedEffects.includes(effect.name));
+                        
+                        if (availableEffects.length > 0) {
+                            // 가중치 랜덤 선택
+                            const totalWeight = availableEffects.reduce((sum, effect) => sum + effect.probability, 0);
+                            const random = Math.random() * totalWeight;
+                            
+                            let currentWeight = 0;
+                            for (const effect of availableEffects) {
+                                currentWeight += effect.probability;
+                                if (random <= currentWeight) {
+                                    // 11티어 고정 (인덱스 10)
+                                    const tierIndex = 10;
+                                    const value = effect.tiers[tierIndex];
+                                    cardEffects[index][slotIndex] = {
+                                        name: effect.name,
+                                        value: value,
+                                        tier: tierIndex + 1
+                                    };
+                                    usedEffects.push(effect.name);
+                                    break;
+                                }
+                            }
+                        } else {
+                            cardEffects[index][slotIndex] = null;
+                        }
+                    } else {
+                        cardEffects[index][slotIndex] = null;
+                    }
+                }
+                
+                updateEffectDisplay(index);
+                updateModuleCounter();
+                updateOptionSummary();
+            });
+        });
+
+        // 효과 변경 버튼 이벤트
+        document.querySelectorAll('.effect-btn').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const usedEffects = [];
+                
+                // 각 슬롯에 대해 확률 계산 (잠긴 슬롯은 제외)
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    if (cardLockStates[index][slotIndex]) {
+                        // 잠긴 슬롯은 기존 효과명을 사용된 효과 목록에 추가
+                        const lockedEffect = cardEffects[index][slotIndex];
+                        if (lockedEffect) {
+                            usedEffects.push(lockedEffect.name);
+                        }
+                        continue;
+                    }
+                    
+                    const slotChance = Math.random() * 100;
+                    
+                    if (slotChance <= slotProbabilities[slotIndex]) {
+                        const effect = generateRandomEffect(usedEffects);
+                        if (effect) {
+                            cardEffects[index][slotIndex] = effect;
+                            usedEffects.push(effect.name);
+                        } else {
+                            cardEffects[index][slotIndex] = null;
+                        }
+                    } else {
+                        cardEffects[index][slotIndex] = null;
+                    }
+                }
+                
+                updateEffectDisplay(index);
+                updateModuleCounter();
+                updateOptionSummary();
+            });
+        });
+
+        // 수치 재설정 버튼 이벤트 (효과 고정, 티어만 랜덤 재설정)
+        document.querySelectorAll('.reset-btn').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                // 기존 효과가 있는 슬롯의 티어만 재설정 (잠긴 슬롯은 제외)
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    if (cardLockStates[index][slotIndex]) {
+                        continue; // 잠긴 슬롯은 건너뜀
+                    }
+                    
+                    const currentEffect = cardEffects[index][slotIndex];
+                    if (currentEffect) {
+                        // 현재 효과의 종류는 유지하고 티어만 랜덤으로 재설정
+                        const effectData = effects.find(e => e.name === currentEffect.name);
+                        if (effectData) {
+                            const tierIndex = getRandomTier();
+                            const value = effectData.tiers[tierIndex];
+                            cardEffects[index][slotIndex] = {
+                                name: currentEffect.name,
+                                value: value,
+                                tier: tierIndex + 1
+                            };
+                        }
+                    }
+                }
+                updateEffectDisplay(index);
+                updateModuleCounter();
+                updateOptionSummary();
+            });
+        });
+    </script>
+</body>
+</html>
