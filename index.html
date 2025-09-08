@@ -726,6 +726,10 @@
             button.addEventListener('click', () => {
                 const usedEffects = [];
                 
+                // 잠긴 슬롯 개수에 따른 추가 모듈 비용
+                const lockedCount = cardLockStates[index].filter(state => state).length;
+                const additionalCost = lockedCount > 0 ? [1, 2][lockedCount - 1] || 0 : 0;
+                
                 // 먼저 모든 잠긴 슬롯의 효과를 사용된 효과 목록에 추가
                 for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
                     if (cardLockStates[index][slotIndex] && cardEffects[index][slotIndex]) {
@@ -757,6 +761,13 @@
                 
                 updateEffectDisplay(index);
                 updateModuleCounter();
+                
+                // 잠긴 슬롯이 있으면 추가 모듈 비용 적용
+                if (additionalCost > 0) {
+                    moduleCount += additionalCost;
+                    document.getElementById('moduleCount').textContent = moduleCount;
+                }
+                
                 updateOptionSummary();
             });
         });
@@ -764,6 +775,10 @@
         // 수치 재설정 버튼 이벤트 (효과 고정, 티어만 랜덤 재설정)
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
+                // 잠긴 슬롯 개수에 따른 추가 모듈 비용
+                const lockedCount = cardLockStates[index].filter(state => state).length;
+                const additionalCost = lockedCount > 0 ? [1, 2][lockedCount - 1] || 0 : 0;
+                
                 // 기존 효과가 있는 슬롯의 티어만 재설정 (잠긴 슬롯은 제외)
                 for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
                     if (cardLockStates[index][slotIndex]) {
@@ -787,6 +802,13 @@
                 }
                 updateEffectDisplay(index);
                 updateModuleCounter();
+                
+                // 잠긴 슬롯이 있으면 추가 모듈 비용 적용
+                if (additionalCost > 0) {
+                    moduleCount += additionalCost;
+                    document.getElementById('moduleCount').textContent = moduleCount;
+                }
+                
                 updateOptionSummary();
             });
         });
