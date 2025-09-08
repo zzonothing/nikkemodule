@@ -726,14 +726,17 @@
             button.addEventListener('click', () => {
                 const usedEffects = [];
                 
+                // 먼저 모든 잠긴 슬롯의 효과를 사용된 효과 목록에 추가
+                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+                    if (cardLockStates[index][slotIndex] && cardEffects[index][slotIndex]) {
+                        usedEffects.push(cardEffects[index][slotIndex].name);
+                    }
+                }
+                
                 // 각 슬롯에 대해 확률 계산 (잠긴 슬롯은 제외)
                 for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
                     if (cardLockStates[index][slotIndex]) {
-                        // 잠긴 슬롯은 기존 효과명을 사용된 효과 목록에 추가
-                        const lockedEffect = cardEffects[index][slotIndex];
-                        if (lockedEffect) {
-                            usedEffects.push(lockedEffect.name);
-                        }
+                        // 잠긴 슬롯은 건너뛰기
                         continue;
                     }
                     
