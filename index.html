@@ -733,6 +733,18 @@
         // 효과 변경 버튼 이벤트
         document.querySelectorAll('.effect-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
+                // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
+                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) => 
+                    effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
+                );
+                
+                if (hasHighTierUnlocked) {
+                    const confirmed = confirm("현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?");
+                    if (!confirmed) {
+                        return; // 사용자가 No를 선택하면 실행 중단
+                    }
+                }
+                
                 const usedEffects = [];
                 
                 // 잠긴 슬롯 개수에 따른 추가 모듈 비용
@@ -784,6 +796,18 @@
         // 수치 재설정 버튼 이벤트 (효과 고정, 티어만 랜덤 재설정)
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
+                // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
+                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) => 
+                    effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
+                );
+                
+                if (hasHighTierUnlocked) {
+                    const confirmed = confirm("현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?");
+                    if (!confirmed) {
+                        return; // 사용자가 No를 선택하면 실행 중단
+                    }
+                }
+                
                 // 잠긴 슬롯 개수에 따른 추가 모듈 비용
                 const lockedCount = cardLockStates[index].filter(state => state).length;
                 const additionalCost = lockedCount > 0 ? [1, 2][lockedCount - 1] || 0 : 0;
