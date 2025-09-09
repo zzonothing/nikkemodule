@@ -34,6 +34,7 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
+            position: relative;
         }
 
         .title {
@@ -289,6 +290,12 @@
                 padding: 16px 12px;
             }
             
+            .language-selector {
+                position: static !important;
+                justify-content: center !important;
+                margin-bottom: 16px !important;
+            }
+            
             .title {
                 font-size: 20px;
                 margin-bottom: 16px;
@@ -341,14 +348,15 @@
             }
             
             .language-selector {
-                top: 10px !important;
-                right: 10px !important;
+                position: static !important;
+                justify-content: center !important;
+                margin-bottom: 20px !important;
             }
         }
         
         /* 언어 선택기 스타일 */
         .language-selector {
-            position: fixed;
+            position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
@@ -391,13 +399,13 @@
     </style>
 </head>
 <body>
-    <!-- 언어 선택기 -->
-    <div class="language-selector">
-        <div class="language-flag active" data-lang="ko" title="한국어">한국어</div>
-        <div class="language-flag" data-lang="ja" title="日本語">日本語</div>
-    </div>
-    
     <div class="container">
+        <!-- 언어 선택기 -->
+        <div class="language-selector">
+            <div class="language-flag active" data-lang="ko" title="한국어">한국어</div>
+            <div class="language-flag" data-lang="ja" title="日본語">日본語</div>
+        </div>
+        
         <div class="title">니케 모듈작 시뮬레이션</div>
         
         <div class="grid-container">
