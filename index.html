@@ -330,10 +330,64 @@
                 font-size: 14px;
                 margin: 0 auto;
             }
+            
+            .language-selector {
+                top: 10px !important;
+                right: 10px !important;
+            }
+        }
+        
+        /* 언어 선택기 스타일 */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+        }
+        
+        .language-flag {
+            width: 60px;
+            height: 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .language-flag:hover {
+            border-color: #007bff;
+            transform: scale(1.1);
+        }
+        
+        .language-flag.active {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+        
+        .language-flag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: none;
+        }
+        
+        .language-flag:hover {
+            transform: scale(1.2);
         }
     </style>
 </head>
 <body>
+    <!-- 언어 선택기 -->
+    <div class="language-selector">
+        <div class="language-flag active" data-lang="ko" title="한국어">한국어</div>
+        <div class="language-flag" data-lang="ja" title="日本語">日本語</div>
+    </div>
+    
     <div class="container">
         <div class="title">니케 모듈작 시뮬레이션</div>
         
@@ -438,6 +492,170 @@
     </div>
 
     <script>
+        // 언어 데이터
+        const translations = {
+            ko: {
+                title: '니케 모듈작 시뮬레이션',
+                equipmentModification: '장비 개조',
+                effectChange: '효과 변경',
+                valueReset: '수치 재설정',
+                reset: '초기화',
+                moduleCount: '사용된 모듈 개수',
+                optionTotal: '현재 옵션 총합',
+                effectNotObtained: '효과 미획득',
+                noActiveOptions: '활성화된 옵션이 없습니다',
+                confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
+                effects: {
+                    '우월코드 대미지 증가': '[우월코드 대미지 증가]',
+                    '명중률 증가': '[명중률 증가]',
+                    '최대 장탄 수 증가': '[최대 장탄 수 증가]',
+                    '공격력 증가': '[공격력 증가]',
+                    '차지 대미지 증가': '[차지 대미지 증가]',
+                    '차지 속도 증가': '[차지 속도 증가]',
+                    '크리티컬 확률 증가': '[크리티컬 확률 증가]',
+                    '방어력 증가': '[방어력 증가]',
+                    '크리티컬 대미지 증가': '[크리티컬 대미지 증가]'
+                }
+            },
+            ja: {
+                title: 'NIKKE オバロ シミュレーション',
+                equipmentModification: '装備の改造',
+                effectChange: '効果変更',
+                valueReset: '数値再設定',
+                reset: 'リセット',
+                moduleCount: 'カスタムモジュール',
+                optionTotal: '総合',
+                effectNotObtained: '効果未取得',
+                noActiveOptions: 'アクティブなオプションがありません',
+                confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
+                effects: {
+                    '우월코드 대미지 증가': '「有利コードダメージ増加」',
+                    '명중률 증가': '「命中率増加」',
+                    '최대 장탄 수 증가': '「最大装弾数増加」',
+                    '공격력 증가': '「攻撃力増加」',
+                    '차지 대미지 증가': '「チャージダメージ増加」',
+                    '차지 속도 증가': '「チャージ速度増加」',
+                    '크리티컬 확률 증가': '「クリティカル確률増加」',
+                    '방어력 증가': '「防御力増加」',
+                    '크리티컬 대미지 증가': '「クリティカルダメージ増加」'
+                }
+            }
+        };
+        
+        // 현재 언어 설정
+        let currentLanguage = 'ko';
+        
+        // 언어 변경 함수
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('nikkeLanguage', lang);
+            updateAllTexts();
+            updateLanguageFlags();
+        }
+        
+        // 모든 텍스트 업데이트 함수
+        function updateAllTexts() {
+            const t = translations[currentLanguage];
+            
+            // 제목
+            document.querySelector('.title').textContent = t.title;
+            
+            // 버튼들
+            document.querySelectorAll('.modify-btn').forEach(btn => {
+                btn.textContent = t.equipmentModification;
+            });
+            
+            document.querySelectorAll('.effect-btn').forEach(btn => {
+                btn.textContent = t.effectChange;
+            });
+            
+            document.querySelectorAll('.reset-btn').forEach(btn => {
+                btn.textContent = t.valueReset;
+            });
+            
+            document.getElementById('resetAllBtn').textContent = t.reset;
+            
+            // 모듈 카운터
+            const moduleCountElement = document.getElementById('moduleCount');
+            if (moduleCountElement && moduleCountElement.parentElement) {
+                moduleCountElement.parentElement.innerHTML = `${t.moduleCount}: <span id="moduleCount">${moduleCount}</span>개`;
+            }
+            
+            // 옵션 총합 제목
+            const optionSummaryTitle = document.querySelector('.option-summary > div:first-child');
+            if (optionSummaryTitle) {
+                optionSummaryTitle.textContent = t.optionTotal;
+            }
+            
+            // 효과 표시 업데이트 (모든 카드)
+            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
+                updateEffectDisplay(cardIndex);
+            }
+            
+            // 옵션 총합 업데이트
+            updateOptionSummary();
+        }
+        
+        // 언어 플래그 상태 업데이트
+        function updateLanguageFlags() {
+            document.querySelectorAll('.language-flag').forEach(flag => {
+                flag.classList.remove('active');
+                if (flag.dataset.lang === currentLanguage) {
+                    flag.classList.add('active');
+                }
+            });
+        }
+        
+        // 위치 기반 자동 언어 감지
+        function detectLanguageByLocation() {
+            // localStorage에 저장된 언어 설정 확인
+            const savedLanguage = localStorage.getItem('nikkeLanguage');
+            if (savedLanguage && translations[savedLanguage]) {
+                currentLanguage = savedLanguage;
+                updateLanguageFlags();
+                return;
+            }
+            
+            // Geolocation API로 위치 확인 (HTTPS 필요)
+            if (navigator.geolocation && location.protocol === 'https:') {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // 일본 좌표 범위 (대략적)
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        // 일본 위치 판단 (대략적인 범위)
+                        if (lat >= 24 && lat <= 46 && lng >= 123 && lng <= 146) {
+                            changeLanguage('ja');
+                        } else {
+                            changeLanguage('ko');
+                        }
+                    },
+                    function(error) {
+                        // 위치 정보를 가져올 수 없는 경우 브라우저 언어 설정 확인
+                        const browserLang = navigator.language || navigator.userLanguage;
+                        if (browserLang.startsWith('ja')) {
+                            changeLanguage('ja');
+                        } else {
+                            changeLanguage('ko');
+                        }
+                    },
+                    {
+                        timeout: 5000,
+                        maximumAge: 300000 // 5분
+                    }
+                );
+            } else {
+                // Geolocation을 사용할 수 없는 경우 브라우저 언어 설정 확인
+                const browserLang = navigator.language || navigator.userLanguage;
+                if (browserLang.startsWith('ja')) {
+                    changeLanguage('ja');
+                } else {
+                    changeLanguage('ko');
+                }
+            }
+        }
+        
         // 모듈 사용 개수 카운터
         let moduleCount = 0;
         
@@ -494,12 +712,15 @@
                 return nameA.localeCompare(nameB);
             });
             
+            const t = translations[currentLanguage];
+            
             if (sortedOptions.length === 0) {
-                summaryElement.innerHTML = '<div style="text-align: center; color: #666; grid-column: 1 / -1;">활성화된 옵션이 없습니다</div>';
+                summaryElement.innerHTML = `<div style="text-align: center; color: #666; grid-column: 1 / -1;">${t.noActiveOptions}</div>`;
             } else {
                 sortedOptions.forEach(([name, total]) => {
                     const optionDiv = document.createElement('div');
                     const tiers = optionTiers[name];
+                    const displayName = t.effects[name] || `[${name}]`;
                     
                     // 티어에 따른 스타일 결정
                     let backgroundColor = 'white';
@@ -519,7 +740,7 @@
                     }
                     
                     optionDiv.style.cssText = `background: ${backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd; text-align: center;`;
-                    optionDiv.innerHTML = `<span style="color: ${nameColor}; font-weight: 500;">[${name}]</span><br><span style="color: ${valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
+                    optionDiv.innerHTML = `<span style="color: ${nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
                     summaryElement.appendChild(optionDiv);
                 });
             }
@@ -633,6 +854,7 @@
         function updateEffectDisplay(cardIndex) {
             const card = document.querySelectorAll('.card')[cardIndex];
             const textLines = card.querySelectorAll('.text-line');
+            const t = translations[currentLanguage];
             
             for (let i = 0; i < 3; i++) {
                 const effect = cardEffects[cardIndex][i];
@@ -641,17 +863,18 @@
                 if (effect) {
                     // 소수점 2자리까지 고정 표시
                     const formattedValue = effect.value.toFixed(2);
+                    const effectName = t.effects[effect.name] || `[${effect.name}]`;
                     
                     let effectHTML = '';
                     if (effect.tier == 15) {
-                        effectHTML = `<span style="color: white;">[${effect.name}]&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                        effectHTML = `<span style="color: white;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
                         textLines[i].style.backgroundColor = 'black';
                     }
                     else if (effect.tier >= 12 && effect.tier <= 14) {
-                        effectHTML = `<span style="color: black;">[${effect.name}]&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                        effectHTML = `<span style="color: black;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
                         textLines[i].style.backgroundColor = 'white';
                     } else {
-                        effectHTML = `<span style="color: black;">[${effect.name}] ${formattedValue}%</span>`;
+                        effectHTML = `<span style="color: black;">${effectName} ${formattedValue}%</span>`;
                         textLines[i].style.backgroundColor = 'white';
                     }
                     
@@ -661,7 +884,7 @@
                     textLines[i].innerHTML = effectHTML;
                     
                 } else {
-                    textLines[i].textContent = '효과 미획득';
+                    textLines[i].textContent = t.effectNotObtained;
                     textLines[i].style.backgroundColor = 'white';
                     textLines[i].style.color = '#666';
                 }
@@ -739,7 +962,7 @@
                 );
                 
                 if (hasHighTierUnlocked) {
-                    const confirmed = confirm("현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?");
+                    const confirmed = confirm(translations[currentLanguage].confirmHighTier);
                     if (!confirmed) {
                         return; // 사용자가 No를 선택하면 실행 중단
                     }
@@ -802,7 +1025,7 @@
                 );
                 
                 if (hasHighTierUnlocked) {
-                    const confirmed = confirm("현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?");
+                    const confirmed = confirm(translations[currentLanguage].confirmHighTier);
                     if (!confirmed) {
                         return; // 사용자가 No를 선택하면 실행 중단
                     }
@@ -875,6 +1098,22 @@
         
         document.getElementById('resetAllBtn').addEventListener('mouseleave', function() {
             this.style.backgroundColor = '#dc3545';
+        });
+        
+        // 언어 선택기 이벤트 리스너
+        document.querySelectorAll('.language-flag').forEach(flag => {
+            flag.addEventListener('click', () => {
+                const selectedLang = flag.dataset.lang;
+                if (selectedLang !== currentLanguage) {
+                    changeLanguage(selectedLang);
+                }
+            });
+        });
+        
+        // 페이지 로드 시 언어 감지 및 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            detectLanguageByLocation();
+            updateAllTexts();
         });
     </script>
 </body>
