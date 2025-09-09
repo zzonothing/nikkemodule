@@ -99,12 +99,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 16px;
+            padding: 0 28px 0 16px;
             font-size: 14px;
             color: #666;
             font-weight: 500;
             border: 2px solid black;
             position: relative;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .lock-icon {
@@ -254,7 +257,10 @@
                 height: 32px;
                 width: 100%;
                 font-size: 12px;
-                padding: 0 8px;
+                padding: 0 24px 0 8px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .button-container {
@@ -315,7 +321,10 @@
             .text-line {
                 height: 28px;
                 font-size: 11px;
-                padding: 0 6px;
+                padding: 0 22px 0 6px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .button {
@@ -883,10 +892,21 @@
                     effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
                     textLines[i].innerHTML = effectHTML;
                     
+                    // 텍스트 길이에 따른 폰트 크기 조정
+                    const fullText = `${effectName} ${formattedValue}%`;
+                    if (fullText.length > 20) {
+                        textLines[i].style.fontSize = '11px';
+                    } else if (fullText.length > 15) {
+                        textLines[i].style.fontSize = '12px';
+                    } else {
+                        textLines[i].style.fontSize = '14px';
+                    }
+                    
                 } else {
                     textLines[i].textContent = t.effectNotObtained;
                     textLines[i].style.backgroundColor = 'white';
                     textLines[i].style.color = '#666';
+                    textLines[i].style.fontSize = '14px';
                 }
             }
         }
