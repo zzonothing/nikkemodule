@@ -623,54 +623,15 @@
             });
         }
         
-        // 위치 기반 자동 언어 감지
-        function detectLanguageByLocation() {
-            // localStorage에 저장된 언어 설정 확인
+        // 저장된 언어 설정 불러오기
+        function loadSavedLanguage() {
             const savedLanguage = localStorage.getItem('nikkeLanguage');
             if (savedLanguage && translations[savedLanguage]) {
                 currentLanguage = savedLanguage;
-                updateLanguageFlags();
-                return;
-            }
-            
-            // Geolocation API로 위치 확인 (HTTPS 필요)
-            if (navigator.geolocation && location.protocol === 'https:') {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        // 일본 좌표 범위 (대략적)
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        
-                        // 일본 위치 판단 (대략적인 범위)
-                        if (lat >= 24 && lat <= 46 && lng >= 123 && lng <= 146) {
-                            changeLanguage('ja');
-                        } else {
-                            changeLanguage('ko');
-                        }
-                    },
-                    function(error) {
-                        // 위치 정보를 가져올 수 없는 경우 브라우저 언어 설정 확인
-                        const browserLang = navigator.language || navigator.userLanguage;
-                        if (browserLang.startsWith('ja')) {
-                            changeLanguage('ja');
-                        } else {
-                            changeLanguage('ko');
-                        }
-                    },
-                    {
-                        timeout: 5000,
-                        maximumAge: 300000 // 5분
-                    }
-                );
             } else {
-                // Geolocation을 사용할 수 없는 경우 브라우저 언어 설정 확인
-                const browserLang = navigator.language || navigator.userLanguage;
-                if (browserLang.startsWith('ja')) {
-                    changeLanguage('ja');
-                } else {
-                    changeLanguage('ko');
-                }
+                currentLanguage = 'ko'; // 기본값: 한국어
             }
+            updateLanguageFlags();
         }
         
         // 모듈 사용 개수 카운터
@@ -1138,9 +1099,9 @@
             });
         });
         
-        // 페이지 로드 시 언어 감지 및 초기화
+        // 페이지 로드 시 언어 설정 불러오기 및 초기화
         document.addEventListener('DOMContentLoaded', () => {
-            detectLanguageByLocation();
+            loadSavedLanguage();
             updateAllTexts();
         });
     </script>
