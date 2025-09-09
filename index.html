@@ -496,7 +496,7 @@
                 초기화
             </button>
             <div class="module-counter" style="font-size: 18px; font-weight: 500; color: #333;">
-                사용된 모듈 개수: <span id="moduleCount">0</span>개
+                사용된 모듈 개수: <span id="moduleCount">0</span>
             </div>
         </div>
         <div class="option-summary" style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 40px;">
@@ -596,7 +596,7 @@
             // 모듈 카운터
             const moduleCountElement = document.getElementById('moduleCount');
             if (moduleCountElement && moduleCountElement.parentElement) {
-                moduleCountElement.parentElement.innerHTML = `${t.moduleCount}: <span id="moduleCount">${moduleCount}</span>개`;
+                moduleCountElement.parentElement.innerHTML = `${t.moduleCount}: <span id="moduleCount">${moduleCount}</span>`;
             }
             
             // 옵션 총합 제목
