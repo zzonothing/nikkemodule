@@ -713,6 +713,14 @@
             localStorage.setItem('nikkeLanguage', lang);
             updateAllTexts();
             updateLanguageFlags();
+
+            // 커스텀 모드일 때 언어 변경 시 Select 박스 재렌더링
+            if (isCustomMode) {
+                for (let i = 0; i < 4; i++) {
+                    updateEffectDisplay(i);
+                }
+                attachSelectChangeListeners();
+            }
         }
         
         // 모든 텍스트 업데이트 함수
