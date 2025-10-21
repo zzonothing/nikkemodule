@@ -19,6 +19,32 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: white;
+            --bg-card: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e9ecef;
+            --shadow: rgba(0,0,0,0.04);
+            --input-bg: white;
+            --input-border: black;
+            --summary-bg: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+            --shadow: rgba(0,0,0,0.3);
+            --input-bg: #2d2d2d;
+            --input-border: #555;
+            --summary-bg: #242424;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -27,9 +53,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background-color: var(--bg-primary);
             min-height: 100vh;
             padding: 60px 40px;
+            transition: background-color 0.3s ease;
         }
 
         .container {
@@ -42,9 +69,10 @@
             text-align: center;
             font-size: 36px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 60px;
             letter-spacing: -0.5px;
+            transition: color 0.3s ease;
         }
 
         .grid-container {
@@ -54,14 +82,15 @@
         }
 
         .card {
-            background: white;
+            background: var(--bg-card);
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .card-content {
@@ -76,13 +105,14 @@
         .center-square {
             width: 120px;
             height: 120px;
-            background-color: white;
-            border: 2px solid black;
+            background-color: var(--input-bg);
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             flex-shrink: 0;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .text-lines {
@@ -96,20 +126,21 @@
         .text-line {
             height: 28px;
             width: 240px;
-            background-color: white;
+            background-color: var(--input-bg);
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0 28px 0 16px;
             font-size: 14px;
-            color: #666;
+            color: var(--text-secondary);
             font-weight: 500;
-            border: 2px solid black;
+            border: 2px solid var(--input-border);
             position: relative;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         
         .lock-icon {
@@ -366,47 +397,97 @@
         }
         
         .language-flag {
-            width: 60px;
-            height: 24px;
+            width: 40px;
+            height: 30px;
             cursor: pointer;
             border-radius: 4px;
             border: 2px solid transparent;
             transition: all 0.2s ease;
-            background-size: cover;
-            background-position: center;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
+        .language-flag img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .language-flag:hover {
             border-color: #007bff;
             transform: scale(1.1);
         }
-        
+
         .language-flag.active {
             border-color: #007bff;
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
         }
-        
-        .language-flag {
+
+        /* 다크모드 토글 스타일 */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            border-color: #007bff;
+            transform: scale(1.05);
+        }
+
+        .theme-icon {
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            background: none;
         }
-        
-        .language-flag:hover {
-            transform: scale(1.2);
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                position: static;
+                margin-bottom: 12px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .theme-toggle {
+                position: static;
+                margin-bottom: 16px;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 다크모드 토글 -->
+        <div class="theme-toggle" id="themeToggle">
+            <span class="theme-icon">🌙</span>
+        </div>
+
         <!-- 언어 선택기 -->
         <div class="language-selector">
-            <div class="language-flag active" data-lang="ko" title="한국어">한국어</div>
-            <div class="language-flag" data-lang="ja" title="日本語">日本語</div>
+            <div class="language-flag active" data-lang="ko" title="한국어">
+                <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
+            </div>
+            <div class="language-flag" data-lang="ja" title="日本語">
+                <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
+            </div>
         </div>
-        
+
         <div class="title">니케 모듈작 시뮬레이션</div>
         
         <div class="grid-container">
@@ -495,12 +576,12 @@
             <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background-color 0.2s ease;">
                 초기화
             </button>
-            <div class="module-counter" style="font-size: 18px; font-weight: 500; color: #333;">
+            <div class="module-counter" style="font-size: 18px; font-weight: 500; color: var(--text-primary); transition: color 0.3s ease;">
                 사용된 모듈 개수: <span id="moduleCount">0</span>
             </div>
         </div>
-        <div class="option-summary" style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 40px;">
-            <div style="text-align: center; font-size: 16px; font-weight: 600; color: #333; margin-bottom: 16px;">
+        <div class="option-summary" style="background: var(--summary-bg); border-radius: 8px; padding: 20px; margin-bottom: 40px; transition: background-color 0.3s ease;">
+            <div style="text-align: center; font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; transition: color 0.3s ease;">
                 현재 옵션 총합
             </div>
             <div id="optionSummary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 14px;">
@@ -1100,8 +1181,39 @@
             });
         });
         
+        // 다크모드 관련 함수
+        function initTheme() {
+            const savedTheme = localStorage.getItem('nikkeTheme') || 'light';
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            const themeIcon = document.querySelector('.theme-icon');
+
+            if (theme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('nikkeTheme', 'dark');
+            } else {
+                html.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('nikkeTheme', 'light');
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        }
+
+        // 다크모드 토글 버튼 이벤트
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
         // 페이지 로드 시 언어 설정 불러오기 및 초기화
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
             loadSavedLanguage();
             updateAllTexts();
         });
