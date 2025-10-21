@@ -235,6 +235,12 @@
             display: none;
         }
 
+        /* 커스텀 모드일 때 버튼 숨김 */
+        .custom-mode .modify-container,
+        .custom-mode .button-container {
+            display: none !important;
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             body {
@@ -425,6 +431,41 @@
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
         }
 
+        /* Select 옵션 스타일 */
+        .tier-select option {
+            background-color: white;
+            color: black;
+        }
+
+        .tier-select option[data-tier="12"],
+        .tier-select option[data-tier="13"],
+        .tier-select option[data-tier="14"] {
+            color: rgb(17, 167, 238);
+            font-weight: 600;
+        }
+
+        .tier-select option[data-tier="15"] {
+            background-color: black;
+            color: rgb(17, 167, 238);
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .tier-select option {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] .tier-select option[data-tier="12"],
+        [data-theme="dark"] .tier-select option[data-tier="13"],
+        [data-theme="dark"] .tier-select option[data-tier="14"] {
+            color: rgb(17, 167, 238);
+        }
+
+        [data-theme="dark"] .tier-select option[data-tier="15"] {
+            background-color: black;
+            color: rgb(17, 167, 238);
+        }
+
         /* 다크모드 토글 스타일 */
         .theme-toggle {
             position: absolute;
@@ -574,6 +615,9 @@
         
         <div style="text-align: center; margin: 40px 0 20px 0;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+                <button id="customModeBtn" style="background-color: #28a745; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                    커스텀
+                </button>
                 <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
                     초기화
                 </button>
@@ -611,6 +655,10 @@
                 noActiveOptions: '활성화된 옵션이 없습니다',
                 confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
                 protectHighTier: '상위 티어 옵션 보호',
+                customModeOn: '커스텀 모드 시작',
+                customModeOff: '커스텀 모드 종료',
+                selectEffect: '효과',
+                selectValue: '수치',
                 effects: {
                     '우월코드 대미지 증가': '[우월코드 대미지 증가]',
                     '명중률 증가': '[명중률 증가]',
@@ -635,6 +683,10 @@
                 noActiveOptions: 'アクティブなオプションがありません',
                 confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
                 protectHighTier: '上位ティアオプション保護',
+                customModeOn: 'カスタムモード開始',
+                customModeOff: 'カスタムモード終了',
+                selectEffect: '効果',
+                selectValue: '数値',
                 effects: {
                     '우월코드 대미지 증가': '「有利コードダメージ増加」',
                     '명중률 증가': '「命中率増加」',
@@ -651,6 +703,9 @@
         
         // 현재 언어 설정
         let currentLanguage = 'ko';
+
+        // 커스텀 모드 상태 (false = 일반 모드, true = 커스텀 모드)
+        let isCustomMode = false;
         
         // 언어 변경 함수
         function changeLanguage(lang) {
@@ -681,6 +736,12 @@
             });
             
             document.getElementById('resetAllBtn').textContent = t.reset;
+
+            // 커스텀 모드 버튼
+            const customBtn = document.getElementById('customModeBtn');
+            if (customBtn) {
+                customBtn.textContent = isCustomMode ? t.customModeOff : t.customModeOn;
+            }
 
             // 상위 티어 보호 라벨
             document.getElementById('protectLabel').textContent = t.protectHighTier;
@@ -904,71 +965,159 @@
         function toggleLock(cardIndex, slotIndex) {
             const currentState = cardLockStates[cardIndex][slotIndex];
             const currentEffect = cardEffects[cardIndex][slotIndex];
-            
-            if (!currentState && currentEffect) {
-                // 잠금 해제 -> 잠금: 모듈 비용 계산 및 차감
-                const lockedCount = cardLockStates[cardIndex].filter(state => state).length;
-                const cost = [2, 3, 4][lockedCount]; // 1번째: 2개, 2번째: 3개, 3번째: 4개
-                
+
+            // 효과와 티어가 모두 있는 경우에만 잠금 가능
+            if (!currentState && currentEffect && currentEffect.name && currentEffect.tier) {
+                // 커스텀 모드가 아닐 때만 모듈 비용 계산 및 차감
+                if (!isCustomMode) {
+                    // 현재 잠긴 개수 확인 (아직 이 슬롯은 잠기지 않은 상태)
+                    const currentLockedCount = cardLockStates[cardIndex].filter(state => state).length;
+                    const cost = [2, 3, 4][currentLockedCount]; // 0->1: 2개, 1->2: 3개, 2->3: 4개
+                    moduleCount += cost;
+                    document.getElementById('moduleCount').textContent = moduleCount;
+                }
+
+                // 잠금 해제 -> 잠금
                 cardLockStates[cardIndex][slotIndex] = true;
-                moduleCount += cost;
-                document.getElementById('moduleCount').textContent = moduleCount;
             } else if (currentState) {
                 // 잠금 -> 잠금 해제
                 cardLockStates[cardIndex][slotIndex] = false;
             }
-            
+
             updateEffectDisplay(cardIndex);
+
+            // 커스텀 모드일 때 이벤트 리스너 재부착
+            if (isCustomMode) {
+                attachSelectChangeListeners();
+            }
         }
         
+        // 카드 내에서 사용 중인 효과 목록 가져오기
+        function getUsedEffectsInCard(cardIndex, excludeSlotIndex = -1) {
+            const usedEffects = [];
+            for (let i = 0; i < 3; i++) {
+                if (i !== excludeSlotIndex && cardEffects[cardIndex][i]) {
+                    usedEffects.push(cardEffects[cardIndex][i].name);
+                }
+            }
+            return usedEffects;
+        }
+
         // 효과 텍스트 업데이트 함수
         function updateEffectDisplay(cardIndex) {
             const card = document.querySelectorAll('.card')[cardIndex];
             const textLines = card.querySelectorAll('.text-line');
             const t = translations[currentLanguage];
-            
-            for (let i = 0; i < 3; i++) {
-                const effect = cardEffects[cardIndex][i];
-                const isLocked = cardLockStates[cardIndex][i];
-                
-                if (effect) {
-                    // 소수점 2자리까지 고정 표시
-                    const formattedValue = effect.value.toFixed(2);
-                    const effectName = t.effects[effect.name] || `[${effect.name}]`;
-                    
-                    let effectHTML = '';
-                    if (effect.tier == 15) {
-                        effectHTML = `<span style="color: white;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
-                        textLines[i].style.backgroundColor = 'black';
-                    }
-                    else if (effect.tier >= 12 && effect.tier <= 14) {
-                        effectHTML = `<span style="color: black;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
-                        textLines[i].style.backgroundColor = 'white';
+
+            // 커스텀 모드인 경우 Select 박스로 변환
+            if (isCustomMode) {
+                for (let i = 0; i < 3; i++) {
+                    const effect = cardEffects[cardIndex][i];
+                    const isLocked = cardLockStates[cardIndex][i];
+                    const usedEffects = getUsedEffectsInCard(cardIndex, i);
+
+                    // 효과 Select 박스 생성
+                    const disabledAttr = isLocked ? ' disabled' : '';
+                    let selectHTML = `<select class="effect-select" data-card="${cardIndex}" data-slot="${i}" style="width: 120px; padding: 4px; font-size: 11px; border: 2px solid var(--input-border); border-radius: 4px; background-color: var(--input-bg); color: var(--text-primary); margin-right: 4px;"${disabledAttr}>`;
+                    selectHTML += `<option value="">${t.selectEffect}</option>`;
+
+                    effects.forEach(eff => {
+                        // 이미 사용 중인 효과는 제외
+                        if (!usedEffects.includes(eff.name)) {
+                            const selected = effect && effect.name === eff.name ? 'selected' : '';
+                            const displayName = t.effects[eff.name] || eff.name;
+                            selectHTML += `<option value="${eff.name}" ${selected}>${displayName}</option>`;
+                        }
+                    });
+
+                    selectHTML += `</select>`;
+
+                    // 수치 Select 박스 생성 (티어별 색상 적용)
+                    let tierSelectStyle = 'width: 80px; padding: 4px; font-size: 11px; border: 2px solid var(--input-border); border-radius: 4px;';
+
+                    // 현재 선택된 티어에 따른 색상 적용
+                    if (effect && effect.tier) {
+                        if (effect.tier === 15) {
+                            tierSelectStyle += ' background-color: black; color: rgb(17, 167, 238);';
+                        } else if (effect.tier >= 12 && effect.tier <= 14) {
+                            tierSelectStyle += ' background-color: var(--input-bg); color: rgb(17, 167, 238);';
+                        } else {
+                            tierSelectStyle += ' background-color: var(--input-bg); color: var(--text-primary);';
+                        }
                     } else {
-                        effectHTML = `<span style="color: black;">${effectName} ${formattedValue}%</span>`;
-                        textLines[i].style.backgroundColor = 'white';
+                        tierSelectStyle += ' background-color: var(--input-bg); color: var(--text-primary);';
                     }
-                    
+
+                    selectHTML += `<select class="tier-select" data-card="${cardIndex}" data-slot="${i}" style="${tierSelectStyle}"${disabledAttr}>`;
+                    selectHTML += `<option value="">${t.selectValue}</option>`;
+
+                    if (effect && effect.name) {
+                        const effectData = effects.find(e => e.name === effect.name);
+                        if (effectData) {
+                            for (let tier = 1; tier <= 15; tier++) {
+                                const selected = effect && effect.tier === tier ? 'selected' : '';
+                                const valueText = effectData.tiers[tier - 1].toFixed(2) + '%';
+                                selectHTML += `<option value="${tier}" data-tier="${tier}" ${selected}>${valueText}</option>`;
+                            }
+                        }
+                    }
+
+                    selectHTML += `</select>`;
+
                     // 자물쇠 아이콘 추가
                     const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
-                    effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
-                    textLines[i].innerHTML = effectHTML;
-                    
-                    // 텍스트 길이에 따른 폰트 크기 조정
-                    const fullText = `${effectName} ${formattedValue}%`;
-                    if (fullText.length > 20) {
-                        textLines[i].style.fontSize = '11px';
-                    } else if (fullText.length > 15) {
-                        textLines[i].style.fontSize = '12px';
+                    selectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+
+                    textLines[i].innerHTML = selectHTML;
+                    textLines[i].style.backgroundColor = 'var(--input-bg)';
+                    textLines[i].style.padding = '0 28px 0 16px';
+                    textLines[i].style.justifyContent = 'center';
+                }
+            } else {
+                // 일반 모드: 기존 텍스트 표시
+                for (let i = 0; i < 3; i++) {
+                    const effect = cardEffects[cardIndex][i];
+                    const isLocked = cardLockStates[cardIndex][i];
+
+                    if (effect) {
+                        // 소수점 2자리까지 고정 표시
+                        const formattedValue = effect.value.toFixed(2);
+                        const effectName = t.effects[effect.name] || `[${effect.name}]`;
+
+                        let effectHTML = '';
+                        if (effect.tier == 15) {
+                            effectHTML = `<span style="color: white;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                            textLines[i].style.backgroundColor = 'black';
+                        }
+                        else if (effect.tier >= 12 && effect.tier <= 14) {
+                            effectHTML = `<span style="color: black;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
+                            textLines[i].style.backgroundColor = 'white';
+                        } else {
+                            effectHTML = `<span style="color: black;">${effectName} ${formattedValue}%</span>`;
+                            textLines[i].style.backgroundColor = 'white';
+                        }
+
+                        // 자물쇠 아이콘 추가
+                        const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
+                        effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                        textLines[i].innerHTML = effectHTML;
+
+                        // 텍스트 길이에 따른 폰트 크기 조정
+                        const fullText = `${effectName} ${formattedValue}%`;
+                        if (fullText.length > 20) {
+                            textLines[i].style.fontSize = '11px';
+                        } else if (fullText.length > 15) {
+                            textLines[i].style.fontSize = '12px';
+                        } else {
+                            textLines[i].style.fontSize = '14px';
+                        }
+
                     } else {
+                        textLines[i].textContent = t.effectNotObtained;
+                        textLines[i].style.backgroundColor = 'white';
+                        textLines[i].style.color = '#666';
                         textLines[i].style.fontSize = '14px';
                     }
-                    
-                } else {
-                    textLines[i].textContent = t.effectNotObtained;
-                    textLines[i].style.backgroundColor = 'white';
-                    textLines[i].style.color = '#666';
-                    textLines[i].style.fontSize = '14px';
                 }
             }
         }
@@ -1169,15 +1318,21 @@
                 const cards = document.querySelectorAll('.card');
                 cards[cardIndex].classList.remove('expanded');
             }
-            
+
             // 모듈 개수 초기화
             moduleCount = 0;
             document.getElementById('moduleCount').textContent = moduleCount;
-            
+
             // 화면 업데이트
             for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
                 updateEffectDisplay(cardIndex);
             }
+
+            // 커스텀 모드일 때 이벤트 리스너 재부착
+            if (isCustomMode) {
+                attachSelectChangeListeners();
+            }
+
             updateOptionSummary();
         });
         
@@ -1185,9 +1340,26 @@
         document.getElementById('resetAllBtn').addEventListener('mouseenter', function() {
             this.style.backgroundColor = '#c82333';
         });
-        
+
         document.getElementById('resetAllBtn').addEventListener('mouseleave', function() {
             this.style.backgroundColor = '#dc3545';
+        });
+
+        // 커스텀 버튼 호버 효과
+        document.getElementById('customModeBtn').addEventListener('mouseenter', function() {
+            if (isCustomMode) {
+                this.style.backgroundColor = '#c82333'; // 빨간색 호버
+            } else {
+                this.style.backgroundColor = '#1e7e34'; // 녹색 호버
+            }
+        });
+
+        document.getElementById('customModeBtn').addEventListener('mouseleave', function() {
+            if (isCustomMode) {
+                this.style.backgroundColor = '#dc3545'; // 빨간색
+            } else {
+                this.style.backgroundColor = '#28a745'; // 녹색
+            }
         });
         
         // 언어 선택기 이벤트 리스너
@@ -1229,6 +1401,153 @@
 
         // 다크모드 토글 버튼 이벤트
         document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // 카드 상태 업데이트 함수 (버튼 표시 제어)
+        function updateCardState(cardIndex) {
+            const card = document.querySelectorAll('.card')[cardIndex];
+            const hasAnyEffect = cardEffects[cardIndex].some(effect => effect !== null);
+
+            if (isCustomMode) {
+                // 커스텀 모드: 모든 버튼 숨김
+                card.classList.add('custom-mode');
+            } else {
+                // 일반 모드: custom-mode 클래스 제거
+                card.classList.remove('custom-mode');
+
+                // 효과가 있으면 expanded 클래스 추가
+                if (hasAnyEffect) {
+                    card.classList.add('expanded');
+                } else {
+                    card.classList.remove('expanded');
+                }
+            }
+        }
+
+        // 커스텀 모드 토글 함수
+        function toggleCustomMode() {
+            isCustomMode = !isCustomMode;
+            const btn = document.getElementById('customModeBtn');
+            const t = translations[currentLanguage];
+
+            if (isCustomMode) {
+                // 커스텀 모드 활성화 - 빨간색, 종료 표시
+                btn.style.backgroundColor = '#dc3545';
+                btn.textContent = t.customModeOff;
+            } else {
+                // 일반 모드 - 녹색, 시작 표시
+                btn.style.backgroundColor = '#28a745';
+                btn.textContent = t.customModeOn;
+            }
+
+            // 모든 카드의 효과 표시 업데이트
+            for (let i = 0; i < 4; i++) {
+                updateEffectDisplay(i);
+                updateCardState(i);
+            }
+
+            // 커스텀 모드에서 Select 변경 이벤트 리스너 추가
+            if (isCustomMode) {
+                attachSelectChangeListeners();
+            }
+        }
+
+        // Select 변경 이벤트 리스너 추가
+        function attachSelectChangeListeners() {
+            // 효과 Select 변경 이벤트
+            document.querySelectorAll('.effect-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const cardIndex = parseInt(this.dataset.card);
+                    const slotIndex = parseInt(this.dataset.slot);
+                    const selectedEffectName = this.value;
+
+                    if (selectedEffectName) {
+                        const effectData = effects.find(e => e.name === selectedEffectName);
+                        if (effectData) {
+                            // 현재 슬롯의 티어를 유지, 없으면 11티어로 설정
+                            const currentEffect = cardEffects[cardIndex][slotIndex];
+                            const tierToUse = currentEffect && currentEffect.tier ? currentEffect.tier : 11;
+                            const tierIndex = tierToUse - 1;
+
+                            cardEffects[cardIndex][slotIndex] = {
+                                name: effectData.name,
+                                value: effectData.tiers[tierIndex],
+                                tier: tierToUse
+                            };
+
+                            // 다른 슬롯의 선택 옵션 업데이트를 위해 다시 렌더링
+                            updateEffectDisplay(cardIndex);
+
+                            // 이벤트 리스너 재부착
+                            attachSelectChangeListeners();
+
+                            // 카드 상태 업데이트 (버튼 표시 제어용)
+                            updateCardState(cardIndex);
+
+                            updateOptionSummary();
+                        }
+                    } else {
+                        cardEffects[cardIndex][slotIndex] = null;
+
+                        // 다른 슬롯의 선택 옵션 업데이트를 위해 다시 렌더링
+                        updateEffectDisplay(cardIndex);
+
+                        // 이벤트 리스너 재부착
+                        attachSelectChangeListeners();
+
+                        // 카드 상태 업데이트 (버튼 표시 제어용)
+                        updateCardState(cardIndex);
+
+                        updateOptionSummary();
+                    }
+                });
+            });
+
+            // 티어 Select 변경 이벤트
+            document.querySelectorAll('.tier-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const cardIndex = parseInt(this.dataset.card);
+                    const slotIndex = parseInt(this.dataset.slot);
+                    const selectedTier = parseInt(this.value);
+                    const currentEffect = cardEffects[cardIndex][slotIndex];
+
+                    if (selectedTier && currentEffect && currentEffect.name) {
+                        const effectData = effects.find(e => e.name === currentEffect.name);
+                        if (effectData) {
+                            const tierIndex = selectedTier - 1;
+                            cardEffects[cardIndex][slotIndex] = {
+                                name: effectData.name,
+                                value: effectData.tiers[tierIndex],
+                                tier: selectedTier
+                            };
+
+                            // Select 박스 스타일 즉시 업데이트
+                            if (selectedTier === 15) {
+                                this.style.backgroundColor = 'black';
+                                this.style.color = 'rgb(17, 167, 238)';
+                            } else if (selectedTier >= 12 && selectedTier <= 14) {
+                                this.style.backgroundColor = 'var(--input-bg)';
+                                this.style.color = 'rgb(17, 167, 238)';
+                            } else {
+                                this.style.backgroundColor = 'var(--input-bg)';
+                                this.style.color = 'var(--text-primary)';
+                            }
+
+                            // 카드 상태 업데이트 (버튼 표시 제어용)
+                            updateCardState(cardIndex);
+
+                            updateOptionSummary();
+                        }
+                    } else {
+                        // "수치" 기본값을 선택한 경우 스타일 초기화
+                        this.style.backgroundColor = 'var(--input-bg)';
+                        this.style.color = 'var(--text-primary)';
+                    }
+                });
+            });
+        }
+
+        // 커스텀 모드 버튼 이벤트
+        document.getElementById('customModeBtn').addEventListener('click', toggleCustomMode);
 
         // 페이지 로드 시 언어 설정 불러오기 및 초기화
         document.addEventListener('DOMContentLoaded', () => {
