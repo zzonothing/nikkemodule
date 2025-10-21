@@ -573,9 +573,15 @@
         </div>
         
         <div style="text-align: center; margin: 40px 0 20px 0;">
-            <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background-color 0.2s ease;">
-                초기화
-            </button>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+                <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                    초기화
+                </button>
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: var(--text-primary); transition: color 0.3s ease;">
+                    <input type="checkbox" id="protectHighTier" checked style="cursor: pointer; width: 16px; height: 16px;">
+                    <span id="protectLabel">상위 티어 옵션 보호</span>
+                </label>
+            </div>
             <div class="module-counter" style="font-size: 18px; font-weight: 500; color: var(--text-primary); transition: color 0.3s ease;">
                 사용된 모듈 개수: <span id="moduleCount">0</span>
             </div>
@@ -604,6 +610,7 @@
                 effectNotObtained: '효과 미획득',
                 noActiveOptions: '활성화된 옵션이 없습니다',
                 confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
+                protectHighTier: '상위 티어 옵션 보호',
                 effects: {
                     '우월코드 대미지 증가': '[우월코드 대미지 증가]',
                     '명중률 증가': '[명중률 증가]',
@@ -627,6 +634,7 @@
                 effectNotObtained: '効果未取得',
                 noActiveOptions: 'アクティブなオプションがありません',
                 confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
+                protectHighTier: '上位ティアオプション保護',
                 effects: {
                     '우월코드 대미지 증가': '「有利コードダメージ増加」',
                     '명중률 증가': '「命中率増加」',
@@ -673,7 +681,10 @@
             });
             
             document.getElementById('resetAllBtn').textContent = t.reset;
-            
+
+            // 상위 티어 보호 라벨
+            document.getElementById('protectLabel').textContent = t.protectHighTier;
+
             // 모듈 카운터
             const moduleCountElement = document.getElementById('moduleCount');
             if (moduleCountElement && moduleCountElement.parentElement) {
@@ -1027,12 +1038,16 @@
         // 효과 변경 버튼 이벤트
         document.querySelectorAll('.effect-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
+                // 상위 티어 보호 체크박스가 체크되어 있는지 확인
+                const isProtectEnabled = document.getElementById('protectHighTier').checked;
+
                 // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
-                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) => 
+                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) =>
                     effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
                 );
-                
-                if (hasHighTierUnlocked) {
+
+                // 보호가 활성화되어 있고 상위 티어가 존재하면 경고
+                if (isProtectEnabled && hasHighTierUnlocked) {
                     const confirmed = confirm(translations[currentLanguage].confirmHighTier);
                     if (!confirmed) {
                         return; // 사용자가 No를 선택하면 실행 중단
@@ -1090,12 +1105,16 @@
         // 수치 재설정 버튼 이벤트 (효과 고정, 티어만 랜덤 재설정)
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
+                // 상위 티어 보호 체크박스가 체크되어 있는지 확인
+                const isProtectEnabled = document.getElementById('protectHighTier').checked;
+
                 // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
-                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) => 
+                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) =>
                     effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
                 );
-                
-                if (hasHighTierUnlocked) {
+
+                // 보호가 활성화되어 있고 상위 티어가 존재하면 경고
+                if (isProtectEnabled && hasHighTierUnlocked) {
                     const confirmed = confirm(translations[currentLanguage].confirmHighTier);
                     if (!confirmed) {
                         return; // 사용자가 No를 선택하면 실행 중단
