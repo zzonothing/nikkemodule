@@ -495,19 +495,56 @@
             justify-content: center;
         }
 
+        /* 모바일 헤더 컨테이너 */
+        .mobile-header {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .theme-toggle {
                 position: static;
-                margin-bottom: 12px;
+                padding: 10px 14px;
+            }
+
+            .language-selector {
+                position: static !important;
+                justify-content: center !important;
+                margin: 0 !important;
+            }
+
+            .mobile-header {
+                display: flex;
                 justify-content: center;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+            }
+
+            /* 데스크탑에서 표시되는 요소 숨김 */
+            .container > .theme-toggle,
+            .container > .language-selector {
+                display: none !important;
             }
         }
 
         @media (max-width: 480px) {
             .theme-toggle {
-                position: static;
-                margin-bottom: 16px;
-                justify-content: center;
+                padding: 8px 10px;
+            }
+
+            .theme-icon {
+                font-size: 16px;
+            }
+
+            .language-flag {
+                width: 36px;
+                height: 27px;
+            }
+
+            .mobile-header {
+                gap: 10px;
+                margin-bottom: 12px;
             }
         }
     </style>
@@ -529,6 +566,30 @@
             </div>
             <div class="language-flag" data-lang="zh" title="繁體中文">
                 <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
+            </div>
+            <div class="language-flag" data-lang="en" title="English">
+                <img src="https://flagcdn.com/w80/us.png" alt="English">
+            </div>
+        </div>
+
+        <!-- 모바일 헤더 (768px 이하에서만 표시) -->
+        <div class="mobile-header">
+            <div class="theme-toggle" id="themeToggleMobile">
+                <span class="theme-icon">🌙</span>
+            </div>
+            <div class="language-selector">
+                <div class="language-flag active" data-lang="ko" title="한국어">
+                    <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
+                </div>
+                <div class="language-flag" data-lang="ja" title="日本語">
+                    <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
+                </div>
+                <div class="language-flag" data-lang="zh" title="繁體中文">
+                    <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
+                </div>
+                <div class="language-flag" data-lang="en" title="English">
+                    <img src="https://flagcdn.com/w80/us.png" alt="English">
+                </div>
             </div>
         </div>
 
@@ -706,11 +767,11 @@
                 title: 'NIKKE 模組作業模擬',
                 equipmentModification: '裝備改造',
                 effectChange: '效果變更',
-                valueReset: '數值重設',
+                valueReset: '重新設定數值',
                 reset: '初始化',
                 moduleCount: '使用的模組數量',
                 optionTotal: '當前選項總和',
-                effectNotObtained: '效果未獲得',
+                effectNotObtained: '未獲得效果',
                 noActiveOptions: '沒有啟用的選項',
                 confirmHighTier: '目前未鎖定的選項中存在高階選項。是否要執行？',
                 protectHighTier: '高階選項保護',
@@ -728,6 +789,34 @@
                     '크리티컬 확률 증가': '【暴擊率增加】',
                     '방어력 증가': '【防禦力增加】',
                     '크리티컬 대미지 증가': '【暴擊傷害增加】'
+                }
+            },
+            en: {
+                title: 'NIKKE Over Load Simulation',
+                equipmentModification: 'Modify Equipment',
+                effectChange: 'Change Effect',
+                valueReset: 'Reset Value',
+                reset: 'Reset',
+                moduleCount: 'Modules Used',
+                optionTotal: 'Total Options',
+                effectNotObtained: 'Effect Not Obtained',
+                noActiveOptions: 'No active options',
+                confirmHighTier: 'There are high-tier options among the unlocked options. Do you want to proceed?',
+                protectHighTier: 'Protect High-Tier Options',
+                customModeOn: 'Start Custom Mode',
+                customModeOff: 'End Custom Mode',
+                selectEffect: 'Effect',
+                selectValue: 'Value',
+                effects: {
+                    '우월코드 대미지 증가': 'Increase Element Damage Dealt',
+                    '명중률 증가': 'Increase Hit Rate',
+                    '최대 장탄 수 증가': 'Increase Max Ammunition Capacity',
+                    '공격력 증가': 'Increase ATK',
+                    '차지 대미지 증가': 'Increase Charge Damage',
+                    '차지 속도 증가': 'Increase Charge Speed',
+                    '크리티컬 확률 증가': 'Increase Critical Rate',
+                    '방어력 증가': 'Increase DEF',
+                    '크리티컬 대미지 증가': 'Increase Critical Damage'
                 }
             }
         };
@@ -1438,8 +1527,11 @@
             applyTheme(newTheme);
         }
 
-        // 다크모드 토글 버튼 이벤트
+        // 다크모드 토글 버튼 이벤트 (데스크탑)
         document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // 다크모드 토글 버튼 이벤트 (모바일)
+        document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
 
         // 카드 상태 업데이트 함수 (버튼 표시 제어)
         function updateCardState(cardIndex) {
