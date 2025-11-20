@@ -14,10 +14,67 @@
     <meta name="google-site-verification" content="nUa6YGTaqpapkvkL1DeAYbZKcBftyoTU7Y6AKpW-FZs" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>니케 모듈작 시뮬레이션</title>
+    <title>니케 모듈작 시뮬레이션 | NIKKE Over Load Module Simulator</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="니케(NIKKE) 오버로드 모듈 시뮬레이터. 장비 개조 확률과 효과를 시뮬레이션하세요. 커스텀 모드로 원하는 옵션 조합을 테스트하고 모듈 비용을 계산할 수 있습니다. | NIKKE Over Load Module Simulator - Test equipment modifications, calculate module costs, and optimize your builds.">
+    <meta name="keywords" content="니케, NIKKE, 모듈작, 오버로드, 시뮬레이터, 장비 개조, 모듈 시뮬레이션, Over Load, Module, Simulator, Equipment Modification, 勝利の女神:NIKKE, モジュール, シミュレーター, 模組, 模擬器">
+    <meta name="author" content="NIKKE Module Simulator">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Korean, Japanese, Chinese, English">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="니케 모듈작 시뮬레이션 | NIKKE Over Load Module Simulator">
+    <meta property="og:description" content="니케(NIKKE) 오버로드 모듈 시뮬레이터로 장비 개조 효과를 테스트하고 최적의 빌드를 찾아보세요. 커스텀 모드 지원, 4개 언어 지원.">
+    <meta property="og:site_name" content="NIKKE Module Simulator">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="zh_TW">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="니케 모듈작 시뮬레이션 | NIKKE Over Load Module Simulator">
+    <meta name="twitter:description" content="니케(NIKKE) 오버로드 모듈 시뮬레이터로 장비 개조 효과를 테스트하고 최적의 빌드를 찾아보세요.">
+
+    <!-- Additional Meta Tags -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "NIKKE Over Load Module Simulator",
+        "alternateName": "니케 모듈작 시뮬레이션",
+        "description": "Simulator for NIKKE Over Load module system. Test equipment modifications, calculate module costs, and optimize your builds with custom mode support.",
+        "url": "https://nikkemodule.com",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "inLanguage": ["ko", "ja", "zh-TW", "en"],
+        "featureList": [
+            "Equipment modification simulation",
+            "Custom mode for testing builds",
+            "Multi-language support (Korean, Japanese, Chinese, English)",
+            "Dark mode theme",
+            "Module cost calculation",
+            "High-tier option protection"
+        ]
+    }
+    </script>
+
     <style>
         :root {
             --bg-primary: #f8f9fa;
@@ -547,6 +604,128 @@
                 margin-bottom: 12px;
             }
         }
+
+        /* 컨텐츠 섹션 스타일 */
+        .content-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 60px;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .content-section h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .content-section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .content-section p,
+        .content-section li {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .content-section ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+        }
+
+        .effect-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .effect-table th,
+        .effect-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .effect-table th {
+            background: var(--summary-bg);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .effect-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .faq-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--summary-bg);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-item strong {
+            color: var(--text-primary);
+            font-size: 18px;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 24px;
+                margin-top: 40px;
+            }
+
+            .content-section h2 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .content-section h3 {
+                font-size: 18px;
+                margin-top: 20px;
+                margin-bottom: 12px;
+            }
+
+            .content-section p,
+            .content-section li {
+                font-size: 14px;
+            }
+
+            .effect-table {
+                font-size: 14px;
+            }
+
+            .effect-table th,
+            .effect-table td {
+                padding: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -702,6 +881,85 @@
                 <!-- 옵션 총합이 여기에 표시됩니다 -->
             </div>
         </div>
+
+        <!-- 사용 가이드 섹션 -->
+        <div class="content-section" id="guideSection">
+            <h2 id="guideSectionTitle">사용 가이드</h2>
+            <p id="guideIntroText">이 시뮬레이터는 니케(NIKKE)의 오버로드 모듈 시스템을 재현하여 장비 개조 및 옵션 조합을 테스트할 수 있도록 도와줍니다.</p>
+
+            <h3 id="guideBasicSectionTitle">기본 사용법</h3>
+            <ul>
+                <li id="guideBasic1Text">장비 개조: 각 장비 슬롯(머리, 몸통, 손, 발)의 "장비 개조" 버튼을 클릭하여 초기 옵션을 생성합니다. 모듈 1개가 소모됩니다.</li>
+                <li id="guideBasic2Text">효과 변경: 획득한 옵션의 "효과 변경" 버튼을 클릭하여 효과 종류를 재설정합니다. 잠긴 슬롯이 있을 경우 추가 모듈이 소모됩니다.</li>
+                <li id="guideBasic3Text">수치 재설정: "수치 재설정" 버튼으로 효과는 유지하되 티어(수치)만 재설정합니다.</li>
+                <li id="guideBasic4Text">옵션 잠금: 각 효과 옆의 자물쇠 아이콘을 클릭하여 원하는 옵션을 고정할 수 있습니다. 잠금 시 모듈이 소모됩니다 (첫 번째: 2개, 두 번째: 3개, 세 번째: 4개).</li>
+            </ul>
+
+            <h3 id="guideCustomSectionTitle">커스텀 모드</h3>
+            <ul>
+                <li id="guideCustom1Text">"커스텀 모드 시작" 버튼을 클릭하면 수동으로 효과와 티어를 선택할 수 있습니다.</li>
+                <li id="guideCustom2Text">효과 드롭다운에서 원하는 효과를, 수치 드롭다운에서 원하는 티어를 선택하세요.</li>
+                <li id="guideCustom3Text">커스텀 모드에서는 모듈이 소모되지 않으며, 다양한 옵션 조합을 자유롭게 테스트할 수 있습니다.</li>
+                <li id="guideCustom4Text">같은 장비 내에서 중복된 효과는 선택할 수 없습니다.</li>
+            </ul>
+
+            <h3 id="guideFeaturesSectionTitle">주요 기능</h3>
+            <ul>
+                <li id="guideFeatures1Text">상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.</li>
+                <li id="guideFeatures2Text">다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.</li>
+                <li id="guideFeatures3Text">다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.</li>
+                <li id="guideFeatures4Text">옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.</li>
+            </ul>
+        </div>
+
+        <!-- 모듈 효과 정보 섹션 -->
+        <div class="content-section" id="effectInfoSection">
+            <h2 id="effectInfoSectionTitle">모듈 효과 정보</h2>
+            <p id="effectInfoIntroText">오버로드 모듈에서 획득할 수 있는 9가지 효과 종류와 티어별 수치 범위입니다.</p>
+
+            <table class="effect-table">
+                <thead>
+                    <tr>
+                        <th id="effectTableNameHeader">효과 이름</th>
+                        <th id="effectTableProbHeader">출현 확률</th>
+                        <th id="effectTableRangeHeader">수치 범위 (1-15티어)</th>
+                    </tr>
+                </thead>
+                <tbody id="effectTableBody">
+                    <!-- 효과 정보가 동적으로 여기에 표시됩니다 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FAQ 섹션 -->
+        <div class="content-section" id="faqSection">
+            <h2 id="faqSectionTitle">자주 묻는 질문</h2>
+
+            <div class="faq-item">
+                <strong id="faq1QText">Q. 모듈 개수는 어떻게 계산되나요?</strong>
+                <p id="faq1AText">A. 장비 개조 시 1개, 효과 변경/수치 재설정 시 1개가 소모됩니다. 옵션을 잠글 경우 첫 번째 잠금 시 2개, 두 번째 3개, 세 번째 4개가 추가로 소모됩니다. 잠금이 있는 상태에서 효과 변경/수치 재설정 시 추가 비용(잠금 1개: +1, 잠금 2개: +2)이 발생합니다.</p>
+            </div>
+
+            <div class="faq-item">
+                <strong id="faq2QText">Q. 티어별 획득 확률은 어떻게 되나요?</strong>
+                <p id="faq2AText">A. 1-5티어는 각각 12% 확률, 6-10티어는 각각 7% 확률, 11-15티어는 각각 1% 확률로 설정되어 있습니다.</p>
+            </div>
+
+            <div class="faq-item">
+                <strong id="faq3QText">Q. 슬롯별 효과 획득 확률은요?</strong>
+                <p id="faq3AText">A. 첫 번째 슬롯은 100%, 두 번째 슬롯은 50%, 세 번째 슬롯은 30% 확률로 효과가 생성됩니다.</p>
+            </div>
+
+            <div class="faq-item">
+                <strong id="faq4QText">Q. 커스텀 모드와 일반 모드의 차이는 무엇인가요?</strong>
+                <p id="faq4AText">A. 일반 모드는 실제 게임처럼 확률에 따라 랜덤으로 효과와 티어가 결정되며 모듈이 소모됩니다. 커스텀 모드는 모든 효과와 티어를 자유롭게 선택할 수 있으며 모듈이 소모되지 않아 다양한 조합을 테스트하기에 적합합니다.</p>
+            </div>
+
+            <div class="faq-item">
+                <strong id="faq5QText">Q. 같은 장비에 중복된 효과를 가질 수 있나요?</strong>
+                <p id="faq5AText">A. 아니요, 같은 장비 내에서는 서로 다른 효과만 선택할 수 있습니다. 다만 서로 다른 장비 간에는 같은 효과를 가질 수 있으며, 이 경우 옵션 총합에 합산되어 표시됩니다.</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -733,7 +991,40 @@
                     '크리티컬 확률 증가': '[크리티컬 확률 증가]',
                     '방어력 증가': '[방어력 증가]',
                     '크리티컬 대미지 증가': '[크리티컬 대미지 증가]'
-                }
+                },
+                guideTitle: '사용 가이드',
+                guideIntro: '이 시뮬레이터는 니케(NIKKE)의 오버로드 모듈 시스템을 재현하여 장비 개조 및 옵션 조합을 테스트할 수 있도록 도와줍니다.',
+                guideBasicTitle: '기본 사용법',
+                guideBasic1: '장비 개조: 각 장비 슬롯(머리, 몸통, 손, 발)의 "장비 개조" 버튼을 클릭하여 초기 옵션을 생성합니다. 모듈 1개가 소모됩니다.',
+                guideBasic2: '효과 변경: 획득한 옵션의 "효과 변경" 버튼을 클릭하여 효과 종류를 재설정합니다. 잠긴 슬롯이 있을 경우 추가 모듈이 소모됩니다.',
+                guideBasic3: '수치 재설정: "수치 재설정" 버튼으로 효과는 유지하되 티어(수치)만 재설정합니다.',
+                guideBasic4: '옵션 잠금: 각 효과 옆의 자물쇠 아이콘을 클릭하여 원하는 옵션을 고정할 수 있습니다. 잠금 시 모듈이 소모됩니다 (첫 번째: 2개, 두 번째: 3개, 세 번째: 4개).',
+                guideCustomTitle: '커스텀 모드',
+                guideCustom1: '"커스텀 모드 시작" 버튼을 클릭하면 수동으로 효과와 티어를 선택할 수 있습니다.',
+                guideCustom2: '효과 드롭다운에서 원하는 효과를, 수치 드롭다운에서 원하는 티어를 선택하세요.',
+                guideCustom3: '커스텀 모드에서는 모듈이 소모되지 않으며, 다양한 옵션 조합을 자유롭게 테스트할 수 있습니다.',
+                guideCustom4: '같은 장비 내에서 중복된 효과는 선택할 수 없습니다.',
+                guideFeaturesTitle: '주요 기능',
+                guideFeatures1: '상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.',
+                guideFeatures2: '다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.',
+                guideFeatures3: '다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.',
+                guideFeatures4: '옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.',
+                effectInfoTitle: '모듈 효과 정보',
+                effectInfoIntro: '오버로드 모듈에서 획득할 수 있는 9가지 효과 종류와 티어별 수치 범위입니다.',
+                effectTableName: '효과 이름',
+                effectTableProb: '출현 확률',
+                effectTableRange: '수치 범위 (1-15티어)',
+                faqTitle: '자주 묻는 질문',
+                faq1Q: 'Q. 모듈 개수는 어떻게 계산되나요?',
+                faq1A: 'A. 장비 개조 시 1개, 효과 변경/수치 재설정 시 1개가 소모됩니다. 옵션을 잠글 경우 첫 번째 잠금 시 2개, 두 번째 3개, 세 번째 4개가 추가로 소모됩니다. 잠금이 있는 상태에서 효과 변경/수치 재설정 시 추가 비용(잠금 1개: +1, 잠금 2개: +2)이 발생합니다.',
+                faq2Q: 'Q. 티어별 획득 확률은 어떻게 되나요?',
+                faq2A: 'A. 1-5티어는 각각 12% 확률, 6-10티어는 각각 7% 확률, 11-15티어는 각각 1% 확률로 설정되어 있습니다.',
+                faq3Q: 'Q. 슬롯별 효과 획득 확률은요?',
+                faq3A: 'A. 첫 번째 슬롯은 100%, 두 번째 슬롯은 50%, 세 번째 슬롯은 30% 확률로 효과가 생성됩니다.',
+                faq4Q: 'Q. 커스텀 모드와 일반 모드의 차이는 무엇인가요?',
+                faq4A: 'A. 일반 모드는 실제 게임처럼 확률에 따라 랜덤으로 효과와 티어가 결정되며 모듈이 소모됩니다. 커스텀 모드는 모든 효과와 티어를 자유롭게 선택할 수 있으며 모듈이 소모되지 않아 다양한 조합을 테스트하기에 적합합니다.',
+                faq5Q: 'Q. 같은 장비에 중복된 효과를 가질 수 있나요?',
+                faq5A: 'A. 아니요, 같은 장비 내에서는 서로 다른 효과만 선택할 수 있습니다. 다만 서로 다른 장비 간에는 같은 효과를 가질 수 있으며, 이 경우 옵션 총합에 합산되어 표시됩니다.'
             },
             ja: {
                 title: 'NIKKE オバロ シミュレーション',
@@ -761,7 +1052,40 @@
                     '크리티컬 확률 증가': '「クリティカル確률増加」',
                     '방어력 증가': '「防御力増加」',
                     '크리티컬 대미지 증가': '「クリティカルダメージ増加」'
-                }
+                },
+                guideTitle: '使用ガイド',
+                guideIntro: 'このシミュレーターはNIKKEのオーバーロードモジュールシステムを再現し、装備改造とオプション組み合わせをテストできます。',
+                guideBasicTitle: '基本的な使い方',
+                guideBasic1: '装備の改造: 各装備スロット(頭、胴体、手、足)の「装備の改造」ボタンをクリックして初期オプションを生成します。モジュール1個を消費します。',
+                guideBasic2: '効果変更: 獲得したオプションの「効果変更」ボタンをクリックして効果の種類を再設定します。ロックされたスロットがある場合、追加のモジュールを消費します。',
+                guideBasic3: '数値再設定: 「数値再設定」ボタンで効果は維持しつつティア(数値)のみを再設定します。',
+                guideBasic4: 'オプションロック: 各効果の横にある鍵アイコンをクリックして希望するオプションを固定できます。ロック時にモジュールを消費します(1番目: 2個、2番目: 3個、3番目: 4個)。',
+                guideCustomTitle: 'カスタムモード',
+                guideCustom1: '「カスタムモード開始」ボタンをクリックすると、手動で効果とティアを選択できます。',
+                guideCustom2: '効果ドロップダウンから希望する効果を、数値ドロップダウンから希望するティアを選択してください。',
+                guideCustom3: 'カスタムモードではモジュールを消費せず、様々なオプションの組み合わせを自由にテストできます。',
+                guideCustom4: '同じ装備内で重複した効果は選択できません。',
+                guideFeaturesTitle: '主な機能',
+                guideFeatures1: '上位ティアオプション保護: 12-15ティアオプションがある場合、効果変更/数値再設定時に確認メッセージが表示されます。',
+                guideFeatures2: 'ダークモード: 左上の月/太陽アイコンでテーマを切り替えられます。',
+                guideFeatures3: '多言語対応: 韓国語、日本語、繁体字中国語、英語に対応しています。',
+                guideFeatures4: 'オプション合計: すべての装備の効果が自動的に合算されて表示されます。',
+                effectInfoTitle: 'モジュール効果情報',
+                effectInfoIntro: 'オーバーロードモジュールで獲得できる9種類の効果とティア別数値範囲です。',
+                effectTableName: '効果名',
+                effectTableProb: '出現確率',
+                effectTableRange: '数値範囲 (1-15ティア)',
+                faqTitle: 'よくある質問',
+                faq1Q: 'Q. モジュール数はどのように計算されますか?',
+                faq1A: 'A. 装備改造時に1個、効果変更/数値再設定時に1個消費されます。オプションをロックする場合、1番目のロック時に2個、2番目に3個、3番目に4個が追加で消費されます。ロックがある状態で効果変更/数値再設定する場合、追加コスト(ロック1個: +1、ロック2個: +2)が発生します。',
+                faq2Q: 'Q. ティア別獲得確率はどうなっていますか?',
+                faq2A: 'A. 1-5ティアはそれぞれ12%の確率、6-10ティアはそれぞれ7%の確率、11-15ティアはそれぞれ1%の確率で設定されています。',
+                faq3Q: 'Q. スロット別効果獲得確率は?',
+                faq3A: 'A. 1番目のスロットは100%、2番目のスロットは50%、3番目のスロットは30%の確率で効果が生成されます。',
+                faq4Q: 'Q. カスタムモードと通常モードの違いは何ですか?',
+                faq4A: 'A. 通常モードは実際のゲームのように確率に応じてランダムに効果とティアが決定され、モジュールを消費します。カスタムモードはすべての効果とティアを自由に選択でき、モジュールを消費しないため様々な組み合わせのテストに適しています。',
+                faq5Q: 'Q. 同じ装備に重複した効果を持てますか?',
+                faq5A: 'A. いいえ、同じ装備内では異なる効果のみ選択できます。ただし、異なる装備間では同じ効果を持つことができ、この場合オプション合計に合算されて表示されます。'
             },
             zh: {
                 title: 'NIKKE 模組作業模擬',
@@ -789,7 +1113,40 @@
                     '크리티컬 확률 증가': '【暴擊率增加】',
                     '방어력 증가': '【防禦力增加】',
                     '크리티컬 대미지 증가': '【暴擊傷害增加】'
-                }
+                },
+                guideTitle: '使用指南',
+                guideIntro: '此模擬器重現了NIKKE的Over Load模組系統，可協助您測試裝備改造和選項組合。',
+                guideBasicTitle: '基本使用方法',
+                guideBasic1: '裝備改造: 點擊各裝備槽位(頭、身體、手、腳)的「裝備改造」按鈕生成初始選項。消耗1個模組。',
+                guideBasic2: '效果變更: 點擊已獲得選項的「效果變更」按鈕重新設定效果種類。若有鎖定槽位，將消耗額外模組。',
+                guideBasic3: '重新設定數值: 使用「重新設定數值」按鈕維持效果，僅重新設定階級(數值)。',
+                guideBasic4: '選項鎖定: 點擊各效果旁的鎖圖示可固定想要的選項。鎖定時消耗模組(第1個: 2個，第2個: 3個，第3個: 4個)。',
+                guideCustomTitle: '自訂模式',
+                guideCustom1: '點擊「自訂模式開始」按鈕可手動選擇效果和階級。',
+                guideCustom2: '從效果下拉選單選擇想要的效果，從數值下拉選單選擇想要的階級。',
+                guideCustom3: '在自訂模式中不會消耗模組，可自由測試各種選項組合。',
+                guideCustom4: '同一裝備內無法選擇重複的效果。',
+                guideFeaturesTitle: '主要功能',
+                guideFeatures1: '高階選項保護: 當有12-15階級選項時，效果變更/數值重設時會顯示確認訊息。',
+                guideFeatures2: '深色模式: 可透過左上角的月亮/太陽圖示切換主題。',
+                guideFeatures3: '多語言支援: 支援韓語、日語、繁體中文、英語。',
+                guideFeatures4: '選項總和: 所有裝備的效果會自動加總顯示。',
+                effectInfoTitle: '模組效果資訊',
+                effectInfoIntro: 'Over Load模組可獲得的9種效果類型及各階級數值範圍。',
+                effectTableName: '效果名稱',
+                effectTableProb: '出現機率',
+                effectTableRange: '數值範圍 (1-15階級)',
+                faqTitle: '常見問題',
+                faq1Q: 'Q. 模組數量如何計算?',
+                faq1A: 'A. 裝備改造時消耗1個，效果變更/數值重設時消耗1個。鎖定選項時，第1個鎖定消耗2個，第2個3個，第3個4個。有鎖定的狀態下進行效果變更/數值重設時會產生額外費用(鎖定1個: +1，鎖定2個: +2)。',
+                faq2Q: 'Q. 各階級的獲得機率如何?',
+                faq2A: 'A. 1-5階級各為12%機率，6-10階級各為7%機率，11-15階級各為1%機率。',
+                faq3Q: 'Q. 各槽位的效果獲得機率呢?',
+                faq3A: 'A. 第1個槽位為100%，第2個槽位為50%，第3個槽位為30%的機率生成效果。',
+                faq4Q: 'Q. 自訂模式和一般模式有什麼差異?',
+                faq4A: 'A. 一般模式如同實際遊戲，根據機率隨機決定效果和階級並消耗模組。自訂模式可自由選擇所有效果和階級且不消耗模組，適合測試各種組合。',
+                faq5Q: 'Q. 同一裝備可以有重複的效果嗎?',
+                faq5A: 'A. 不行，同一裝備內只能選擇不同的效果。但不同裝備間可以有相同效果，此時會在選項總和中加總顯示。'
             },
             en: {
                 title: 'NIKKE Over Load Simulation',
@@ -817,7 +1174,40 @@
                     '크리티컬 확률 증가': 'Increase Critical Rate',
                     '방어력 증가': 'Increase DEF',
                     '크리티컬 대미지 증가': 'Increase Critical Damage'
-                }
+                },
+                guideTitle: 'User Guide',
+                guideIntro: 'This simulator replicates NIKKE\'s Over Load module system, helping you test equipment modifications and option combinations.',
+                guideBasicTitle: 'Basic Usage',
+                guideBasic1: 'Equipment Modification: Click the "Equipment Modification" button for each equipment slot (Head, Body, Hands, Feet) to generate initial options. Consumes 1 module.',
+                guideBasic2: 'Change Effects: Click the "Change Effects" button on acquired options to reset the effect type. Additional modules are consumed if there are locked slots.',
+                guideBasic3: 'Reset Attributes: Use the "Reset Attributes" button to maintain the effect while resetting only the tier (value).',
+                guideBasic4: 'Option Locking: Click the lock icon next to each effect to fix desired options. Modules are consumed when locking (1st: 2, 2nd: 3, 3rd: 4).',
+                guideCustomTitle: 'Custom Mode',
+                guideCustom1: 'Click the "Start Custom Mode" button to manually select effects and tiers.',
+                guideCustom2: 'Select the desired effect from the effect dropdown and the desired tier from the value dropdown.',
+                guideCustom3: 'In custom mode, modules are not consumed, allowing you to freely test various option combinations.',
+                guideCustom4: 'Duplicate effects cannot be selected within the same equipment.',
+                guideFeaturesTitle: 'Key Features',
+                guideFeatures1: 'High-Tier Option Protection: Displays a confirmation message when changing effects/resetting values if 12-15 tier options exist.',
+                guideFeatures2: 'Dark Mode: Switch themes using the moon/sun icon in the top left corner.',
+                guideFeatures3: 'Multi-language Support: Supports Korean, Japanese, Traditional Chinese, and English.',
+                guideFeatures4: 'Option Totals: Effects from all equipment are automatically summed and displayed.',
+                effectInfoTitle: 'Module Effect Information',
+                effectInfoIntro: '9 types of effects available in Over Load modules and their tier-based value ranges.',
+                effectTableName: 'Effect Name',
+                effectTableProb: 'Drop Rate',
+                effectTableRange: 'Value Range (Tier 1-15)',
+                faqTitle: 'Frequently Asked Questions',
+                faq1Q: 'Q. How are module counts calculated?',
+                faq1A: 'A. 1 module is consumed for equipment modification, 1 for effect change/attribute reset. When locking options, 2 modules for the 1st lock, 3 for the 2nd, 4 for the 3rd are additionally consumed. Additional costs occur when changing effects/resetting attributes with locks present (1 lock: +1, 2 locks: +2).',
+                faq2Q: 'Q. What are the acquisition rates by tier?',
+                faq2A: 'A. Tiers 1-5 each have a 12% rate, tiers 6-10 each have a 7% rate, and tiers 11-15 each have a 1% rate.',
+                faq3Q: 'Q. What about effect acquisition rates by slot?',
+                faq3A: 'A. The 1st slot has a 100% rate, the 2nd slot has a 50% rate, and the 3rd slot has a 30% rate for effect generation.',
+                faq4Q: 'Q. What\'s the difference between custom mode and normal mode?',
+                faq4A: 'A. Normal mode randomly determines effects and tiers based on probability like the actual game and consumes modules. Custom mode allows free selection of all effects and tiers without consuming modules, making it suitable for testing various combinations.',
+                faq5Q: 'Q. Can the same equipment have duplicate effects?',
+                faq5A: 'A. No, only different effects can be selected within the same equipment. However, different equipment can have the same effects, which will be summed and displayed in the option totals.'
             }
         };
         
@@ -846,7 +1236,10 @@
         // 모든 텍스트 업데이트 함수
         function updateAllTexts() {
             const t = translations[currentLanguage];
-            
+
+            // 페이지 제목 (브라우저 탭)
+            document.title = t.title + ' | NIKKE Over Load Module Simulator';
+
             // 제목
             document.querySelector('.title').textContent = t.title;
             
@@ -893,8 +1286,71 @@
             
             // 옵션 총합 업데이트
             updateOptionSummary();
+
+            // 컨텐츠 섹션 업데이트
+            updateContentSections();
         }
-        
+
+        // 컨텐츠 섹션 텍스트 업데이트
+        function updateContentSections() {
+            const t = translations[currentLanguage];
+
+            // 가이드 섹션
+            document.getElementById('guideSectionTitle').textContent = t.guideTitle;
+            document.getElementById('guideIntroText').textContent = t.guideIntro;
+            document.getElementById('guideBasicSectionTitle').textContent = t.guideBasicTitle;
+            document.getElementById('guideBasic1Text').textContent = t.guideBasic1;
+            document.getElementById('guideBasic2Text').textContent = t.guideBasic2;
+            document.getElementById('guideBasic3Text').textContent = t.guideBasic3;
+            document.getElementById('guideBasic4Text').textContent = t.guideBasic4;
+            document.getElementById('guideCustomSectionTitle').textContent = t.guideCustomTitle;
+            document.getElementById('guideCustom1Text').textContent = t.guideCustom1;
+            document.getElementById('guideCustom2Text').textContent = t.guideCustom2;
+            document.getElementById('guideCustom3Text').textContent = t.guideCustom3;
+            document.getElementById('guideCustom4Text').textContent = t.guideCustom4;
+            document.getElementById('guideFeaturesSectionTitle').textContent = t.guideFeaturesTitle;
+            document.getElementById('guideFeatures1Text').textContent = t.guideFeatures1;
+            document.getElementById('guideFeatures2Text').textContent = t.guideFeatures2;
+            document.getElementById('guideFeatures3Text').textContent = t.guideFeatures3;
+            document.getElementById('guideFeatures4Text').textContent = t.guideFeatures4;
+
+            // 효과 정보 섹션
+            document.getElementById('effectInfoSectionTitle').textContent = t.effectInfoTitle;
+            document.getElementById('effectInfoIntroText').textContent = t.effectInfoIntro;
+            document.getElementById('effectTableNameHeader').textContent = t.effectTableName;
+            document.getElementById('effectTableProbHeader').textContent = t.effectTableProb;
+            document.getElementById('effectTableRangeHeader').textContent = t.effectTableRange;
+
+            // 효과 테이블 업데이트
+            const tbody = document.getElementById('effectTableBody');
+            tbody.innerHTML = '';
+            effects.forEach(effect => {
+                const tr = document.createElement('tr');
+                const displayName = t.effects[effect.name] || effect.name;
+                const minValue = effect.tiers[0].toFixed(2);
+                const maxValue = effect.tiers[14].toFixed(2);
+                tr.innerHTML = `
+                    <td>${displayName}</td>
+                    <td>${effect.probability}%</td>
+                    <td>${minValue}% - ${maxValue}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // FAQ 섹션
+            document.getElementById('faqSectionTitle').textContent = t.faqTitle;
+            document.getElementById('faq1QText').textContent = t.faq1Q;
+            document.getElementById('faq1AText').textContent = t.faq1A;
+            document.getElementById('faq2QText').textContent = t.faq2Q;
+            document.getElementById('faq2AText').textContent = t.faq2A;
+            document.getElementById('faq3QText').textContent = t.faq3Q;
+            document.getElementById('faq3AText').textContent = t.faq3A;
+            document.getElementById('faq4QText').textContent = t.faq4Q;
+            document.getElementById('faq4AText').textContent = t.faq4A;
+            document.getElementById('faq5QText').textContent = t.faq5Q;
+            document.getElementById('faq5AText').textContent = t.faq5A;
+        }
+
         // 언어 플래그 상태 업데이트
         function updateLanguageFlags() {
             document.querySelectorAll('.language-flag').forEach(flag => {
@@ -1685,6 +2141,7 @@
             initTheme();
             loadSavedLanguage();
             updateAllTexts();
+            updateContentSections();
         });
     </script>
 </body>
