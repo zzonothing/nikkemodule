@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이용약관 | Terms of Service - NIKKE Module Simulator</title>
+    <meta name="robots" content="noindex, follow">
+    <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-card: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        p, li {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: #007bff;
+        }
+
+        .lang-btn.active {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .lang-selector {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="changeLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="changeLang('en')">English</button>
+        <button class="lang-btn" onclick="changeLang('ja')">日本語</button>
+        <button class="lang-btn" onclick="changeLang('zh')">繁體中文</button>
+    </div>
+
+    <div class="container">
+        <!-- Korean -->
+        <div id="content-ko" class="content active">
+            <h1>이용약관</h1>
+            <p class="last-updated">최종 업데이트: 2024년 11월</p>
+
+            <h2>1. 서비스 이용 동의</h2>
+            <p>NIKKE 모듈 시뮬레이터("본 서비스")를 이용함으로써 귀하는 본 이용약관에 동의하는 것으로 간주됩니다. 동의하지 않으시는 경우 본 서비스를 이용하지 마십시오.</p>
+
+            <h2>2. 서비스 설명</h2>
+            <p>본 서비스는 게임 "NIKKE: The Goddess of Victory"의 오버로드 모듈 시스템을 시뮬레이션하는 무료 웹 기반 도구입니다. 본 서비스는 교육 및 엔터테인먼트 목적으로 제공됩니다.</p>
+
+            <h2>3. 지적재산권</h2>
+            <p>"NIKKE: The Goddess of Victory" 및 관련 모든 콘텐츠는 SHIFT UP Corporation 및 Level Infinite의 자산입니다. 본 서비스는 팬이 만든 비공식 도구이며 게임 개발사와 제휴하거나 보증받지 않습니다.</p>
+
+            <h2>4. 사용 제한</h2>
+            <p>본 서비스를 이용할 때 귀하는 다음을 수행할 수 없습니다:</p>
+            <ul>
+                <li>불법적인 목적으로 서비스 사용</li>
+                <li>서비스의 기능을 방해하거나 손상시키는 행위</li>
+                <li>자동화된 시스템(봇, 스크립트)을 통한 과도한 접근</li>
+                <li>서비스의 소스 코드를 역엔지니어링하는 행위</li>
+                <li>다른 사용자나 제3자의 권리를 침해하는 행위</li>
+            </ul>
+
+            <h2>5. 면책조항</h2>
+            <p>본 서비스는 "있는 그대로" 제공됩니다. 서비스의 정확성, 신뢰성, 완전성에 대해 어떠한 보증도 하지 않습니다. 본 서비스 사용으로 인한 결과에 대해 책임지지 않습니다.</p>
+
+            <h2>6. 시뮬레이션 결과</h2>
+            <p>본 서비스의 시뮬레이션 결과는 참고용이며 실제 게임 결과와 다를 수 있습니다. 확률 및 메커니즘은 공식 정보를 기반으로 하지만 100% 정확성을 보장하지 않습니다.</p>
+
+            <h2>7. 서비스 변경 및 중단</h2>
+            <p>본 서비스는 사전 통지 없이 언제든지 서비스를 수정, 일시 중단 또는 중단할 권리를 보유합니다.</p>
+
+            <h2>8. 광고</h2>
+            <p>본 서비스는 Google AdSense를 통해 광고를 게재할 수 있습니다. 광고 내용에 대한 책임은 광고주에게 있으며, 본 서비스는 광고 내용을 보증하지 않습니다.</p>
+
+            <h2>9. 외부 링크</h2>
+            <p>본 서비스에는 외부 웹사이트로 연결되는 링크가 포함될 수 있습니다. 외부 웹사이트의 내용에 대해 책임지지 않습니다.</p>
+
+            <h2>10. 약관 변경</h2>
+            <p>본 이용약관은 필요에 따라 업데이트될 수 있습니다. 중요한 변경사항이 있을 경우 웹사이트에 공지됩니다. 변경 후 서비스를 계속 사용하는 것은 새로운 약관에 동의하는 것으로 간주됩니다.</p>
+
+            <h2>11. 준거법</h2>
+            <p>본 약관은 대한민국 법률에 따라 해석되고 규율됩니다.</p>
+
+            <h2>12. 문의</h2>
+            <p>이용약관과 관련된 질문이 있으시면 <a href="contact.html">연락처 페이지</a>를 통해 문의해 주세요.</p>
+
+            <a href="index.html" class="back-link">← 메인 페이지로 돌아가기</a>
+        </div>
+
+        <!-- English -->
+        <div id="content-en" class="content">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last Updated: November 2024</p>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>By using NIKKE Module Simulator ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.</p>
+
+            <h2>2. Service Description</h2>
+            <p>The Service is a free web-based tool that simulates the Over Load module system from the game "NIKKE: The Goddess of Victory". The Service is provided for educational and entertainment purposes.</p>
+
+            <h2>3. Intellectual Property</h2>
+            <p>"NIKKE: The Goddess of Victory" and all related content are properties of SHIFT UP Corporation and Level Infinite. This Service is an unofficial fan-made tool and is not affiliated with or endorsed by the game developers.</p>
+
+            <h2>4. Use Restrictions</h2>
+            <p>When using the Service, you may not:</p>
+            <ul>
+                <li>Use the Service for any illegal purposes</li>
+                <li>Interfere with or disrupt the Service's functionality</li>
+                <li>Excessive access through automated systems (bots, scripts)</li>
+                <li>Reverse engineer the Service's source code</li>
+                <li>Violate the rights of other users or third parties</li>
+            </ul>
+
+            <h2>5. Disclaimer</h2>
+            <p>The Service is provided "as is". We make no warranties regarding the accuracy, reliability, or completeness of the Service. We are not responsible for any consequences resulting from the use of the Service.</p>
+
+            <h2>6. Simulation Results</h2>
+            <p>Simulation results from the Service are for reference only and may differ from actual game results. While probabilities and mechanics are based on official information, 100% accuracy is not guaranteed.</p>
+
+            <h2>7. Service Changes and Termination</h2>
+            <p>The Service reserves the right to modify, suspend, or discontinue the Service at any time without prior notice.</p>
+
+            <h2>8. Advertising</h2>
+            <p>The Service may display advertisements through Google AdSense. Responsibility for advertisement content lies with the advertisers, and the Service does not endorse the advertisement content.</p>
+
+            <h2>9. External Links</h2>
+            <p>The Service may contain links to external websites. We are not responsible for the content of external websites.</p>
+
+            <h2>10. Changes to Terms</h2>
+            <p>These Terms of Service may be updated as necessary. Significant changes will be announced on the website. Continued use of the Service after changes constitutes acceptance of the new terms.</p>
+
+            <h2>11. Governing Law</h2>
+            <p>These terms shall be interpreted and governed by the laws of the Republic of Korea.</p>
+
+            <h2>12. Contact</h2>
+            <p>If you have questions about these Terms of Service, please contact us through the <a href="contact.html">Contact page</a>.</p>
+
+            <a href="index.html" class="back-link">← Back to Main Page</a>
+        </div>
+
+        <!-- Japanese -->
+        <div id="content-ja" class="content">
+            <h1>利用規約</h1>
+            <p class="last-updated">最終更新: 2024年11月</p>
+
+            <h2>1. 利用規約への同意</h2>
+            <p>NIKKEモジュールシミュレーター（「本サービス」）を利用することにより、本利用規約に同意したものとみなされます。同意しない場合は、本サービスを利用しないでください。</p>
+
+            <h2>2. サービスの説明</h2>
+            <p>本サービスは、ゲーム「勝利の女神：NIKKE」のOver Loadモジュールシステムをシミュレートする無料のウェブベースツールです。本サービスは教育およびエンターテインメント目的で提供されます。</p>
+
+            <h2>3. 知的財産権</h2>
+            <p>「勝利の女神：NIKKE」および関連するすべてのコンテンツは、SHIFT UP CorporationおよびLevel Infiniteの資産です。本サービスは、ファンが作成した非公式ツールであり、ゲーム開発者と提携または承認されていません。</p>
+
+            <h2>4. 使用制限</h2>
+            <p>本サービスを利用する際、以下の行為を行うことはできません：</p>
+            <ul>
+                <li>違法な目的でサービスを使用すること</li>
+                <li>サービスの機能を妨害または損傷する行為</li>
+                <li>自動化されたシステム（ボット、スクリプト）による過度なアクセス</li>
+                <li>サービスのソースコードをリバースエンジニアリングする行為</li>
+                <li>他のユーザーまたは第三者の権利を侵害する行為</li>
+            </ul>
+
+            <h2>5. 免責事項</h2>
+            <p>本サービスは「現状のまま」提供されます。サービスの正確性、信頼性、完全性について一切の保証をしません。本サービスの使用による結果について責任を負いません。</p>
+
+            <h2>6. シミュレーション結果</h2>
+            <p>本サービスのシミュレーション結果は参考用であり、実際のゲーム結果と異なる場合があります。確率とメカニズムは公式情報に基づいていますが、100%の正確性を保証するものではありません。</p>
+
+            <h2>7. サービスの変更と終了</h2>
+            <p>本サービスは、事前通知なしにいつでもサービスを変更、一時停止、または終了する権利を保有します。</p>
+
+            <h2>8. 広告</h2>
+            <p>本サービスは、Google AdSenseを通じて広告を掲載する場合があります。広告内容に対する責任は広告主にあり、本サービスは広告内容を保証しません。</p>
+
+            <h2>9. 外部リンク</h2>
+            <p>本サービスには、外部ウェブサイトへのリンクが含まれる場合があります。外部ウェブサイトのコンテンツについて責任を負いません。</p>
+
+            <h2>10. 規約の変更</h2>
+            <p>本利用規約は必要に応じて更新される場合があります。重要な変更がある場合は、ウェブサイトで通知されます。変更後もサービスを継続して使用することは、新しい規約に同意したものとみなされます。</p>
+
+            <h2>11. 準拠法</h2>
+            <p>本規約は、大韓民国の法律に従って解釈および規律されます。</p>
+
+            <h2>12. お問い合わせ</h2>
+            <p>利用規約に関する質問がある場合は、<a href="contact.html">お問い合わせページ</a>からご連絡ください。</p>
+
+            <a href="index.html" class="back-link">← メインページに戻る</a>
+        </div>
+
+        <!-- Chinese -->
+        <div id="content-zh" class="content">
+            <h1>服務條款</h1>
+            <p class="last-updated">最後更新: 2024年11月</p>
+
+            <h2>1. 同意服務條款</h2>
+            <p>使用NIKKE模組模擬器（「本服務」）即表示您同意受本服務條款約束。如果您不同意這些條款，請勿使用本服務。</p>
+
+            <h2>2. 服務說明</h2>
+            <p>本服務是一個免費的網頁工具，模擬遊戲「勝利女神：NIKKE」的Over Load模組系統。本服務僅供教育和娛樂目的。</p>
+
+            <h2>3. 智慧財產權</h2>
+            <p>「勝利女神：NIKKE」及所有相關內容均為SHIFT UP Corporation和Level Infinite的資產。本服務是由粉絲製作的非官方工具，未獲得遊戲開發商的授權或認可。</p>
+
+            <h2>4. 使用限制</h2>
+            <p>使用本服務時，您不得：</p>
+            <ul>
+                <li>將服務用於任何非法目的</li>
+                <li>干擾或破壞服務的功能</li>
+                <li>透過自動化系統（機器人、腳本）過度存取</li>
+                <li>對服務的原始碼進行逆向工程</li>
+                <li>侵犯其他使用者或第三方的權利</li>
+            </ul>
+
+            <h2>5. 免責聲明</h2>
+            <p>本服務按「現狀」提供。我們不對服務的準確性、可靠性或完整性做任何保證。我們不對使用本服務所產生的任何後果負責。</p>
+
+            <h2>6. 模擬結果</h2>
+            <p>本服務的模擬結果僅供參考，可能與實際遊戲結果不同。雖然機率和機制基於官方資訊，但不保證100%準確。</p>
+
+            <h2>7. 服務變更和終止</h2>
+            <p>本服務保留隨時修改、暫停或終止服務的權利，無需事先通知。</p>
+
+            <h2>8. 廣告</h2>
+            <p>本服務可能透過Google AdSense展示廣告。廣告內容的責任在於廣告商，本服務不為廣告內容背書。</p>
+
+            <h2>9. 外部連結</h2>
+            <p>本服務可能包含指向外部網站的連結。我們不對外部網站的內容負責。</p>
+
+            <h2>10. 條款變更</h2>
+            <p>本服務條款可能會根據需要進行更新。如有重大變更，將在網站上公告。變更後繼續使用服務即表示接受新條款。</p>
+
+            <h2>11. 適用法律</h2>
+            <p>本條款應根據大韓民國法律進行解釋和規範。</p>
+
+            <h2>12. 聯絡我們</h2>
+            <p>如對本服務條款有任何疑問，請透過<a href="contact.html">聯絡頁面</a>與我們聯絡。</p>
+
+            <a href="index.html" class="back-link">← 返回主頁</a>
+        </div>
+    </div>
+
+    <script>
+        function changeLang(lang) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + lang).classList.add('active');
+            event.target.classList.add('active');
+            localStorage.setItem('termsLang', lang);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('termsLang') || 'ko';
+            const langBtn = document.querySelector(`.lang-btn[onclick="changeLang('${savedLang}')"]`);
+            if (langBtn) langBtn.click();
+        });
+    </script>
+</body>
+</html>
