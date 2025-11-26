@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인정보 보호정책 | Privacy Policy - NIKKE Module Simulator</title>
+    <meta name="robots" content="noindex, follow">
+    <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-card: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        p, li {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: #007bff;
+        }
+
+        .lang-btn.active {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .lang-selector {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="changeLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="changeLang('en')">English</button>
+        <button class="lang-btn" onclick="changeLang('ja')">日本語</button>
+        <button class="lang-btn" onclick="changeLang('zh')">繁體中文</button>
+    </div>
+
+    <div class="container">
+        <!-- Korean -->
+        <div id="content-ko" class="content active">
+            <h1>개인정보 보호정책</h1>
+            <p class="last-updated">최종 업데이트: 2024년 11월</p>
+
+            <h2>1. 개요</h2>
+            <p>NIKKE 모듈 시뮬레이터("본 서비스")는 사용자의 개인정보를 보호하고 존중합니다. 본 개인정보 보호정책은 본 서비스가 어떤 정보를 수집하고 사용하는지 설명합니다.</p>
+
+            <h2>2. 수집하는 정보</h2>
+            <p>본 서비스는 다음과 같은 정보를 수집할 수 있습니다:</p>
+            <ul>
+                <li><strong>자동 수집 정보:</strong> Google Analytics를 통한 방문 통계, 브라우저 유형, 운영체제, 참조 URL</li>
+                <li><strong>쿠키:</strong> 언어 설정, 테마 설정 등 사용자 경험 개선을 위한 로컬 스토리지</li>
+                <li><strong>광고 관련:</strong> Google AdSense를 통한 광고 게재 시 수집되는 정보</li>
+            </ul>
+
+            <h2>3. 정보의 사용</h2>
+            <p>수집된 정보는 다음 목적으로 사용됩니다:</p>
+            <ul>
+                <li>서비스 제공 및 개선</li>
+                <li>사용자 경험 최적화</li>
+                <li>웹사이트 트래픽 분석</li>
+                <li>맞춤형 광고 제공</li>
+            </ul>
+
+            <h2>4. 개인정보 보호</h2>
+            <p>본 서비스는 사용자의 개인 식별 정보를 수집하거나 저장하지 않습니다. 모든 시뮬레이션 데이터는 사용자의 브라우저에 로컬로 저장됩니다.</p>
+
+            <h2>5. 제3자 서비스</h2>
+            <p>본 서비스는 다음 제3자 서비스를 사용합니다:</p>
+            <ul>
+                <li><strong>Google Analytics:</strong> 웹사이트 분석</li>
+                <li><strong>Google AdSense:</strong> 광고 게재</li>
+            </ul>
+            <p>이러한 서비스는 자체 개인정보 보호정책을 따릅니다.</p>
+
+            <h2>6. 쿠키</h2>
+            <p>본 서비스는 사용자 설정(언어, 테마)을 저장하기 위해 로컬 스토리지를 사용합니다. 브라우저 설정에서 이를 관리할 수 있습니다.</p>
+
+            <h2>7. 정책 변경</h2>
+            <p>본 개인정보 보호정책은 필요에 따라 업데이트될 수 있습니다. 중요한 변경사항이 있을 경우 웹사이트에 공지됩니다.</p>
+
+            <h2>8. 문의</h2>
+            <p>개인정보 보호와 관련된 질문이나 우려사항이 있으시면 <a href="contact.html">연락처 페이지</a>를 통해 문의해 주세요.</p>
+
+            <a href="index.html" class="back-link">← 메인 페이지로 돌아가기</a>
+        </div>
+
+        <!-- English -->
+        <div id="content-en" class="content">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: November 2024</p>
+
+            <h2>1. Overview</h2>
+            <p>NIKKE Module Simulator ("the Service") respects and protects user privacy. This Privacy Policy explains what information the Service collects and how it is used.</p>
+
+            <h2>2. Information We Collect</h2>
+            <p>The Service may collect the following information:</p>
+            <ul>
+                <li><strong>Automatically Collected Information:</strong> Visit statistics via Google Analytics, browser type, operating system, referring URLs</li>
+                <li><strong>Cookies:</strong> Local storage for user experience improvements such as language settings and theme preferences</li>
+                <li><strong>Advertising-related:</strong> Information collected through Google AdSense ad serving</li>
+            </ul>
+
+            <h2>3. Use of Information</h2>
+            <p>Collected information is used for the following purposes:</p>
+            <ul>
+                <li>Providing and improving the Service</li>
+                <li>Optimizing user experience</li>
+                <li>Analyzing website traffic</li>
+                <li>Serving personalized advertisements</li>
+            </ul>
+
+            <h2>4. Privacy Protection</h2>
+            <p>The Service does not collect or store personally identifiable information. All simulation data is stored locally in your browser.</p>
+
+            <h2>5. Third-Party Services</h2>
+            <p>The Service uses the following third-party services:</p>
+            <ul>
+                <li><strong>Google Analytics:</strong> Website analytics</li>
+                <li><strong>Google AdSense:</strong> Advertisement serving</li>
+            </ul>
+            <p>These services follow their own privacy policies.</p>
+
+            <h2>6. Cookies</h2>
+            <p>The Service uses local storage to save user preferences (language, theme). You can manage this through your browser settings.</p>
+
+            <h2>7. Policy Changes</h2>
+            <p>This Privacy Policy may be updated as necessary. Significant changes will be announced on the website.</p>
+
+            <h2>8. Contact</h2>
+            <p>If you have questions or concerns about privacy, please contact us through the <a href="contact.html">Contact page</a>.</p>
+
+            <a href="index.html" class="back-link">← Back to Main Page</a>
+        </div>
+
+        <!-- Japanese -->
+        <div id="content-ja" class="content">
+            <h1>プライバシーポリシー</h1>
+            <p class="last-updated">最終更新: 2024年11月</p>
+
+            <h2>1. 概要</h2>
+            <p>NIKKEモジュールシミュレーター（「本サービス」）は、ユーザーのプライバシーを尊重し保護します。本プライバシーポリシーは、本サービスが収集する情報とその使用方法について説明します。</p>
+
+            <h2>2. 収集する情報</h2>
+            <p>本サービスは以下の情報を収集する場合があります：</p>
+            <ul>
+                <li><strong>自動収集情報:</strong> Google Analyticsによる訪問統計、ブラウザタイプ、オペレーティングシステム、参照URL</li>
+                <li><strong>クッキー:</strong> 言語設定、テーマ設定などのユーザー体験向上のためのローカルストレージ</li>
+                <li><strong>広告関連:</strong> Google AdSenseによる広告配信時に収集される情報</li>
+            </ul>
+
+            <h2>3. 情報の使用</h2>
+            <p>収集された情報は以下の目的で使用されます：</p>
+            <ul>
+                <li>サービスの提供と改善</li>
+                <li>ユーザー体験の最適化</li>
+                <li>ウェブサイトトラフィックの分析</li>
+                <li>カスタマイズされた広告の配信</li>
+            </ul>
+
+            <h2>4. プライバシー保護</h2>
+            <p>本サービスは、ユーザーの個人識別情報を収集または保存しません。すべてのシミュレーションデータは、ユーザーのブラウザにローカルに保存されます。</p>
+
+            <h2>5. 第三者サービス</h2>
+            <p>本サービスは以下の第三者サービスを使用します：</p>
+            <ul>
+                <li><strong>Google Analytics:</strong> ウェブサイト分析</li>
+                <li><strong>Google AdSense:</strong> 広告配信</li>
+            </ul>
+            <p>これらのサービスは独自のプライバシーポリシーに従います。</p>
+
+            <h2>6. クッキー</h2>
+            <p>本サービスは、ユーザー設定（言語、テーマ）を保存するためにローカルストレージを使用します。ブラウザ設定でこれを管理できます。</p>
+
+            <h2>7. ポリシーの変更</h2>
+            <p>本プライバシーポリシーは必要に応じて更新される場合があります。重要な変更がある場合は、ウェブサイトで通知されます。</p>
+
+            <h2>8. お問い合わせ</h2>
+            <p>プライバシーに関する質問や懸念がある場合は、<a href="contact.html">お問い合わせページ</a>からご連絡ください。</p>
+
+            <a href="index.html" class="back-link">← メインページに戻る</a>
+        </div>
+
+        <!-- Chinese -->
+        <div id="content-zh" class="content">
+            <h1>隱私權政策</h1>
+            <p class="last-updated">最後更新: 2024年11月</p>
+
+            <h2>1. 概述</h2>
+            <p>NIKKE模組模擬器（「本服務」）尊重並保護使用者隱私。本隱私權政策說明本服務收集哪些資訊以及如何使用。</p>
+
+            <h2>2. 收集的資訊</h2>
+            <p>本服務可能收集以下資訊：</p>
+            <ul>
+                <li><strong>自動收集資訊:</strong> 透過Google Analytics的訪問統計、瀏覽器類型、作業系統、參照URL</li>
+                <li><strong>Cookie:</strong> 用於改善使用者體驗的本地儲存，如語言設定、主題設定</li>
+                <li><strong>廣告相關:</strong> 透過Google AdSense投放廣告時收集的資訊</li>
+            </ul>
+
+            <h2>3. 資訊的使用</h2>
+            <p>收集的資訊用於以下目的：</p>
+            <ul>
+                <li>提供和改善服務</li>
+                <li>優化使用者體驗</li>
+                <li>分析網站流量</li>
+                <li>提供個人化廣告</li>
+            </ul>
+
+            <h2>4. 隱私保護</h2>
+            <p>本服務不收集或儲存使用者的個人識別資訊。所有模擬資料都儲存在使用者的瀏覽器本地。</p>
+
+            <h2>5. 第三方服務</h2>
+            <p>本服務使用以下第三方服務：</p>
+            <ul>
+                <li><strong>Google Analytics:</strong> 網站分析</li>
+                <li><strong>Google AdSense:</strong> 廣告投放</li>
+            </ul>
+            <p>這些服務遵循其自己的隱私權政策。</p>
+
+            <h2>6. Cookie</h2>
+            <p>本服務使用本地儲存來保存使用者設定（語言、主題）。您可以透過瀏覽器設定來管理這些。</p>
+
+            <h2>7. 政策變更</h2>
+            <p>本隱私權政策可能會根據需要進行更新。如有重要變更，將在網站上公告。</p>
+
+            <h2>8. 聯絡我們</h2>
+            <p>如對隱私權有任何疑問或疑慮，請透過<a href="contact.html">聯絡頁面</a>與我們聯絡。</p>
+
+            <a href="index.html" class="back-link">← 返回主頁</a>
+        </div>
+    </div>
+
+    <script>
+        function changeLang(lang) {
+            // Hide all content
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+
+            // Show selected content
+            document.getElementById('content-' + lang).classList.add('active');
+            event.target.classList.add('active');
+
+            // Save preference
+            localStorage.setItem('privacyLang', lang);
+        }
+
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('privacyLang') || 'ko';
+            const langBtn = document.querySelector(`.lang-btn[onclick="changeLang('${savedLang}')"]`);
+            if (langBtn) langBtn.click();
+        });
+    </script>
+</body>
+</html>

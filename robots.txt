@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /about.html
+Allow: /contact.html
+Disallow: /privacy-policy.html
+Disallow: /terms-of-service.html
+
+# Allow Google AdSense bot
+User-agent: Mediapartners-Google
+Allow: /
+
+# Sitemap location
+Sitemap: https://nikkemodule.com/sitemap.xml

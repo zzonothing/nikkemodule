@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | NIKKE Module Simulator</title>
+    <meta name="robots" content="noindex, follow">
+    <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-card: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        p, li {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .feature-card h3 {
+            color: var(--text-primary);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: #007bff;
+        }
+
+        .lang-btn.active {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .lang-selector {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="changeLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="changeLang('en')">English</button>
+        <button class="lang-btn" onclick="changeLang('ja')">日本語</button>
+        <button class="lang-btn" onclick="changeLang('zh')">繁體中文</button>
+    </div>
+
+    <div class="container">
+        <!-- Korean -->
+        <div id="content-ko" class="content active">
+            <h1>NIKKE 모듈 시뮬레이터 소개</h1>
+            <p class="subtitle">게임 "NIKKE: The Goddess of Victory"의 오버로드 모듈 시스템을 시뮬레이션하는 무료 웹 도구입니다.</p>
+
+            <h2>서비스 소개</h2>
+            <p>NIKKE 모듈 시뮬레이터는 플레이어들이 실제 게임에서 귀중한 모듈을 소비하기 전에 다양한 옵션 조합을 테스트하고 최적의 빌드를 계획할 수 있도록 도와주는 도구입니다.</p>
+
+            <h2>주요 기능</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 실제 확률 기반</h3>
+                    <p>게임의 공식 확률을 기반으로 한 정확한 시뮬레이션</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚙️ 커스텀 모드</h3>
+                    <p>원하는 효과와 티어를 자유롭게 선택하여 테스트</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌍 다국어 지원</h3>
+                    <p>한국어, 일본어, 번체 중국어, 영어 지원</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌙 다크 모드</h3>
+                    <p>눈의 피로를 줄이는 다크 모드 테마</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 옵션 잠금</h3>
+                    <p>원하는 옵션을 고정하여 보호</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 총합 계산</h3>
+                    <p>모든 장비의 효과를 자동으로 합산</p>
+                </div>
+            </div>
+
+            <h2>개발 목적</h2>
+            <p>이 도구는 NIKKE 커뮤니티를 위해 팬이 제작한 무료 프로젝트입니다. 플레이어들이 더 나은 의사결정을 내리고 게임을 더 즐길 수 있도록 돕는 것이 목표입니다.</p>
+
+            <h2>기술 스택</h2>
+            <ul>
+                <li>순수 HTML, CSS, JavaScript (프레임워크 없음)</li>
+                <li>로컬 스토리지를 활용한 사용자 설정 저장</li>
+                <li>반응형 디자인으로 모바일 최적화</li>
+                <li>Google Analytics를 통한 사용 통계</li>
+            </ul>
+
+            <h2>면책 조항</h2>
+            <p>본 서비스는 SHIFT UP Corporation 또는 Level Infinite와 공식적으로 제휴하거나 승인받지 않은 팬메이드 프로젝트입니다. 모든 게임 관련 콘텐츠 및 상표는 해당 소유자의 자산입니다.</p>
+
+            <h2>개인정보 보호</h2>
+            <p>본 서비스는 사용자의 개인 정보를 수집하거나 저장하지 않습니다. 모든 시뮬레이션 데이터는 사용자의 브라우저에 로컬로 저장됩니다. 자세한 내용은 <a href="privacy-policy.html">개인정보 보호정책</a>을 참조하세요.</p>
+
+            <h2>향후 계획</h2>
+            <ul>
+                <li>추가 게임 메커니즘 시뮬레이션</li>
+                <li>통계 및 분석 기능</li>
+                <li>커뮤니티 추천 빌드 공유</li>
+                <li>성능 최적화 및 기능 개선</li>
+            </ul>
+
+            <h2>기여 및 피드백</h2>
+            <p>버그 리포트, 기능 제안 또는 기타 피드백은 <a href="contact.html">연락처 페이지</a>를 통해 보내주세요. 여러분의 의견은 서비스 개선에 큰 도움이 됩니다!</p>
+
+            <a href="index.html" class="back-link">← 메인 페이지로 돌아가기</a>
+        </div>
+
+        <!-- English -->
+        <div id="content-en" class="content">
+            <h1>About NIKKE Module Simulator</h1>
+            <p class="subtitle">A free web tool that simulates the Over Load module system from the game "NIKKE: The Goddess of Victory".</p>
+
+            <h2>Introduction</h2>
+            <p>NIKKE Module Simulator is a tool that helps players test various option combinations and plan optimal builds before spending valuable modules in the actual game.</p>
+
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 Real Probability</h3>
+                    <p>Accurate simulation based on official game probabilities</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚙️ Custom Mode</h3>
+                    <p>Freely select desired effects and tiers for testing</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌍 Multi-language</h3>
+                    <p>Support for Korean, Japanese, Traditional Chinese, English</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌙 Dark Mode</h3>
+                    <p>Dark mode theme to reduce eye strain</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Option Locking</h3>
+                    <p>Lock and protect desired options</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Total Calculation</h3>
+                    <p>Automatic summation of all equipment effects</p>
+                </div>
+            </div>
+
+            <h2>Development Purpose</h2>
+            <p>This tool is a free fan-made project for the NIKKE community. The goal is to help players make better decisions and enjoy the game more.</p>
+
+            <h2>Tech Stack</h2>
+            <ul>
+                <li>Pure HTML, CSS, JavaScript (no frameworks)</li>
+                <li>Local storage for user preference saving</li>
+                <li>Responsive design optimized for mobile</li>
+                <li>Google Analytics for usage statistics</li>
+            </ul>
+
+            <h2>Disclaimer</h2>
+            <p>This service is a fan-made project not officially affiliated with or endorsed by SHIFT UP Corporation or Level Infinite. All game-related content and trademarks are property of their respective owners.</p>
+
+            <h2>Privacy</h2>
+            <p>This service does not collect or store user personal information. All simulation data is stored locally in your browser. For more details, see our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+
+            <h2>Future Plans</h2>
+            <ul>
+                <li>Additional game mechanic simulations</li>
+                <li>Statistics and analysis features</li>
+                <li>Community recommended build sharing</li>
+                <li>Performance optimization and feature improvements</li>
+            </ul>
+
+            <h2>Contribution & Feedback</h2>
+            <p>Please send bug reports, feature suggestions, or other feedback through the <a href="contact.html">Contact page</a>. Your input greatly helps improve the service!</p>
+
+            <a href="index.html" class="back-link">← Back to Main Page</a>
+        </div>
+
+        <!-- Japanese -->
+        <div id="content-ja" class="content">
+            <h1>NIKKEモジュールシミュレーターについて</h1>
+            <p class="subtitle">ゲーム「勝利の女神：NIKKE」のOver Loadモジュールシステムをシミュレートする無料ウェブツールです。</p>
+
+            <h2>サービス紹介</h2>
+            <p>NIKKEモジュールシミュレーターは、プレイヤーが実際のゲームで貴重なモジュールを消費する前に、さまざまなオプションの組み合わせをテストし、最適なビルドを計画できるようにするツールです。</p>
+
+            <h2>主な機能</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 実際の確率基準</h3>
+                    <p>ゲームの公式確率に基づく正確なシミュレーション</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚙️ カスタムモード</h3>
+                    <p>希望する効果とティアを自由に選択してテスト</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌍 多言語対応</h3>
+                    <p>韓国語、日本語、繁体字中国語、英語に対応</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌙 ダークモード</h3>
+                    <p>目の疲れを軽減するダークモードテーマ</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 オプションロック</h3>
+                    <p>希望するオプションを固定して保護</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 合計計算</h3>
+                    <p>すべての装備の効果を自動的に合算</p>
+                </div>
+            </div>
+
+            <h2>開発目的</h2>
+            <p>このツールは、NIKKEコミュニティのためにファンが作成した無料プロジェクトです。プレイヤーがより良い意思決定を行い、ゲームをより楽しめるようにすることが目標です。</p>
+
+            <h2>技術スタック</h2>
+            <ul>
+                <li>純粋なHTML、CSS、JavaScript（フレームワークなし）</li>
+                <li>ローカルストレージを活用したユーザー設定の保存</li>
+                <li>モバイル最適化されたレスポンシブデザイン</li>
+                <li>Google Analyticsによる使用統計</li>
+            </ul>
+
+            <h2>免責事項</h2>
+            <p>本サービスは、SHIFT UP CorporationまたはLevel Infiniteと公式に提携または承認されていないファンメイドプロジェクトです。すべてのゲーム関連コンテンツおよび商標は、それぞれの所有者の資産です。</p>
+
+            <h2>プライバシー保護</h2>
+            <p>本サービスは、ユーザーの個人情報を収集または保存しません。すべてのシミュレーションデータは、ユーザーのブラウザにローカルに保存されます。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご参照ください。</p>
+
+            <h2>今後の計画</h2>
+            <ul>
+                <li>追加のゲームメカニズムシミュレーション</li>
+                <li>統計および分析機能</li>
+                <li>コミュニティ推奨ビルドの共有</li>
+                <li>パフォーマンス最適化および機能改善</li>
+            </ul>
+
+            <h2>貢献とフィードバック</h2>
+            <p>バグ報告、機能提案、その他のフィードバックは<a href="contact.html">お問い合わせページ</a>からお送りください。皆様のご意見は、サービス改善に大いに役立ちます！</p>
+
+            <a href="index.html" class="back-link">← メインページに戻る</a>
+        </div>
+
+        <!-- Chinese -->
+        <div id="content-zh" class="content">
+            <h1>關於NIKKE模組模擬器</h1>
+            <p class="subtitle">免費網頁工具，模擬遊戲「勝利女神：NIKKE」的Over Load模組系統。</p>
+
+            <h2>服務介紹</h2>
+            <p>NIKKE模組模擬器是一個幫助玩家在實際遊戲中消耗寶貴模組之前，測試各種選項組合並規劃最佳組合的工具。</p>
+
+            <h2>主要功能</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 實際機率基準</h3>
+                    <p>基於遊戲官方機率的精確模擬</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚙️ 自訂模式</h3>
+                    <p>自由選擇想要的效果和階級進行測試</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌍 多語言支援</h3>
+                    <p>支援韓語、日語、繁體中文、英語</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌙 深色模式</h3>
+                    <p>減輕眼睛疲勞的深色模式主題</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 選項鎖定</h3>
+                    <p>鎖定並保護想要的選項</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 總和計算</h3>
+                    <p>自動加總所有裝備的效果</p>
+                </div>
+            </div>
+
+            <h2>開發目的</h2>
+            <p>此工具是為NIKKE社群製作的免費粉絲專案。目標是幫助玩家做出更好的決策，更享受遊戲。</p>
+
+            <h2>技術架構</h2>
+            <ul>
+                <li>純HTML、CSS、JavaScript（無框架）</li>
+                <li>利用本地儲存保存使用者設定</li>
+                <li>針對行動裝置最佳化的響應式設計</li>
+                <li>透過Google Analytics的使用統計</li>
+            </ul>
+
+            <h2>免責聲明</h2>
+            <p>本服務是粉絲製作的專案，未經SHIFT UP Corporation或Level Infinite正式授權或認可。所有遊戲相關內容和商標均為其各自所有者的資產。</p>
+
+            <h2>隱私保護</h2>
+            <p>本服務不收集或儲存使用者的個人資訊。所有模擬資料都儲存在使用者的瀏覽器本地。詳情請參閱<a href="privacy-policy.html">隱私權政策</a>。</p>
+
+            <h2>未來計劃</h2>
+            <ul>
+                <li>額外的遊戲機制模擬</li>
+                <li>統計和分析功能</li>
+                <li>社群推薦組合分享</li>
+                <li>性能優化和功能改進</li>
+            </ul>
+
+            <h2>貢獻與回饋</h2>
+            <p>請透過<a href="contact.html">聯絡頁面</a>傳送錯誤報告、功能建議或其他回饋。您的意見對改進服務有很大幫助！</p>
+
+            <a href="index.html" class="back-link">← 返回主頁</a>
+        </div>
+    </div>
+
+    <script>
+        function changeLang(lang) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + lang).classList.add('active');
+            event.target.classList.add('active');
+            localStorage.setItem('aboutLang', lang);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('aboutLang') || 'ko';
+            const langBtn = document.querySelector(`.lang-btn[onclick="changeLang('${savedLang}')"]`);
+            if (langBtn) langBtn.click();
+        });
+    </script>
+</body>
+</html>
