@@ -778,7 +778,7 @@
             <!-- Card 1 -->
             <div class="card">
                 <div class="card-content">
-                    <div class="center-square image1" style="background-image: url('images/weapon-head.webp');">
+                    <div class="center-square" style="background-image: url('images/weapon-head.webp');">
                     </div>
                     <div class="text-lines">
                         <div class="text-line">효과 미획득</div>
@@ -798,7 +798,7 @@
             <!-- Card 2 -->
             <div class="card">
                 <div class="card-content">
-                    <div class="center-square image2" style="background-image: url('images/weapon-body.webp');">
+                    <div class="center-square" style="background-image: url('images/weapon-body.webp');">
                     </div>
                     <div class="text-lines">
                         <div class="text-line">효과 미획득</div>
@@ -818,7 +818,7 @@
             <!-- Card 3 -->
             <div class="card">
                 <div class="card-content">
-                    <div class="center-square image3" style="background-image: url('images/weapon-hand.webp');">
+                    <div class="center-square" style="background-image: url('images/weapon-hand.webp');">
                     </div>
                     <div class="text-lines">
                         <div class="text-line">효과 미획득</div>
@@ -838,7 +838,7 @@
             <!-- Card 4 -->
             <div class="card">
                 <div class="card-content">
-                    <div class="center-square image4" style="background-image: url('images/weapon-foot.webp');">
+                    <div class="center-square" style="background-image: url('images/weapon-foot.webp');">
                     </div>
                     <div class="text-lines">
                         <div class="text-line">효과 미획득</div>
@@ -1216,7 +1216,89 @@
 
         // 커스텀 모드 상태 (false = 일반 모드, true = 커스텀 모드)
         let isCustomMode = false;
+
+        // 상수 정의
+        const CONSTANTS = {
+            SLOT_PROBABILITIES: [100, 50, 30],
+            TIER_PROBABILITIES: [12, 12, 12, 12, 12, 7, 7, 7, 7, 7, 1, 1, 1, 1, 1],
+            LOCK_COSTS: [2, 3, 4],
+            ADDITIONAL_LOCK_COSTS: [1, 2],
+            DEFAULT_TIER: 11,
+            HIGH_TIER_MIN: 12,
+            HIGH_TIER_MAX: 15,
+            MAX_TIER: 15,
+            CARD_COUNT: 4,
+            SLOT_COUNT: 3
+        };
         
+        // Helper 함수들
+
+        // 상위 티어 옵션 보호 확인
+        function checkHighTierProtection(cardIndex) {
+            const isProtectEnabled = document.getElementById('protectHighTier').checked;
+            const hasHighTierUnlocked = cardEffects[cardIndex].some((effect, slotIndex) =>
+                effect && effect.tier >= CONSTANTS.HIGH_TIER_MIN && effect.tier <= CONSTANTS.HIGH_TIER_MAX && !cardLockStates[cardIndex][slotIndex]
+            );
+
+            if (isProtectEnabled && hasHighTierUnlocked) {
+                return confirm(translations[currentLanguage].confirmHighTier);
+            }
+            return true;
+        }
+
+        // 잠긴 슬롯 개수에 따른 추가 비용 계산
+        function getAdditionalLockCost(cardIndex) {
+            const lockedCount = cardLockStates[cardIndex].filter(state => state).length;
+            return lockedCount > 0 ? CONSTANTS.ADDITIONAL_LOCK_COSTS[lockedCount - 1] || 0 : 0;
+        }
+
+        // 잠긴 슬롯의 효과 목록 가져오기
+        function getLockedEffects(cardIndex) {
+            const usedEffects = [];
+            for (let slotIndex = 0; slotIndex < CONSTANTS.SLOT_COUNT; slotIndex++) {
+                if (cardLockStates[cardIndex][slotIndex] && cardEffects[cardIndex][slotIndex]) {
+                    usedEffects.push(cardEffects[cardIndex][slotIndex].name);
+                }
+            }
+            return usedEffects;
+        }
+
+        // 티어에 따른 스타일 정보 반환
+        function getTierStyle(tier) {
+            if (tier === CONSTANTS.MAX_TIER) {
+                return {
+                    backgroundColor: 'black',
+                    nameColor: 'white',
+                    valueColor: 'rgb(17, 167, 238)'
+                };
+            } else if (tier >= CONSTANTS.HIGH_TIER_MIN && tier <= CONSTANTS.HIGH_TIER_MAX - 1) {
+                return {
+                    backgroundColor: 'white',
+                    nameColor: 'black',
+                    valueColor: 'rgb(17, 167, 238)'
+                };
+            }
+            return {
+                backgroundColor: 'white',
+                nameColor: 'black',
+                valueColor: 'black'
+            };
+        }
+
+        // Select 박스에 티어 스타일 적용
+        function applyTierStyleToSelect(selectElement, tier) {
+            if (tier === CONSTANTS.MAX_TIER) {
+                selectElement.style.backgroundColor = 'black';
+                selectElement.style.color = 'rgb(17, 167, 238)';
+            } else if (tier >= CONSTANTS.HIGH_TIER_MIN && tier <= CONSTANTS.HIGH_TIER_MAX - 1) {
+                selectElement.style.backgroundColor = 'var(--input-bg)';
+                selectElement.style.color = 'rgb(17, 167, 238)';
+            } else {
+                selectElement.style.backgroundColor = 'var(--input-bg)';
+                selectElement.style.color = 'var(--text-primary)';
+            }
+        }
+
         // 언어 변경 함수
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -1226,7 +1308,7 @@
 
             // 커스텀 모드일 때 언어 변경 시 Select 박스 재렌더링
             if (isCustomMode) {
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
                     updateEffectDisplay(i);
                 }
                 attachSelectChangeListeners();
@@ -1384,11 +1466,10 @@
         // 옵션 총합 계산 및 업데이트 함수
         function updateOptionSummary() {
             const optionTotals = {};
-            const optionTiers = {}; // 각 옵션의 티어 정보를 저장
-            
-            // 모든 카드의 효과를 순회하여 총합 계산
-            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+            const optionTiers = {};
+
+            for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
+                for (let slotIndex = 0; slotIndex < CONSTANTS.SLOT_COUNT; slotIndex++) {
                     const effect = cardEffects[cardIndex][slotIndex];
                     if (effect) {
                         if (optionTotals[effect.name]) {
@@ -1437,26 +1518,13 @@
                     const optionDiv = document.createElement('div');
                     const tiers = optionTiers[name];
                     const displayName = t.effects[name] || `[${name}]`;
-                    
+
                     // 티어에 따른 스타일 결정
-                    let backgroundColor = 'white';
-                    let nameColor = 'black';
-                    let valueColor = 'black';
-                    
-                    if (tiers.includes(15)) {
-                        // 15티어가 하나라도 있으면 15티어 스타일
-                        backgroundColor = 'black';
-                        nameColor = 'white';
-                        valueColor = 'rgb(17, 167, 238)';
-                    } else if (tiers.some(tier => tier >= 12 && tier <= 14)) {
-                        // 12-14티어가 하나라도 있으면 12-14티어 스타일
-                        backgroundColor = 'white';
-                        nameColor = 'black';
-                        valueColor = 'rgb(17, 167, 238)';
-                    }
-                    
-                    optionDiv.style.cssText = `background: ${backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd; text-align: center;`;
-                    optionDiv.innerHTML = `<span style="color: ${nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
+                    const maxTier = Math.max(...tiers);
+                    const style = getTierStyle(maxTier);
+
+                    optionDiv.style.cssText = `background: ${style.backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd; text-align: center;`;
+                    optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
                     summaryElement.appendChild(optionDiv);
                 });
             }
@@ -1475,29 +1543,20 @@
             { name: "크리티컬 대미지 증가", probability: 12, tiers: [6.64, 7.62, 8.60, 9.58, 10.56, 11.54, 12.52, 13.50, 14.48, 15.46, 16.44, 17.42, 18.40, 19.38, 20.36] }
         ];
 
-        // 슬롯별 확률
-        const slotProbabilities = [100, 50, 30];
-
-        // 티어별 확률 정의
-        const tierProbabilities = [
-            12, 12, 12, 12, 12,  // 1~5티어: 각각 12%
-            7, 7, 7, 7, 7,       // 6~10티어: 각각 7%
-            1, 1, 1, 1, 1        // 11~15티어: 각각 1%
-        ];
 
         // 랜덤 티어 선택 함수
         function getRandomTier() {
-            const totalWeight = tierProbabilities.reduce((sum, prob) => sum + prob, 0);
+            const totalWeight = CONSTANTS.TIER_PROBABILITIES.reduce((sum, prob) => sum + prob, 0);
             const random = Math.random() * totalWeight;
-            
+
             let currentWeight = 0;
-            for (let i = 0; i < tierProbabilities.length; i++) {
-                currentWeight += tierProbabilities[i];
+            for (let i = 0; i < CONSTANTS.TIER_PROBABILITIES.length; i++) {
+                currentWeight += CONSTANTS.TIER_PROBABILITIES[i];
                 if (random <= currentWeight) {
-                    return i; // 0-based index 반환
+                    return i;
                 }
             }
-            return 0; // 기본값
+            return CONSTANTS.DEFAULT_TIER - 1;
         }
 
         // 랜덤 효과 생성 함수
@@ -1554,23 +1613,19 @@
             if (!currentState && currentEffect && currentEffect.name && currentEffect.tier) {
                 // 커스텀 모드가 아닐 때만 모듈 비용 계산 및 차감
                 if (!isCustomMode) {
-                    // 현재 잠긴 개수 확인 (아직 이 슬롯은 잠기지 않은 상태)
                     const currentLockedCount = cardLockStates[cardIndex].filter(state => state).length;
-                    const cost = [2, 3, 4][currentLockedCount]; // 0->1: 2개, 1->2: 3개, 2->3: 4개
+                    const cost = CONSTANTS.LOCK_COSTS[currentLockedCount];
                     moduleCount += cost;
                     document.getElementById('moduleCount').textContent = moduleCount;
                 }
 
-                // 잠금 해제 -> 잠금
                 cardLockStates[cardIndex][slotIndex] = true;
             } else if (currentState) {
-                // 잠금 -> 잠금 해제
                 cardLockStates[cardIndex][slotIndex] = false;
             }
 
             updateEffectDisplay(cardIndex);
 
-            // 커스텀 모드일 때 이벤트 리스너 재부착
             if (isCustomMode) {
                 attachSelectChangeListeners();
             }
@@ -1579,7 +1634,7 @@
         // 카드 내에서 사용 중인 효과 목록 가져오기
         function getUsedEffectsInCard(cardIndex, excludeSlotIndex = -1) {
             const usedEffects = [];
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < CONSTANTS.SLOT_COUNT; i++) {
                 if (i !== excludeSlotIndex && cardEffects[cardIndex][i]) {
                     usedEffects.push(cardEffects[cardIndex][i].name);
                 }
@@ -1595,7 +1650,7 @@
 
             // 커스텀 모드인 경우 Select 박스로 변환
             if (isCustomMode) {
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < CONSTANTS.SLOT_COUNT; i++) {
                     const effect = cardEffects[cardIndex][i];
                     const isLocked = cardLockStates[cardIndex][i];
                     const usedEffects = getUsedEffectsInCard(cardIndex, i);
@@ -1621,9 +1676,10 @@
 
                     // 현재 선택된 티어에 따른 색상 적용
                     if (effect && effect.tier) {
-                        if (effect.tier === 15) {
-                            tierSelectStyle += ' background-color: black; color: rgb(17, 167, 238);';
-                        } else if (effect.tier >= 12 && effect.tier <= 14) {
+                        const style = getTierStyle(effect.tier);
+                        if (effect.tier === CONSTANTS.MAX_TIER) {
+                            tierSelectStyle += ` background-color: ${style.backgroundColor}; color: ${style.valueColor};`;
+                        } else if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
                             tierSelectStyle += ' background-color: var(--input-bg); color: rgb(17, 167, 238);';
                         } else {
                             tierSelectStyle += ' background-color: var(--input-bg); color: var(--text-primary);';
@@ -1638,7 +1694,7 @@
                     if (effect && effect.name) {
                         const effectData = effects.find(e => e.name === effect.name);
                         if (effectData) {
-                            for (let tier = 1; tier <= 15; tier++) {
+                            for (let tier = 1; tier <= CONSTANTS.MAX_TIER; tier++) {
                                 const selected = effect && effect.tier === tier ? 'selected' : '';
                                 const valueText = effectData.tiers[tier - 1].toFixed(2) + '%';
                                 selectHTML += `<option value="${tier}" data-tier="${tier}" ${selected}>${valueText}</option>`;
@@ -1659,27 +1715,24 @@
                 }
             } else {
                 // 일반 모드: 기존 텍스트 표시
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < CONSTANTS.SLOT_COUNT; i++) {
                     const effect = cardEffects[cardIndex][i];
                     const isLocked = cardLockStates[cardIndex][i];
 
                     if (effect) {
-                        // 소수점 2자리까지 고정 표시
                         const formattedValue = effect.value.toFixed(2);
                         const effectName = t.effects[effect.name] || `[${effect.name}]`;
+                        const style = getTierStyle(effect.tier);
 
                         let effectHTML = '';
-                        if (effect.tier == 15) {
-                            effectHTML = `<span style="color: white;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
-                            textLines[i].style.backgroundColor = 'black';
-                        }
-                        else if (effect.tier >= 12 && effect.tier <= 14) {
-                            effectHTML = `<span style="color: black;">${effectName}&nbsp;</span><span style="color: rgb(17, 167, 238);">${formattedValue}%</span>`;
-                            textLines[i].style.backgroundColor = 'white';
+                        if (effect.tier === CONSTANTS.MAX_TIER) {
+                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
+                        } else if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
+                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
                         } else {
-                            effectHTML = `<span style="color: black;">${effectName} ${formattedValue}%</span>`;
-                            textLines[i].style.backgroundColor = 'white';
+                            effectHTML = `<span style="color: ${style.nameColor};">${effectName} ${formattedValue}%</span>`;
                         }
+                        textLines[i].style.backgroundColor = style.backgroundColor;
 
                         // 자물쇠 아이콘 추가
                         const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
@@ -1706,44 +1759,33 @@
             }
         }
 
-        // 장비 개조 버튼 이벤트 (슬롯별 확률 적용, 11티어 고정)
+        // 장비 개조 버튼 이벤트
         document.querySelectorAll('.modify-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
                 const card = button.closest('.card');
                 card.classList.add('expanded');
-                
-                // 장비 개조 시 초기 효과 생성 (슬롯별 확률 적용, 11티어 고정)
-                const usedEffects = [];
-                
-                // 기존에 잠긴 효과들을 사용된 효과 목록에 미리 추가
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
-                    if (cardLockStates[index][slotIndex] && cardEffects[index][slotIndex]) {
-                        usedEffects.push(cardEffects[index][slotIndex].name);
-                    }
-                }
-                
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
-                    // 잠긴 슬롯은 건너뛰기
+
+                const usedEffects = getLockedEffects(index);
+
+                for (let slotIndex = 0; slotIndex < CONSTANTS.SLOT_COUNT; slotIndex++) {
                     if (cardLockStates[index][slotIndex]) {
                         continue;
                     }
-                    
+
                     const slotChance = Math.random() * 100;
-                    
-                    if (slotChance <= slotProbabilities[slotIndex]) {
+
+                    if (slotChance <= CONSTANTS.SLOT_PROBABILITIES[slotIndex]) {
                         const availableEffects = effects.filter(effect => !usedEffects.includes(effect.name));
-                        
+
                         if (availableEffects.length > 0) {
-                            // 가중치 랜덤 선택
                             const totalWeight = availableEffects.reduce((sum, effect) => sum + effect.probability, 0);
                             const random = Math.random() * totalWeight;
-                            
+
                             let currentWeight = 0;
                             for (const effect of availableEffects) {
                                 currentWeight += effect.probability;
                                 if (random <= currentWeight) {
-                                    // 11티어 고정 (인덱스 10)
-                                    const tierIndex = 10;
+                                    const tierIndex = CONSTANTS.DEFAULT_TIER - 1;
                                     const value = effect.tiers[tierIndex];
                                     cardEffects[index][slotIndex] = {
                                         name: effect.name,
@@ -1761,7 +1803,7 @@
                         cardEffects[index][slotIndex] = null;
                     }
                 }
-                
+
                 updateEffectDisplay(index);
                 updateModuleCounter();
                 updateOptionSummary();
@@ -1771,45 +1813,21 @@
         // 효과 변경 버튼 이벤트
         document.querySelectorAll('.effect-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
-                // 상위 티어 보호 체크박스가 체크되어 있는지 확인
-                const isProtectEnabled = document.getElementById('protectHighTier').checked;
-
-                // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
-                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) =>
-                    effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
-                );
-
-                // 보호가 활성화되어 있고 상위 티어가 존재하면 경고
-                if (isProtectEnabled && hasHighTierUnlocked) {
-                    const confirmed = confirm(translations[currentLanguage].confirmHighTier);
-                    if (!confirmed) {
-                        return; // 사용자가 No를 선택하면 실행 중단
-                    }
+                if (!checkHighTierProtection(index)) {
+                    return;
                 }
-                
-                const usedEffects = [];
-                
-                // 잠긴 슬롯 개수에 따른 추가 모듈 비용
-                const lockedCount = cardLockStates[index].filter(state => state).length;
-                const additionalCost = lockedCount > 0 ? [1, 2][lockedCount - 1] || 0 : 0;
-                
-                // 먼저 모든 잠긴 슬롯의 효과를 사용된 효과 목록에 추가
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
-                    if (cardLockStates[index][slotIndex] && cardEffects[index][slotIndex]) {
-                        usedEffects.push(cardEffects[index][slotIndex].name);
-                    }
-                }
-                
-                // 각 슬롯에 대해 확률 계산 (잠긴 슬롯은 제외)
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+
+                const usedEffects = getLockedEffects(index);
+                const additionalCost = getAdditionalLockCost(index);
+
+                for (let slotIndex = 0; slotIndex < CONSTANTS.SLOT_COUNT; slotIndex++) {
                     if (cardLockStates[index][slotIndex]) {
-                        // 잠긴 슬롯은 건너뛰기
                         continue;
                     }
-                    
+
                     const slotChance = Math.random() * 100;
-                    
-                    if (slotChance <= slotProbabilities[slotIndex]) {
+
+                    if (slotChance <= CONSTANTS.SLOT_PROBABILITIES[slotIndex]) {
                         const effect = generateRandomEffect(usedEffects);
                         if (effect) {
                             cardEffects[index][slotIndex] = effect;
@@ -1821,52 +1839,35 @@
                         cardEffects[index][slotIndex] = null;
                     }
                 }
-                
+
                 updateEffectDisplay(index);
                 updateModuleCounter();
-                
-                // 잠긴 슬롯이 있으면 추가 모듈 비용 적용
+
                 if (additionalCost > 0) {
                     moduleCount += additionalCost;
                     document.getElementById('moduleCount').textContent = moduleCount;
                 }
-                
+
                 updateOptionSummary();
             });
         });
 
-        // 수치 재설정 버튼 이벤트 (효과 고정, 티어만 랜덤 재설정)
+        // 수치 재설정 버튼 이벤트
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
             button.addEventListener('click', () => {
-                // 상위 티어 보호 체크박스가 체크되어 있는지 확인
-                const isProtectEnabled = document.getElementById('protectHighTier').checked;
-
-                // 현재 옵션 중 12-15티어이고 잠기지 않은 옵션이 있는지 확인
-                const hasHighTierUnlocked = cardEffects[index].some((effect, slotIndex) =>
-                    effect && effect.tier >= 12 && effect.tier <= 15 && !cardLockStates[index][slotIndex]
-                );
-
-                // 보호가 활성화되어 있고 상위 티어가 존재하면 경고
-                if (isProtectEnabled && hasHighTierUnlocked) {
-                    const confirmed = confirm(translations[currentLanguage].confirmHighTier);
-                    if (!confirmed) {
-                        return; // 사용자가 No를 선택하면 실행 중단
-                    }
+                if (!checkHighTierProtection(index)) {
+                    return;
                 }
-                
-                // 잠긴 슬롯 개수에 따른 추가 모듈 비용
-                const lockedCount = cardLockStates[index].filter(state => state).length;
-                const additionalCost = lockedCount > 0 ? [1, 2][lockedCount - 1] || 0 : 0;
-                
-                // 기존 효과가 있는 슬롯의 티어만 재설정 (잠긴 슬롯은 제외)
-                for (let slotIndex = 0; slotIndex < 3; slotIndex++) {
+
+                const additionalCost = getAdditionalLockCost(index);
+
+                for (let slotIndex = 0; slotIndex < CONSTANTS.SLOT_COUNT; slotIndex++) {
                     if (cardLockStates[index][slotIndex]) {
-                        continue; // 잠긴 슬롯은 건너뜀
+                        continue;
                     }
-                    
+
                     const currentEffect = cardEffects[index][slotIndex];
                     if (currentEffect) {
-                        // 현재 효과의 종류는 유지하고 티어만 랜덤으로 재설정
                         const effectData = effects.find(e => e.name === currentEffect.name);
                         if (effectData) {
                             const tierIndex = getRandomTier();
@@ -1879,40 +1880,35 @@
                         }
                     }
                 }
+
                 updateEffectDisplay(index);
                 updateModuleCounter();
-                
-                // 잠긴 슬롯이 있으면 추가 모듈 비용 적용
+
                 if (additionalCost > 0) {
                     moduleCount += additionalCost;
                     document.getElementById('moduleCount').textContent = moduleCount;
                 }
-                
+
                 updateOptionSummary();
             });
         });
         
         // 초기화 버튼 이벤트
         document.getElementById('resetAllBtn').addEventListener('click', () => {
-            // 모든 카드의 효과 초기화
-            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
-                cardEffects[cardIndex] = [null, null, null];
-                cardLockStates[cardIndex] = [false, false, false];
-                // 모든 카드를 초기 상태로 변경
+            for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
+                cardEffects[cardIndex] = Array(CONSTANTS.SLOT_COUNT).fill(null);
+                cardLockStates[cardIndex] = Array(CONSTANTS.SLOT_COUNT).fill(false);
                 const cards = document.querySelectorAll('.card');
                 cards[cardIndex].classList.remove('expanded');
             }
 
-            // 모듈 개수 초기화
             moduleCount = 0;
             document.getElementById('moduleCount').textContent = moduleCount;
 
-            // 화면 업데이트
-            for (let cardIndex = 0; cardIndex < 4; cardIndex++) {
+            for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
                 updateEffectDisplay(cardIndex);
             }
 
-            // 커스텀 모드일 때 이벤트 리스너 재부착
             if (isCustomMode) {
                 attachSelectChangeListeners();
             }
@@ -2017,22 +2013,18 @@
             const t = translations[currentLanguage];
 
             if (isCustomMode) {
-                // 커스텀 모드 활성화 - 빨간색, 종료 표시
                 btn.style.backgroundColor = '#dc3545';
                 btn.textContent = t.customModeOff;
             } else {
-                // 일반 모드 - 녹색, 시작 표시
                 btn.style.backgroundColor = '#28a745';
                 btn.textContent = t.customModeOn;
             }
 
-            // 모든 카드의 효과 표시 업데이트
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
                 updateEffectDisplay(i);
                 updateCardState(i);
             }
 
-            // 커스텀 모드에서 Select 변경 이벤트 리스너 추가
             if (isCustomMode) {
                 attachSelectChangeListeners();
             }
@@ -2050,9 +2042,8 @@
                     if (selectedEffectName) {
                         const effectData = effects.find(e => e.name === selectedEffectName);
                         if (effectData) {
-                            // 현재 슬롯의 티어를 유지, 없으면 11티어로 설정
                             const currentEffect = cardEffects[cardIndex][slotIndex];
-                            const tierToUse = currentEffect && currentEffect.tier ? currentEffect.tier : 11;
+                            const tierToUse = currentEffect && currentEffect.tier ? currentEffect.tier : CONSTANTS.DEFAULT_TIER;
                             const tierIndex = tierToUse - 1;
 
                             cardEffects[cardIndex][slotIndex] = {
@@ -2107,25 +2098,11 @@
                                 tier: selectedTier
                             };
 
-                            // Select 박스 스타일 즉시 업데이트
-                            if (selectedTier === 15) {
-                                this.style.backgroundColor = 'black';
-                                this.style.color = 'rgb(17, 167, 238)';
-                            } else if (selectedTier >= 12 && selectedTier <= 14) {
-                                this.style.backgroundColor = 'var(--input-bg)';
-                                this.style.color = 'rgb(17, 167, 238)';
-                            } else {
-                                this.style.backgroundColor = 'var(--input-bg)';
-                                this.style.color = 'var(--text-primary)';
-                            }
-
-                            // 카드 상태 업데이트 (버튼 표시 제어용)
+                            applyTierStyleToSelect(this, selectedTier);
                             updateCardState(cardIndex);
-
                             updateOptionSummary();
                         }
                     } else {
-                        // "수치" 기본값을 선택한 경우 스타일 초기화
                         this.style.backgroundColor = 'var(--input-bg)';
                         this.style.color = 'var(--text-primary)';
                     }
