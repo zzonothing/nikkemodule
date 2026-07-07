@@ -664,7 +664,24 @@
             font-size: 16px;
             line-height: 1.6;
             color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .modal-protect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
             margin-bottom: 24px;
+        }
+
+        .modal-protect input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
 
         .modal-actions {
@@ -701,15 +718,6 @@
 
         .modal-btn-cancel:hover {
             background-color: var(--border-color);
-        }
-
-        /* 상위 티어 배지 (색각 이상 사용자를 위한 비색상 표식) */
-        .tier-badge {
-            font-size: 9px;
-            font-weight: 700;
-            vertical-align: super;
-            margin-left: 3px;
-            opacity: 0.9;
         }
 
         /* 컨텐츠 섹션 스타일 */
@@ -1110,6 +1118,10 @@
     <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmModalText" style="display: none;">
         <div class="modal-box">
             <p id="confirmModalText"></p>
+            <label class="modal-protect">
+                <input type="checkbox" id="modalProtectHighTier" checked>
+                <span id="modalProtectLabel">상위 티어 옵션 보호</span>
+            </label>
             <div class="modal-actions">
                 <button id="confirmModalCancel" type="button" class="modal-btn modal-btn-cancel"></button>
                 <button id="confirmModalConfirm" type="button" class="modal-btn modal-btn-confirm"></button>
@@ -1419,13 +1431,24 @@
                 const text = document.getElementById('confirmModalText');
                 const okBtn = document.getElementById('confirmModalConfirm');
                 const cancelBtn = document.getElementById('confirmModalCancel');
+                const protectBox = document.getElementById('modalProtectHighTier');
+                const protectLabel = document.getElementById('modalProtectLabel');
+                const mainProtectBox = document.getElementById('protectHighTier');
                 const t = translations[currentLanguage];
 
                 text.textContent = message;
                 okBtn.textContent = t.confirmYes;
                 cancelBtn.textContent = t.confirmNo;
+                protectLabel.textContent = t.protectHighTier;
+                // 모달의 체크박스는 현재 보호 설정 상태를 반영
+                protectBox.checked = mainProtectBox.checked;
                 overlay.style.display = 'flex';
                 okBtn.focus();
+
+                // 모달에서 보호를 끄면 메인 체크박스에도 즉시 반영
+                function onProtectChange() {
+                    mainProtectBox.checked = protectBox.checked;
+                }
 
                 function cleanup(result) {
                     overlay.style.display = 'none';
@@ -1433,6 +1456,7 @@
                     cancelBtn.removeEventListener('click', onCancel);
                     overlay.removeEventListener('click', onOverlay);
                     document.removeEventListener('keydown', onKey);
+                    protectBox.removeEventListener('change', onProtectChange);
                     resolve(result);
                 }
                 function onOk() { cleanup(true); }
@@ -1447,6 +1471,7 @@
                 cancelBtn.addEventListener('click', onCancel);
                 overlay.addEventListener('click', onOverlay);
                 document.addEventListener('keydown', onKey);
+                protectBox.addEventListener('change', onProtectChange);
             });
         }
 
@@ -1764,12 +1789,9 @@
                     // 티어에 따른 스타일 결정
                     const maxTier = Math.max(...tiers);
                     const style = getTierStyle(maxTier);
-                    const tierBadge = maxTier >= CONSTANTS.HIGH_TIER_MIN
-                        ? `<span class="tier-badge" style="color: ${style.valueColor};">T${maxTier}</span>`
-                        : '';
 
                     optionDiv.style.cssText = `background: ${style.backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;`;
-                    optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>${tierBadge}`;
+                    optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
                     summaryElement.appendChild(optionDiv);
                 });
             }
@@ -2008,14 +2030,9 @@
                         const effectName = t.effects[effect.name] || `[${effect.name}]`;
                         const style = getTierStyle(effect.tier);
 
-                        // 상위 티어(12~15)는 색상 외에 텍스트 배지로도 표시하여 색각 이상 사용자도 구분 가능
-                        const tierBadge = effect.tier >= CONSTANTS.HIGH_TIER_MIN
-                            ? `<span class="tier-badge" style="color: ${style.valueColor};">T${effect.tier}</span>`
-                            : '';
-
                         let effectHTML = '';
                         if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
-                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>${tierBadge}`;
+                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
                         } else {
                             effectHTML = `<span style="color: ${style.nameColor};">${effectName} ${formattedValue}%</span>`;
                         }
