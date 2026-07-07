@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-<script src="protect.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H2GV4HDM4X"></script>
 <script>
@@ -15,6 +14,7 @@
     <meta name="google-site-verification" content="nUa6YGTaqpapkvkL1DeAYbZKcBftyoTU7Y6AKpW-FZs" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="protect.js"></script>
     <title>니케 모듈작 시뮬레이션 | NIKKE Over Load Module Simulator</title>
 
     <!-- SEO Meta Tags -->
@@ -614,6 +614,84 @@
             }
         }
 
+        /* 확인 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .modal-box p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            min-width: 100px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-btn-confirm {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-btn-confirm:hover {
+            background-color: #0056b3;
+        }
+
+        .modal-btn-cancel {
+            background-color: var(--summary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-btn-cancel:hover {
+            background-color: var(--border-color);
+        }
+
+        /* 상위 티어 배지 (색각 이상 사용자를 위한 비색상 표식) */
+        .tier-badge {
+            font-size: 9px;
+            font-weight: 700;
+            vertical-align: super;
+            margin-left: 3px;
+            opacity: 0.9;
+        }
+
         /* 컨텐츠 섹션 스타일 */
         .content-section {
             background: var(--bg-card);
@@ -868,7 +946,7 @@
         <div style="text-align: center; margin: 40px 0 20px 0;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
                 <button id="customModeBtn" style="background-color: #28a745; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
-                    커스텀
+                    커스텀 모드 시작
                 </button>
                 <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
                     초기화
@@ -990,6 +1068,17 @@
         </footer>
     </div>
 
+    <!-- 확인 모달 -->
+    <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmModalText" style="display: none;">
+        <div class="modal-box">
+            <p id="confirmModalText"></p>
+            <div class="modal-actions">
+                <button id="confirmModalCancel" type="button" class="modal-btn modal-btn-cancel"></button>
+                <button id="confirmModalConfirm" type="button" class="modal-btn modal-btn-confirm"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 언어 데이터
         const translations = {
@@ -1004,6 +1093,12 @@
                 effectNotObtained: '효과 미획득',
                 noActiveOptions: '활성화된 옵션이 없습니다',
                 confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
+                confirmYes: '실행',
+                confirmNo: '취소',
+                lockOption: '옵션 잠금',
+                unlockOption: '옵션 잠금 해제',
+                themeToDark: '다크 모드로 전환',
+                themeToLight: '라이트 모드로 전환',
                 protectHighTier: '상위 티어 옵션 보호',
                 customModeOn: '커스텀 모드 시작',
                 customModeOff: '커스텀 모드 종료',
@@ -1065,6 +1160,12 @@
                 effectNotObtained: '効果未取得',
                 noActiveOptions: 'アクティブなオプションがありません',
                 confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
+                confirmYes: '実行',
+                confirmNo: 'キャンセル',
+                lockOption: 'オプションをロック',
+                unlockOption: 'ロック解除',
+                themeToDark: 'ダークモードに切り替え',
+                themeToLight: 'ライトモードに切り替え',
                 protectHighTier: '上位ティアオプション保護',
                 customModeOn: 'カスタムモード開始',
                 customModeOff: 'カスタムモード終了',
@@ -1126,6 +1227,12 @@
                 effectNotObtained: '未獲得效果',
                 noActiveOptions: '沒有啟用的選項',
                 confirmHighTier: '目前未鎖定的選項中存在高階選項。是否要執行？',
+                confirmYes: '執行',
+                confirmNo: '取消',
+                lockOption: '鎖定選項',
+                unlockOption: '解除鎖定',
+                themeToDark: '切換至深色模式',
+                themeToLight: '切換至淺色模式',
                 protectHighTier: '高階選項保護',
                 customModeOn: '自訂模式開始',
                 customModeOff: '自訂模式結束',
@@ -1187,6 +1294,12 @@
                 effectNotObtained: 'Effect Not Obtained',
                 noActiveOptions: 'No active options',
                 confirmHighTier: 'There are high-tier options among the unlocked options. Do you want to proceed?',
+                confirmYes: 'Proceed',
+                confirmNo: 'Cancel',
+                lockOption: 'Lock option',
+                unlockOption: 'Unlock option',
+                themeToDark: 'Switch to dark mode',
+                themeToLight: 'Switch to light mode',
                 protectHighTier: 'Protect High-Tier Options',
                 customModeOn: 'Start Custom Mode',
                 customModeOff: 'End Custom Mode',
@@ -1261,7 +1374,45 @@
         
         // Helper 함수들
 
-        // 상위 티어 옵션 보호 확인
+        // 커스텀 확인 모달 (Promise<boolean> 반환)
+        function showConfirmModal(message) {
+            return new Promise(resolve => {
+                const overlay = document.getElementById('confirmModal');
+                const text = document.getElementById('confirmModalText');
+                const okBtn = document.getElementById('confirmModalConfirm');
+                const cancelBtn = document.getElementById('confirmModalCancel');
+                const t = translations[currentLanguage];
+
+                text.textContent = message;
+                okBtn.textContent = t.confirmYes;
+                cancelBtn.textContent = t.confirmNo;
+                overlay.style.display = 'flex';
+                okBtn.focus();
+
+                function cleanup(result) {
+                    overlay.style.display = 'none';
+                    okBtn.removeEventListener('click', onOk);
+                    cancelBtn.removeEventListener('click', onCancel);
+                    overlay.removeEventListener('click', onOverlay);
+                    document.removeEventListener('keydown', onKey);
+                    resolve(result);
+                }
+                function onOk() { cleanup(true); }
+                function onCancel() { cleanup(false); }
+                function onOverlay(e) { if (e.target === overlay) cleanup(false); }
+                function onKey(e) {
+                    if (e.key === 'Escape') cleanup(false);
+                    else if (e.key === 'Enter') cleanup(true);
+                }
+
+                okBtn.addEventListener('click', onOk);
+                cancelBtn.addEventListener('click', onCancel);
+                overlay.addEventListener('click', onOverlay);
+                document.addEventListener('keydown', onKey);
+            });
+        }
+
+        // 상위 티어 옵션 보호 확인 (Promise<boolean> 반환)
         function checkHighTierProtection(cardIndex) {
             const isProtectEnabled = document.getElementById('protectHighTier').checked;
             const hasHighTierUnlocked = cardEffects[cardIndex].some((effect, slotIndex) =>
@@ -1269,9 +1420,19 @@
             );
 
             if (isProtectEnabled && hasHighTierUnlocked) {
-                return confirm(translations[currentLanguage].confirmHighTier);
+                return showConfirmModal(translations[currentLanguage].confirmHighTier);
             }
-            return true;
+            return Promise.resolve(true);
+        }
+
+        // 변경 가능한(잠기지 않은) 슬롯이 있는지 확인
+        function hasUnlockedSlots(cardIndex) {
+            return cardLockStates[cardIndex].some(state => !state);
+        }
+
+        // 수치 재설정이 가능한(잠기지 않았고 효과가 있는) 슬롯이 있는지 확인
+        function hasResettableSlots(cardIndex) {
+            return cardEffects[cardIndex].some((effect, i) => effect && !cardLockStates[cardIndex][i]);
         }
 
         // 잠긴 슬롯 개수에 따른 추가 비용 계산
@@ -1403,6 +1564,9 @@
 
             // 컨텐츠 섹션 업데이트
             updateContentSections();
+
+            // 테마 토글 aria-label 갱신 (언어 변경 반영)
+            updateThemeToggleLabel();
         }
 
         // 컨텐츠 섹션 텍스트 업데이트
@@ -1468,10 +1632,9 @@
         // 언어 플래그 상태 업데이트
         function updateLanguageFlags() {
             document.querySelectorAll('.language-flag').forEach(flag => {
-                flag.classList.remove('active');
-                if (flag.dataset.lang === currentLanguage) {
-                    flag.classList.add('active');
-                }
+                const isActive = flag.dataset.lang === currentLanguage;
+                flag.classList.toggle('active', isActive);
+                flag.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
         }
         
@@ -1488,11 +1651,16 @@
         
         // 모듈 사용 개수 카운터
         let moduleCount = 0;
-        
-        // 모듈 카운터 업데이트 함수
-        function updateModuleCounter() {
-            moduleCount++;
+
+        // 모듈 개수 증감 및 표시 갱신 (모든 소모 로직이 이 함수를 통함)
+        function addModules(count) {
+            moduleCount += count;
             document.getElementById('moduleCount').textContent = moduleCount;
+        }
+
+        // 모듈 카운터 업데이트 함수 (기본 소모: 1개)
+        function updateModuleCounter() {
+            addModules(1);
         }
         
         // 옵션 총합 계산 및 업데이트 함수
@@ -1537,8 +1705,12 @@
                 if (indexB !== -1) {
                     return 1;
                 }
-                // 둘 다 우선순위 목록에 없는 경우 알파벳 순
-                return nameA.localeCompare(nameB);
+                // 둘 다 우선순위 목록에 없는 경우: 현재 표시 언어의 이름 기준 정렬
+                const localeMap = { ko: 'ko', ja: 'ja', zh: 'zh-TW', en: 'en' };
+                const locale = localeMap[currentLanguage] || 'en';
+                const displayA = translations[currentLanguage].effects[nameA] || nameA;
+                const displayB = translations[currentLanguage].effects[nameB] || nameB;
+                return displayA.localeCompare(displayB, locale);
             });
             
             const t = translations[currentLanguage];
@@ -1554,9 +1726,12 @@
                     // 티어에 따른 스타일 결정
                     const maxTier = Math.max(...tiers);
                     const style = getTierStyle(maxTier);
+                    const tierBadge = maxTier >= CONSTANTS.HIGH_TIER_MIN
+                        ? `<span class="tier-badge" style="color: ${style.valueColor};">T${maxTier}</span>`
+                        : '';
 
                     optionDiv.style.cssText = `background: ${style.backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;`;
-                    optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
+                    optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>${tierBadge}`;
                     summaryElement.appendChild(optionDiv);
                 });
             }
@@ -1636,6 +1811,43 @@
             [false, false, false]  // 카드 4
         ];
 
+        const STATE_STORAGE_KEY = 'nikkeState';
+
+        // 현재 시뮬레이터 상태를 localStorage에 저장
+        function saveState() {
+            try {
+                localStorage.setItem(STATE_STORAGE_KEY, JSON.stringify({
+                    cardEffects: cardEffects,
+                    cardLockStates: cardLockStates,
+                    moduleCount: moduleCount
+                }));
+            } catch (e) {
+                // 저장 실패(용량 초과 등)는 무시
+            }
+        }
+
+        // 저장된 상태를 복원 (const 배열 내용을 덮어씀)
+        function loadState() {
+            let saved;
+            try {
+                saved = JSON.parse(localStorage.getItem(STATE_STORAGE_KEY));
+            } catch (e) {
+                return;
+            }
+            if (!saved) return;
+
+            for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
+                for (let j = 0; j < CONSTANTS.SLOT_COUNT; j++) {
+                    const e = saved.cardEffects && saved.cardEffects[i] ? saved.cardEffects[i][j] : null;
+                    cardEffects[i][j] = (e && typeof e.name === 'string') ? e : null;
+                    cardLockStates[i][j] = !!(saved.cardLockStates && saved.cardLockStates[i] && saved.cardLockStates[i][j]);
+                }
+            }
+            if (typeof saved.moduleCount === 'number' && saved.moduleCount >= 0) {
+                moduleCount = saved.moduleCount;
+            }
+        }
+
         // 자물쇠 아이콘 클릭 이벤트 핸들러
         function toggleLock(cardIndex, slotIndex) {
             const currentState = cardLockStates[cardIndex][slotIndex];
@@ -1647,8 +1859,7 @@
                 if (!isCustomMode) {
                     const currentLockedCount = cardLockStates[cardIndex].filter(state => state).length;
                     const cost = CONSTANTS.LOCK_COSTS[currentLockedCount];
-                    moduleCount += cost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(cost);
                 }
 
                 cardLockStates[cardIndex][slotIndex] = true;
@@ -1661,8 +1872,10 @@
             if (isCustomMode) {
                 attachSelectChangeListeners();
             }
+
+            saveState();
         }
-        
+
         // 카드 내에서 사용 중인 효과 목록 가져오기
         function getUsedEffectsInCard(cardIndex, excludeSlotIndex = -1) {
             const usedEffects = [];
@@ -1738,7 +1951,8 @@
 
                     // 자물쇠 아이콘 추가
                     const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
-                    selectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                    const lockLabel = isLocked ? t.unlockOption : t.lockOption;
+                    selectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" role="button" tabindex="0" aria-label="${lockLabel}" alt="">`;
 
                     textLines[i].innerHTML = selectHTML;
                     textLines[i].style.backgroundColor = 'var(--input-bg)';
@@ -1756,11 +1970,14 @@
                         const effectName = t.effects[effect.name] || `[${effect.name}]`;
                         const style = getTierStyle(effect.tier);
 
+                        // 상위 티어(12~15)는 색상 외에 텍스트 배지로도 표시하여 색각 이상 사용자도 구분 가능
+                        const tierBadge = effect.tier >= CONSTANTS.HIGH_TIER_MIN
+                            ? `<span class="tier-badge" style="color: ${style.valueColor};">T${effect.tier}</span>`
+                            : '';
+
                         let effectHTML = '';
-                        if (effect.tier === CONSTANTS.MAX_TIER) {
-                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
-                        } else if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
-                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
+                        if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
+                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>${tierBadge}`;
                         } else {
                             effectHTML = `<span style="color: ${style.nameColor};">${effectName} ${formattedValue}%</span>`;
                         }
@@ -1768,7 +1985,8 @@
 
                         // 자물쇠 아이콘 추가
                         const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
-                        effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                        const lockLabel = isLocked ? t.unlockOption : t.lockOption;
+                        effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" role="button" tabindex="0" aria-label="${lockLabel}" alt="">`;
                         textLines[i].innerHTML = effectHTML;
 
                         // 텍스트 길이에 따른 폰트 크기 조정
@@ -1839,13 +2057,19 @@
                 updateEffectDisplay(index);
                 updateModuleCounter();
                 updateOptionSummary();
+                saveState();
             });
         });
 
         // 효과 변경 버튼 이벤트
         document.querySelectorAll('.effect-btn').forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (!checkHighTierProtection(index)) {
+            button.addEventListener('click', async () => {
+                // 변경 가능한 슬롯이 없으면(모두 잠김) 모듈을 소모하지 않고 중단
+                if (!hasUnlockedSlots(index)) {
+                    return;
+                }
+
+                if (!(await checkHighTierProtection(index))) {
                     return;
                 }
 
@@ -1876,18 +2100,23 @@
                 updateModuleCounter();
 
                 if (additionalCost > 0) {
-                    moduleCount += additionalCost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(additionalCost);
                 }
 
                 updateOptionSummary();
+                saveState();
             });
         });
 
         // 수치 재설정 버튼 이벤트
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (!checkHighTierProtection(index)) {
+            button.addEventListener('click', async () => {
+                // 재설정 가능한(잠기지 않고 효과가 있는) 슬롯이 없으면 모듈을 소모하지 않고 중단
+                if (!hasResettableSlots(index)) {
+                    return;
+                }
+
+                if (!(await checkHighTierProtection(index))) {
                     return;
                 }
 
@@ -1917,14 +2146,14 @@
                 updateModuleCounter();
 
                 if (additionalCost > 0) {
-                    moduleCount += additionalCost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(additionalCost);
                 }
 
                 updateOptionSummary();
+                saveState();
             });
         });
-        
+
         // 초기화 버튼 이벤트
         document.getElementById('resetAllBtn').addEventListener('click', () => {
             for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
@@ -1946,8 +2175,9 @@
             }
 
             updateOptionSummary();
+            saveState();
         });
-        
+
         // 초기화 버튼 호버 효과
         document.getElementById('resetAllBtn').addEventListener('mouseenter', function() {
             this.style.backgroundColor = '#c82333';
@@ -2006,6 +2236,17 @@
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#007bff');
                 localStorage.setItem('nikkeTheme', 'light');
             }
+
+            updateThemeToggleLabel();
+        }
+
+        // 테마 토글 버튼의 aria-label을 현재 테마/언어에 맞게 갱신
+        function updateThemeToggleLabel() {
+            const t = translations[currentLanguage];
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.querySelectorAll('.theme-toggle').forEach(el => {
+                el.setAttribute('aria-label', isDark ? t.themeToLight : t.themeToDark);
+            });
         }
 
         function toggleTheme() {
@@ -2014,11 +2255,41 @@
             applyTheme(newTheme);
         }
 
-        // 다크모드 토글 버튼 이벤트 (데스크탑)
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        // 다크모드 토글 버튼 이벤트 (데스크탑/모바일) + 키보드 접근성
+        document.querySelectorAll('.theme-toggle').forEach(toggle => {
+            toggle.setAttribute('role', 'button');
+            toggle.setAttribute('tabindex', '0');
+            toggle.addEventListener('click', toggleTheme);
+            toggle.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+            });
+        });
 
-        // 다크모드 토글 버튼 이벤트 (모바일)
-        document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
+        // 언어 플래그 키보드 접근성 (role/tabindex/aria-label/키보드 조작)
+        document.querySelectorAll('.language-flag').forEach(flag => {
+            flag.setAttribute('role', 'button');
+            flag.setAttribute('tabindex', '0');
+            const label = flag.getAttribute('title');
+            if (label) flag.setAttribute('aria-label', label);
+            flag.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flag.click();
+                }
+            });
+        });
+
+        // 자물쇠 아이콘 키보드 조작 (이벤트 위임: Enter/Space → 클릭)
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'Enter' || e.key === ' ') &&
+                e.target.classList && e.target.classList.contains('lock-icon')) {
+                e.preventDefault();
+                e.target.click();
+            }
+        });
 
         // 카드 상태 업데이트 함수 (버튼 표시 제어)
         function updateCardState(cardIndex) {
@@ -2097,6 +2368,7 @@
                             updateCardState(cardIndex);
 
                             updateOptionSummary();
+                            saveState();
                         }
                     } else {
                         cardEffects[cardIndex][slotIndex] = null;
@@ -2111,6 +2383,7 @@
                         updateCardState(cardIndex);
 
                         updateOptionSummary();
+                        saveState();
                     }
                 });
             });
@@ -2136,6 +2409,7 @@
                             applyTierStyleToSelect(this, selectedTier);
                             updateCardState(cardIndex);
                             updateOptionSummary();
+                            saveState();
                         }
                     } else {
                         this.style.backgroundColor = 'var(--input-bg)';
@@ -2152,6 +2426,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             loadSavedLanguage();
+
+            // 저장된 시뮬레이터 상태 복원
+            loadState();
+            document.getElementById('moduleCount').textContent = moduleCount;
+            for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
+                updateCardState(cardIndex);
+            }
+
             updateAllTexts();
             updateContentSections();
         });
