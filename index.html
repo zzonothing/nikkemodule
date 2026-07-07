@@ -284,6 +284,42 @@
             background-color: #495057;
         }
 
+        /* 하단 컨트롤 버튼 (커스텀/초기화) — 호버 상태를 CSS로 처리 */
+        .control-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-custom {
+            background-color: #28a745;
+        }
+
+        .btn-custom:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-custom.active {
+            background-color: #dc3545;
+        }
+
+        .btn-custom.active:hover {
+            background-color: #c82333;
+        }
+
+        .btn-reset {
+            background-color: #dc3545;
+        }
+
+        .btn-reset:hover {
+            background-color: #c82333;
+        }
+
         .button-container {
             display: none;
         }
@@ -393,13 +429,7 @@
             body {
                 padding: 16px 12px;
             }
-            
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin-bottom: 16px !important;
-            }
-            
+
             .title {
                 font-size: 20px;
                 margin-bottom: 16px;
@@ -450,12 +480,6 @@
                 font-size: 14px;
                 margin: 0 auto;
             }
-            
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin-bottom: 20px !important;
-            }
         }
         
         /* 언어 선택기 스타일 */
@@ -481,10 +505,12 @@
             justify-content: center;
         }
 
-        .language-flag img {
+        .language-flag img,
+        .language-flag svg {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .language-flag:hover {
@@ -561,24 +587,14 @@
             justify-content: center;
         }
 
-        /* 모바일 헤더 컨테이너 */
-        .mobile-header {
-            display: none;
+        /* 헤더 컨테이너: 데스크탑에서는 자식(토글/선택기)이 절대배치되어 자리를 차지하지 않음 */
+        .page-header {
+            position: static;
         }
 
         @media (max-width: 768px) {
-            .theme-toggle {
-                position: static;
-                padding: 10px 14px;
-            }
-
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin: 0 !important;
-            }
-
-            .mobile-header {
+            /* 모바일: 헤더를 중앙 정렬 플렉스 행으로, 자식은 정적 배치 */
+            .page-header {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -587,10 +603,14 @@
                 flex-wrap: wrap;
             }
 
-            /* 데스크탑에서 표시되는 요소 숨김 */
-            .container > .theme-toggle,
-            .container > .language-selector {
-                display: none !important;
+            .theme-toggle {
+                position: static;
+                padding: 10px 14px;
+            }
+
+            .language-selector {
+                position: static;
+                justify-content: center;
             }
         }
 
@@ -608,7 +628,7 @@
                 height: 27px;
             }
 
-            .mobile-header {
+            .page-header {
                 gap: 10px;
                 margin-bottom: 12px;
             }
@@ -817,44 +837,62 @@
 </head>
 <body>
     <div class="container">
-        <!-- 다크모드 토글 -->
-        <div class="theme-toggle" id="themeToggle">
-            <span class="theme-icon">🌙</span>
-        </div>
-
-        <!-- 언어 선택기 -->
-        <div class="language-selector">
-            <div class="language-flag active" data-lang="ko" title="한국어">
-                <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
-            </div>
-            <div class="language-flag" data-lang="ja" title="日本語">
-                <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
-            </div>
-            <div class="language-flag" data-lang="zh" title="繁體中文">
-                <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
-            </div>
-            <div class="language-flag" data-lang="en" title="English">
-                <img src="https://flagcdn.com/w80/us.png" alt="English">
-            </div>
-        </div>
-
-        <!-- 모바일 헤더 (768px 이하에서만 표시) -->
-        <div class="mobile-header">
-            <div class="theme-toggle" id="themeToggleMobile">
+        <!-- 헤더: 다크모드 토글 + 언어 선택기 (데스크탑=절대배치, 모바일=중앙 정렬) -->
+        <div class="page-header">
+            <div class="theme-toggle" id="themeToggle">
                 <span class="theme-icon">🌙</span>
             </div>
+
             <div class="language-selector">
                 <div class="language-flag active" data-lang="ko" title="한국어">
-                    <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <circle cx="18" cy="12" r="6" fill="#cd2e3a"/>
+                        <path d="M18 12a3 3 0 0 1 6 0 6 6 0 0 1-12 0 3 3 0 0 1 6 0z" fill="#0047a0"/>
+                        <g fill="#000">
+                            <rect x="4" y="5" width="4" height="0.7"/><rect x="4" y="6.3" width="4" height="0.7"/><rect x="4" y="7.6" width="4" height="0.7"/>
+                            <rect x="28" y="5" width="4" height="0.7"/><rect x="28" y="6.3" width="4" height="0.7"/><rect x="28" y="7.6" width="4" height="0.7"/>
+                            <rect x="4" y="16" width="4" height="0.7"/><rect x="4" y="17.3" width="4" height="0.7"/><rect x="4" y="18.6" width="4" height="0.7"/>
+                            <rect x="28" y="16" width="4" height="0.7"/><rect x="28" y="17.3" width="4" height="0.7"/><rect x="28" y="18.6" width="4" height="0.7"/>
+                        </g>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="ja" title="日本語">
-                    <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <circle cx="18" cy="12" r="7.2" fill="#bc002d"/>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="zh" title="繁體中文">
-                    <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fe0000"/>
+                        <rect width="18" height="12" fill="#000095"/>
+                        <circle cx="9" cy="6" r="4.2" fill="#fff"/>
+                        <circle cx="9" cy="6" r="3.2" fill="#000095"/>
+                        <circle cx="9" cy="6" r="2.2" fill="#fff"/>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="en" title="English">
-                    <img src="https://flagcdn.com/w80/us.png" alt="English">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <g fill="#b22234">
+                            <rect y="0" width="36" height="1.846"/>
+                            <rect y="3.692" width="36" height="1.846"/>
+                            <rect y="7.385" width="36" height="1.846"/>
+                            <rect y="11.077" width="36" height="1.846"/>
+                            <rect y="14.769" width="36" height="1.846"/>
+                            <rect y="18.462" width="36" height="1.846"/>
+                            <rect y="22.154" width="36" height="1.846"/>
+                        </g>
+                        <rect width="14.4" height="12.923" fill="#3c3b6e"/>
+                        <g fill="#fff">
+                            <circle cx="2.4" cy="2.2" r="0.7"/><circle cx="6" cy="2.2" r="0.7"/><circle cx="9.6" cy="2.2" r="0.7"/><circle cx="12" cy="2.2" r="0.7"/>
+                            <circle cx="4.2" cy="4.6" r="0.7"/><circle cx="7.8" cy="4.6" r="0.7"/><circle cx="11.4" cy="4.6" r="0.7"/>
+                            <circle cx="2.4" cy="7" r="0.7"/><circle cx="6" cy="7" r="0.7"/><circle cx="9.6" cy="7" r="0.7"/><circle cx="12" cy="7" r="0.7"/>
+                            <circle cx="4.2" cy="9.4" r="0.7"/><circle cx="7.8" cy="9.4" r="0.7"/><circle cx="11.4" cy="9.4" r="0.7"/>
+                            <circle cx="2.4" cy="11.6" r="0.7"/><circle cx="6" cy="11.6" r="0.7"/><circle cx="9.6" cy="11.6" r="0.7"/><circle cx="12" cy="11.6" r="0.7"/>
+                        </g>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -945,10 +983,10 @@
         
         <div style="text-align: center; margin: 40px 0 20px 0;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
-                <button id="customModeBtn" style="background-color: #28a745; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                <button id="customModeBtn" class="control-btn btn-custom">
                     커스텀 모드 시작
                 </button>
-                <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                <button id="resetAllBtn" class="control-btn btn-reset">
                     초기화
                 </button>
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: var(--text-primary); transition: color 0.3s ease;">
@@ -2178,32 +2216,8 @@
             saveState();
         });
 
-        // 초기화 버튼 호버 효과
-        document.getElementById('resetAllBtn').addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#c82333';
-        });
+        // (호버 효과는 CSS의 .btn-reset:hover / .btn-custom:hover 로 처리)
 
-        document.getElementById('resetAllBtn').addEventListener('mouseleave', function() {
-            this.style.backgroundColor = '#dc3545';
-        });
-
-        // 커스텀 버튼 호버 효과
-        document.getElementById('customModeBtn').addEventListener('mouseenter', function() {
-            if (isCustomMode) {
-                this.style.backgroundColor = '#c82333'; // 빨간색 호버
-            } else {
-                this.style.backgroundColor = '#1e7e34'; // 녹색 호버
-            }
-        });
-
-        document.getElementById('customModeBtn').addEventListener('mouseleave', function() {
-            if (isCustomMode) {
-                this.style.backgroundColor = '#dc3545'; // 빨간색
-            } else {
-                this.style.backgroundColor = '#28a745'; // 녹색
-            }
-        });
-        
         // 언어 선택기 이벤트 리스너
         document.querySelectorAll('.language-flag').forEach(flag => {
             flag.addEventListener('click', () => {
@@ -2318,13 +2332,8 @@
             const btn = document.getElementById('customModeBtn');
             const t = translations[currentLanguage];
 
-            if (isCustomMode) {
-                btn.style.backgroundColor = '#dc3545';
-                btn.textContent = t.customModeOff;
-            } else {
-                btn.style.backgroundColor = '#28a745';
-                btn.textContent = t.customModeOn;
-            }
+            btn.classList.toggle('active', isCustomMode);
+            btn.textContent = isCustomMode ? t.customModeOff : t.customModeOn;
 
             for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
                 updateEffectDisplay(i);
