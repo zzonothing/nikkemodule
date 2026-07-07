@@ -18,7 +18,16 @@
     var _blocked = false;
     var _THRESHOLD = 160;
 
+    // 터치/모바일 기기 여부 판별
+    // 모바일에서는 가상 키보드·주소창(툴바) 표시로 innerWidth/innerHeight가 크게 변해
+    // 창 크기 차이 기반 감지가 정상 사용자를 오탐(차단)하므로 감지 대상에서 제외한다.
+    var _isTouchDevice = ('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+
     function _checkDevTools() {
+        if (_isTouchDevice) return;
+
         var widthDiff = window.outerWidth - window.innerWidth;
         var heightDiff = window.outerHeight - window.innerHeight;
         var isOpen = widthDiff > _THRESHOLD || heightDiff > _THRESHOLD;
@@ -55,5 +64,8 @@
         if (el) el.style.display = 'none';
     }
 
-    setInterval(_checkDevTools, 500);
+    // 데스크탑(마우스 포인터) 환경에서만 감지 루프 실행
+    if (!_isTouchDevice) {
+        setInterval(_checkDevTools, 500);
+    }
 })();
