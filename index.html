@@ -1294,22 +1294,23 @@
         // 티어에 따른 스타일 정보 반환
         function getTierStyle(tier) {
             if (tier === CONSTANTS.MAX_TIER) {
+                // 15티어: 최상위 등급 강조용 특수 스타일 (테마와 무관하게 유지)
                 return {
-                    backgroundColor: 'black',
-                    nameColor: 'white',
+                    backgroundColor: '#000',
+                    nameColor: '#fff',
                     valueColor: 'rgb(17, 167, 238)'
                 };
             } else if (tier >= CONSTANTS.HIGH_TIER_MIN && tier <= CONSTANTS.HIGH_TIER_MAX - 1) {
                 return {
-                    backgroundColor: 'white',
-                    nameColor: 'black',
+                    backgroundColor: 'var(--input-bg)',
+                    nameColor: 'var(--text-primary)',
                     valueColor: 'rgb(17, 167, 238)'
                 };
             }
             return {
-                backgroundColor: 'white',
-                nameColor: 'black',
-                valueColor: 'black'
+                backgroundColor: 'var(--input-bg)',
+                nameColor: 'var(--text-primary)',
+                valueColor: 'var(--text-primary)'
             };
         }
 
@@ -1349,6 +1350,9 @@
 
             // 페이지 제목 (브라우저 탭)
             document.title = t.title + ' | NIKKE Over Load Module Simulator';
+
+            // 문서 언어 속성 갱신 (접근성/SEO)
+            document.documentElement.lang = { ko: 'ko', ja: 'ja', zh: 'zh-TW', en: 'en' }[currentLanguage] || 'ko';
 
             // 제목
             document.querySelector('.title').textContent = t.title;
@@ -1540,7 +1544,7 @@
             const t = translations[currentLanguage];
             
             if (sortedOptions.length === 0) {
-                summaryElement.innerHTML = `<div style="text-align: center; color: #666; grid-column: 1 / -1;">${t.noActiveOptions}</div>`;
+                summaryElement.innerHTML = `<div style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">${t.noActiveOptions}</div>`;
             } else {
                 sortedOptions.forEach(([name, total]) => {
                     const optionDiv = document.createElement('div');
@@ -1551,7 +1555,7 @@
                     const maxTier = Math.max(...tiers);
                     const style = getTierStyle(maxTier);
 
-                    optionDiv.style.cssText = `background: ${style.backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd; text-align: center;`;
+                    optionDiv.style.cssText = `background: ${style.backgroundColor}; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;`;
                     optionDiv.innerHTML = `<span style="color: ${style.nameColor}; font-weight: 500;">${displayName}</span><br><span style="color: ${style.valueColor}; font-weight: 600;">${total.toFixed(2)}%</span>`;
                     summaryElement.appendChild(optionDiv);
                 });
@@ -1779,8 +1783,8 @@
 
                     } else {
                         textLines[i].textContent = t.effectNotObtained;
-                        textLines[i].style.backgroundColor = 'white';
-                        textLines[i].style.color = '#666';
+                        textLines[i].style.backgroundColor = 'var(--input-bg)';
+                        textLines[i].style.color = 'var(--text-secondary)';
                         textLines[i].style.fontSize = '14px';
                     }
                 }
@@ -1988,15 +1992,18 @@
 
         function applyTheme(theme) {
             const html = document.documentElement;
-            const themeIcon = document.querySelector('.theme-icon');
+            const themeIcons = document.querySelectorAll('.theme-icon');
+            const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
             if (theme === 'dark') {
                 html.setAttribute('data-theme', 'dark');
-                themeIcon.textContent = '☀️';
+                themeIcons.forEach(icon => icon.textContent = '☀️');
+                if (themeColorMeta) themeColorMeta.setAttribute('content', '#1a1a1a');
                 localStorage.setItem('nikkeTheme', 'dark');
             } else {
                 html.removeAttribute('data-theme');
-                themeIcon.textContent = '🌙';
+                themeIcons.forEach(icon => icon.textContent = '🌙');
+                if (themeColorMeta) themeColorMeta.setAttribute('content', '#007bff');
                 localStorage.setItem('nikkeTheme', 'light');
             }
         }
