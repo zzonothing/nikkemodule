@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-<script src="protect.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H2GV4HDM4X"></script>
 <script>
@@ -15,6 +14,7 @@
     <meta name="google-site-verification" content="nUa6YGTaqpapkvkL1DeAYbZKcBftyoTU7Y6AKpW-FZs" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="protect.js"></script>
     <title>니케 모듈작 시뮬레이션 | NIKKE Over Load Module Simulator</title>
 
     <!-- SEO Meta Tags -->
@@ -284,6 +284,42 @@
             background-color: #495057;
         }
 
+        /* 하단 컨트롤 버튼 (커스텀/초기화) — 호버 상태를 CSS로 처리 */
+        .control-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-custom {
+            background-color: #28a745;
+        }
+
+        .btn-custom:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-custom.active {
+            background-color: #dc3545;
+        }
+
+        .btn-custom.active:hover {
+            background-color: #c82333;
+        }
+
+        .btn-reset {
+            background-color: #dc3545;
+        }
+
+        .btn-reset:hover {
+            background-color: #c82333;
+        }
+
         .button-container {
             display: none;
         }
@@ -393,13 +429,7 @@
             body {
                 padding: 16px 12px;
             }
-            
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin-bottom: 16px !important;
-            }
-            
+
             .title {
                 font-size: 20px;
                 margin-bottom: 16px;
@@ -450,12 +480,6 @@
                 font-size: 14px;
                 margin: 0 auto;
             }
-            
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin-bottom: 20px !important;
-            }
         }
         
         /* 언어 선택기 스타일 */
@@ -481,10 +505,12 @@
             justify-content: center;
         }
 
-        .language-flag img {
+        .language-flag img,
+        .language-flag svg {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .language-flag:hover {
@@ -561,24 +587,14 @@
             justify-content: center;
         }
 
-        /* 모바일 헤더 컨테이너 */
-        .mobile-header {
-            display: none;
+        /* 헤더 컨테이너: 데스크탑에서는 자식(토글/선택기)이 절대배치되어 자리를 차지하지 않음 */
+        .page-header {
+            position: static;
         }
 
         @media (max-width: 768px) {
-            .theme-toggle {
-                position: static;
-                padding: 10px 14px;
-            }
-
-            .language-selector {
-                position: static !important;
-                justify-content: center !important;
-                margin: 0 !important;
-            }
-
-            .mobile-header {
+            /* 모바일: 헤더를 중앙 정렬 플렉스 행으로, 자식은 정적 배치 */
+            .page-header {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -587,10 +603,14 @@
                 flex-wrap: wrap;
             }
 
-            /* 데스크탑에서 표시되는 요소 숨김 */
-            .container > .theme-toggle,
-            .container > .language-selector {
-                display: none !important;
+            .theme-toggle {
+                position: static;
+                padding: 10px 14px;
+            }
+
+            .language-selector {
+                position: static;
+                justify-content: center;
             }
         }
 
@@ -608,10 +628,104 @@
                 height: 27px;
             }
 
-            .mobile-header {
+            .page-header {
                 gap: 10px;
                 margin-bottom: 12px;
             }
+        }
+
+        /* 확인 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .modal-box p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .modal-protect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .modal-protect input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            min-width: 100px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        /* 파괴적 동작(옵션 변경 등) 확인 버튼 — 위험을 색으로 표시 */
+        .modal-btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .modal-btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .modal-btn-cancel {
+            background-color: var(--summary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-btn-cancel:hover {
+            background-color: var(--border-color);
         }
 
         /* 컨텐츠 섹션 스타일 */
@@ -739,44 +853,62 @@
 </head>
 <body>
     <div class="container">
-        <!-- 다크모드 토글 -->
-        <div class="theme-toggle" id="themeToggle">
-            <span class="theme-icon">🌙</span>
-        </div>
-
-        <!-- 언어 선택기 -->
-        <div class="language-selector">
-            <div class="language-flag active" data-lang="ko" title="한국어">
-                <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
-            </div>
-            <div class="language-flag" data-lang="ja" title="日本語">
-                <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
-            </div>
-            <div class="language-flag" data-lang="zh" title="繁體中文">
-                <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
-            </div>
-            <div class="language-flag" data-lang="en" title="English">
-                <img src="https://flagcdn.com/w80/us.png" alt="English">
-            </div>
-        </div>
-
-        <!-- 모바일 헤더 (768px 이하에서만 표시) -->
-        <div class="mobile-header">
-            <div class="theme-toggle" id="themeToggleMobile">
+        <!-- 헤더: 다크모드 토글 + 언어 선택기 (데스크탑=절대배치, 모바일=중앙 정렬) -->
+        <div class="page-header">
+            <div class="theme-toggle" id="themeToggle">
                 <span class="theme-icon">🌙</span>
             </div>
+
             <div class="language-selector">
                 <div class="language-flag active" data-lang="ko" title="한국어">
-                    <img src="https://flagcdn.com/w80/kr.png" alt="한국어">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <circle cx="18" cy="12" r="6" fill="#cd2e3a"/>
+                        <path d="M18 12a3 3 0 0 1 6 0 6 6 0 0 1-12 0 3 3 0 0 1 6 0z" fill="#0047a0"/>
+                        <g fill="#000">
+                            <rect x="4" y="5" width="4" height="0.7"/><rect x="4" y="6.3" width="4" height="0.7"/><rect x="4" y="7.6" width="4" height="0.7"/>
+                            <rect x="28" y="5" width="4" height="0.7"/><rect x="28" y="6.3" width="4" height="0.7"/><rect x="28" y="7.6" width="4" height="0.7"/>
+                            <rect x="4" y="16" width="4" height="0.7"/><rect x="4" y="17.3" width="4" height="0.7"/><rect x="4" y="18.6" width="4" height="0.7"/>
+                            <rect x="28" y="16" width="4" height="0.7"/><rect x="28" y="17.3" width="4" height="0.7"/><rect x="28" y="18.6" width="4" height="0.7"/>
+                        </g>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="ja" title="日本語">
-                    <img src="https://flagcdn.com/w80/jp.png" alt="日本語">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <circle cx="18" cy="12" r="7.2" fill="#bc002d"/>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="zh" title="繁體中文">
-                    <img src="https://flagcdn.com/w80/tw.png" alt="繁體中文">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fe0000"/>
+                        <rect width="18" height="12" fill="#000095"/>
+                        <circle cx="9" cy="6" r="4.2" fill="#fff"/>
+                        <circle cx="9" cy="6" r="3.2" fill="#000095"/>
+                        <circle cx="9" cy="6" r="2.2" fill="#fff"/>
+                    </svg>
                 </div>
                 <div class="language-flag" data-lang="en" title="English">
-                    <img src="https://flagcdn.com/w80/us.png" alt="English">
+                    <svg viewBox="0 0 36 24" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="36" height="24" fill="#fff"/>
+                        <g fill="#b22234">
+                            <rect y="0" width="36" height="1.846"/>
+                            <rect y="3.692" width="36" height="1.846"/>
+                            <rect y="7.385" width="36" height="1.846"/>
+                            <rect y="11.077" width="36" height="1.846"/>
+                            <rect y="14.769" width="36" height="1.846"/>
+                            <rect y="18.462" width="36" height="1.846"/>
+                            <rect y="22.154" width="36" height="1.846"/>
+                        </g>
+                        <rect width="14.4" height="12.923" fill="#3c3b6e"/>
+                        <g fill="#fff">
+                            <circle cx="2.4" cy="2.2" r="0.7"/><circle cx="6" cy="2.2" r="0.7"/><circle cx="9.6" cy="2.2" r="0.7"/><circle cx="12" cy="2.2" r="0.7"/>
+                            <circle cx="4.2" cy="4.6" r="0.7"/><circle cx="7.8" cy="4.6" r="0.7"/><circle cx="11.4" cy="4.6" r="0.7"/>
+                            <circle cx="2.4" cy="7" r="0.7"/><circle cx="6" cy="7" r="0.7"/><circle cx="9.6" cy="7" r="0.7"/><circle cx="12" cy="7" r="0.7"/>
+                            <circle cx="4.2" cy="9.4" r="0.7"/><circle cx="7.8" cy="9.4" r="0.7"/><circle cx="11.4" cy="9.4" r="0.7"/>
+                            <circle cx="2.4" cy="11.6" r="0.7"/><circle cx="6" cy="11.6" r="0.7"/><circle cx="9.6" cy="11.6" r="0.7"/><circle cx="12" cy="11.6" r="0.7"/>
+                        </g>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -867,10 +999,10 @@
         
         <div style="text-align: center; margin: 40px 0 20px 0;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
-                <button id="customModeBtn" style="background-color: #28a745; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
-                    커스텀
+                <button id="customModeBtn" class="control-btn btn-custom">
+                    커스텀 모드 시작
                 </button>
-                <button id="resetAllBtn" style="background-color: #dc3545; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                <button id="resetAllBtn" class="control-btn btn-reset">
                     초기화
                 </button>
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: var(--text-primary); transition: color 0.3s ease;">
@@ -914,7 +1046,7 @@
 
             <h3 id="guideFeaturesSectionTitle">주요 기능</h3>
             <ul>
-                <li id="guideFeatures1Text">상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.</li>
+                <li id="guideFeatures1Text">상위 티어 옵션 보호: 12티어 이상 옵션이 있을 때 효과 변경/수치 재설정 시 확인 창을 표시합니다. 확인 창에서 "다시 묻지 않기"를 선택하면 보호를 끌 수 있습니다.</li>
                 <li id="guideFeatures2Text">다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.</li>
                 <li id="guideFeatures3Text">다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.</li>
                 <li id="guideFeatures4Text">옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.</li>
@@ -990,6 +1122,22 @@
         </footer>
     </div>
 
+    <!-- 확인 모달 -->
+    <div id="confirmModal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-describedby="confirmModalText" style="display: none;">
+        <div class="modal-box">
+            <h3 id="confirmModalTitle" class="modal-title"></h3>
+            <p id="confirmModalText"></p>
+            <label class="modal-protect">
+                <input type="checkbox" id="modalDontAskAgain">
+                <span id="modalDontAskLabel">다시 묻지 않기</span>
+            </label>
+            <div class="modal-actions">
+                <button id="confirmModalCancel" type="button" class="modal-btn modal-btn-cancel"></button>
+                <button id="confirmModalConfirm" type="button" class="modal-btn modal-btn-danger"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 언어 데이터
         const translations = {
@@ -1003,7 +1151,15 @@
                 optionTotal: '현재 옵션 총합',
                 effectNotObtained: '효과 미획득',
                 noActiveOptions: '활성화된 옵션이 없습니다',
-                confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
+                confirmTitle: '옵션 변경 확인',
+                confirmHighTier: '잠기지 않은 옵션 중 상위 티어(12티어 이상) 옵션이 있습니다. 계속 진행하면 해당 옵션이 변경될 수 있습니다.',
+                confirmYes: '계속 진행',
+                confirmNo: '취소',
+                dontAskAgain: '다시 묻지 않기',
+                lockOption: '옵션 잠금',
+                unlockOption: '옵션 잠금 해제',
+                themeToDark: '다크 모드로 전환',
+                themeToLight: '라이트 모드로 전환',
                 protectHighTier: '상위 티어 옵션 보호',
                 customModeOn: '커스텀 모드 시작',
                 customModeOff: '커스텀 모드 종료',
@@ -1033,7 +1189,7 @@
                 guideCustom3: '커스텀 모드에서는 모듈이 소모되지 않으며, 다양한 옵션 조합을 자유롭게 테스트할 수 있습니다.',
                 guideCustom4: '같은 장비 내에서 중복된 효과는 선택할 수 없습니다.',
                 guideFeaturesTitle: '주요 기능',
-                guideFeatures1: '상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.',
+                guideFeatures1: '상위 티어 옵션 보호: 12티어 이상 옵션이 있을 때 효과 변경/수치 재설정 시 확인 창을 표시합니다. 확인 창에서 "다시 묻지 않기"를 선택하면 보호를 끌 수 있습니다.',
                 guideFeatures2: '다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.',
                 guideFeatures3: '다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.',
                 guideFeatures4: '옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.',
@@ -1064,7 +1220,15 @@
                 optionTotal: '総合',
                 effectNotObtained: '効果未取得',
                 noActiveOptions: 'アクティブなオプションがありません',
-                confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
+                confirmTitle: 'オプション変更の確認',
+                confirmHighTier: 'ロックされていないオプションに上位ティア（12ティア以上）のオプションがあります。続行すると該当オプションが変更される可能性があります。',
+                confirmYes: '続行',
+                confirmNo: 'キャンセル',
+                dontAskAgain: '今後表示しない',
+                lockOption: 'オプションをロック',
+                unlockOption: 'ロック解除',
+                themeToDark: 'ダークモードに切り替え',
+                themeToLight: 'ライトモードに切り替え',
                 protectHighTier: '上位ティアオプション保護',
                 customModeOn: 'カスタムモード開始',
                 customModeOff: 'カスタムモード終了',
@@ -1094,7 +1258,7 @@
                 guideCustom3: 'カスタムモードではモジュールを消費せず、様々なオプションの組み合わせを自由にテストできます。',
                 guideCustom4: '同じ装備内で重複した効果は選択できません。',
                 guideFeaturesTitle: '主な機能',
-                guideFeatures1: '上位ティアオプション保護: 12-15ティアオプションがある場合、効果変更/数値再設定時に確認メッセージが表示されます。',
+                guideFeatures1: '上位ティアオプション保護: 12ティア以上のオプションがある場合、効果変更/数値再設定時に確認ダイアログが表示されます。「今後表示しない」を選択すると保護をオフにできます。',
                 guideFeatures2: 'ダークモード: 左上の月/太陽アイコンでテーマを切り替えられます。',
                 guideFeatures3: '多言語対応: 韓国語、日本語、繁体字中国語、英語に対応しています。',
                 guideFeatures4: 'オプション合計: すべての装備の効果が自動的に合算されて表示されます。',
@@ -1125,7 +1289,15 @@
                 optionTotal: '當前選項總和',
                 effectNotObtained: '未獲得效果',
                 noActiveOptions: '沒有啟用的選項',
-                confirmHighTier: '目前未鎖定的選項中存在高階選項。是否要執行？',
+                confirmTitle: '選項變更確認',
+                confirmHighTier: '未鎖定的選項中包含高階（12階級以上）選項。繼續執行可能會變更該選項。',
+                confirmYes: '繼續執行',
+                confirmNo: '取消',
+                dontAskAgain: '不再詢問',
+                lockOption: '鎖定選項',
+                unlockOption: '解除鎖定',
+                themeToDark: '切換至深色模式',
+                themeToLight: '切換至淺色模式',
                 protectHighTier: '高階選項保護',
                 customModeOn: '自訂模式開始',
                 customModeOff: '自訂模式結束',
@@ -1155,7 +1327,7 @@
                 guideCustom3: '在自訂模式中不會消耗模組，可自由測試各種選項組合。',
                 guideCustom4: '同一裝備內無法選擇重複的效果。',
                 guideFeaturesTitle: '主要功能',
-                guideFeatures1: '高階選項保護: 當有12-15階級選項時，效果變更/數值重設時會顯示確認訊息。',
+                guideFeatures1: '高階選項保護: 有12階級以上選項時，效果變更/數值重設時會顯示確認視窗。勾選「不再詢問」即可關閉保護。',
                 guideFeatures2: '深色模式: 可透過左上角的月亮/太陽圖示切換主題。',
                 guideFeatures3: '多語言支援: 支援韓語、日語、繁體中文、英語。',
                 guideFeatures4: '選項總和: 所有裝備的效果會自動加總顯示。',
@@ -1186,7 +1358,15 @@
                 optionTotal: 'Total Options',
                 effectNotObtained: 'Effect Not Obtained',
                 noActiveOptions: 'No active options',
-                confirmHighTier: 'There are high-tier options among the unlocked options. Do you want to proceed?',
+                confirmTitle: 'Confirm Option Change',
+                confirmHighTier: 'Unlocked options include high-tier (Tier 12+) options. Continuing may change these options.',
+                confirmYes: 'Continue',
+                confirmNo: 'Cancel',
+                dontAskAgain: 'Don\'t ask again',
+                lockOption: 'Lock option',
+                unlockOption: 'Unlock option',
+                themeToDark: 'Switch to dark mode',
+                themeToLight: 'Switch to light mode',
                 protectHighTier: 'Protect High-Tier Options',
                 customModeOn: 'Start Custom Mode',
                 customModeOff: 'End Custom Mode',
@@ -1216,7 +1396,7 @@
                 guideCustom3: 'In custom mode, modules are not consumed, allowing you to freely test various option combinations.',
                 guideCustom4: 'Duplicate effects cannot be selected within the same equipment.',
                 guideFeaturesTitle: 'Key Features',
-                guideFeatures1: 'High-Tier Option Protection: Displays a confirmation message when changing effects/resetting values if 12-15 tier options exist.',
+                guideFeatures1: 'High-Tier Option Protection: Displays a confirmation dialog when changing effects/resetting values if Tier 12+ options exist. Check "Don\'t ask again" in the dialog to turn off protection.',
                 guideFeatures2: 'Dark Mode: Switch themes using the moon/sun icon in the top left corner.',
                 guideFeatures3: 'Multi-language Support: Supports Korean, Japanese, Traditional Chinese, and English.',
                 guideFeatures4: 'Option Totals: Effects from all equipment are automatically summed and displayed.',
@@ -1261,7 +1441,99 @@
         
         // Helper 함수들
 
-        // 상위 티어 옵션 보호 확인
+        // 커스텀 확인 모달 (Promise<boolean> 반환)
+        // 표준 "다시 묻지 않기" 패턴:
+        // - 체크박스는 열 때마다 해제 상태로 시작
+        // - "계속 진행"을 눌렀을 때만 적용 (취소하면 무시) → 보호 설정을 끄고 저장
+        // - 파괴적 동작이므로 기본 포커스는 취소 버튼, Esc = 취소
+        // - 포커스 트랩: Tab/Shift+Tab이 모달 내부(체크박스→취소→계속)만 순환 (배경 조작·재진입 차단)
+        // - 닫힐 때 모달을 연 요소로 포커스 복원
+        function showConfirmModal(message) {
+            return new Promise(resolve => {
+                const overlay = document.getElementById('confirmModal');
+
+                // 재진입 가드: 이미 열려 있으면 새 요청은 취소로 처리
+                if (overlay.style.display === 'flex') {
+                    resolve(false);
+                    return;
+                }
+
+                const text = document.getElementById('confirmModalText');
+                const title = document.getElementById('confirmModalTitle');
+                const okBtn = document.getElementById('confirmModalConfirm');
+                const cancelBtn = document.getElementById('confirmModalCancel');
+                const dontAskBox = document.getElementById('modalDontAskAgain');
+                const dontAskLabel = document.getElementById('modalDontAskLabel');
+                const t = translations[currentLanguage];
+                const opener = document.activeElement; // 닫을 때 포커스 복원용
+
+                title.textContent = t.confirmTitle;
+                text.textContent = message;
+                okBtn.textContent = t.confirmYes;
+                cancelBtn.textContent = t.confirmNo;
+                dontAskLabel.textContent = t.dontAskAgain;
+                dontAskBox.checked = false;
+                overlay.style.display = 'flex';
+                cancelBtn.focus();
+
+                // 오버레이 클릭 취소는 mousedown도 오버레이에서 시작된 경우만 인정
+                // (모달 안 텍스트를 드래그로 선택하다 바깥에서 마우스를 떼는 오탐 방지)
+                let pressStartedOnOverlay = false;
+
+                function cleanup(result) {
+                    overlay.style.display = 'none';
+                    okBtn.removeEventListener('click', onOk);
+                    cancelBtn.removeEventListener('click', onCancel);
+                    overlay.removeEventListener('click', onOverlay);
+                    overlay.removeEventListener('mousedown', onPress);
+                    document.removeEventListener('keydown', onKey);
+                    // 모달을 연 요소(효과 변경/수치 재설정 버튼 등)로 포커스 복원
+                    if (opener && typeof opener.focus === 'function' && document.contains(opener)) {
+                        opener.focus();
+                    }
+                    resolve(result);
+                }
+                function onOk() {
+                    // "다시 묻지 않기"는 진행을 확정했을 때만 반영
+                    if (dontAskBox.checked) {
+                        document.getElementById('protectHighTier').checked = false;
+                        saveProtectSetting();
+                    }
+                    cleanup(true);
+                }
+                function onCancel() { cleanup(false); }
+                function onPress(e) { pressStartedOnOverlay = (e.target === overlay); }
+                function onOverlay(e) {
+                    if (e.target === overlay && pressStartedOnOverlay) cleanup(false);
+                }
+                function onKey(e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cleanup(false);
+                    } else if (e.key === 'Tab') {
+                        // 포커스 트랩: 모달 내부 요소만 순환
+                        const focusables = [dontAskBox, cancelBtn, okBtn];
+                        const idx = focusables.indexOf(document.activeElement);
+                        e.preventDefault();
+                        let next;
+                        if (e.shiftKey) {
+                            next = idx <= 0 ? focusables[focusables.length - 1] : focusables[idx - 1];
+                        } else {
+                            next = (idx === -1 || idx === focusables.length - 1) ? focusables[0] : focusables[idx + 1];
+                        }
+                        next.focus();
+                    }
+                }
+
+                okBtn.addEventListener('click', onOk);
+                cancelBtn.addEventListener('click', onCancel);
+                overlay.addEventListener('click', onOverlay);
+                overlay.addEventListener('mousedown', onPress);
+                document.addEventListener('keydown', onKey);
+            });
+        }
+
+        // 상위 티어 옵션 보호 확인 (Promise<boolean> 반환)
         function checkHighTierProtection(cardIndex) {
             const isProtectEnabled = document.getElementById('protectHighTier').checked;
             const hasHighTierUnlocked = cardEffects[cardIndex].some((effect, slotIndex) =>
@@ -1269,9 +1541,19 @@
             );
 
             if (isProtectEnabled && hasHighTierUnlocked) {
-                return confirm(translations[currentLanguage].confirmHighTier);
+                return showConfirmModal(translations[currentLanguage].confirmHighTier);
             }
-            return true;
+            return Promise.resolve(true);
+        }
+
+        // 변경 가능한(잠기지 않은) 슬롯이 있는지 확인
+        function hasUnlockedSlots(cardIndex) {
+            return cardLockStates[cardIndex].some(state => !state);
+        }
+
+        // 수치 재설정이 가능한(잠기지 않았고 효과가 있는) 슬롯이 있는지 확인
+        function hasResettableSlots(cardIndex) {
+            return cardEffects[cardIndex].some((effect, i) => effect && !cardLockStates[cardIndex][i]);
         }
 
         // 잠긴 슬롯 개수에 따른 추가 비용 계산
@@ -1403,6 +1685,9 @@
 
             // 컨텐츠 섹션 업데이트
             updateContentSections();
+
+            // 테마 토글 aria-label 갱신 (언어 변경 반영)
+            updateThemeToggleLabel();
         }
 
         // 컨텐츠 섹션 텍스트 업데이트
@@ -1468,10 +1753,9 @@
         // 언어 플래그 상태 업데이트
         function updateLanguageFlags() {
             document.querySelectorAll('.language-flag').forEach(flag => {
-                flag.classList.remove('active');
-                if (flag.dataset.lang === currentLanguage) {
-                    flag.classList.add('active');
-                }
+                const isActive = flag.dataset.lang === currentLanguage;
+                flag.classList.toggle('active', isActive);
+                flag.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
         }
         
@@ -1488,11 +1772,16 @@
         
         // 모듈 사용 개수 카운터
         let moduleCount = 0;
-        
-        // 모듈 카운터 업데이트 함수
-        function updateModuleCounter() {
-            moduleCount++;
+
+        // 모듈 개수 증감 및 표시 갱신 (모든 소모 로직이 이 함수를 통함)
+        function addModules(count) {
+            moduleCount += count;
             document.getElementById('moduleCount').textContent = moduleCount;
+        }
+
+        // 모듈 카운터 업데이트 함수 (기본 소모: 1개)
+        function updateModuleCounter() {
+            addModules(1);
         }
         
         // 옵션 총합 계산 및 업데이트 함수
@@ -1537,8 +1826,12 @@
                 if (indexB !== -1) {
                     return 1;
                 }
-                // 둘 다 우선순위 목록에 없는 경우 알파벳 순
-                return nameA.localeCompare(nameB);
+                // 둘 다 우선순위 목록에 없는 경우: 현재 표시 언어의 이름 기준 정렬
+                const localeMap = { ko: 'ko', ja: 'ja', zh: 'zh-TW', en: 'en' };
+                const locale = localeMap[currentLanguage] || 'en';
+                const displayA = translations[currentLanguage].effects[nameA] || nameA;
+                const displayB = translations[currentLanguage].effects[nameB] || nameB;
+                return displayA.localeCompare(displayB, locale);
             });
             
             const t = translations[currentLanguage];
@@ -1636,6 +1929,60 @@
             [false, false, false]  // 카드 4
         ];
 
+        const STATE_STORAGE_KEY = 'nikkeState';
+        const PROTECT_STORAGE_KEY = 'nikkeProtectHighTier';
+
+        // 상위 티어 보호 설정 저장/복원 ("다시 묻지 않기"가 새로고침 후에도 유지되도록)
+        function saveProtectSetting() {
+            try {
+                localStorage.setItem(PROTECT_STORAGE_KEY, document.getElementById('protectHighTier').checked ? '1' : '0');
+            } catch (e) {
+                // 저장 실패는 무시
+            }
+        }
+
+        function loadProtectSetting() {
+            const saved = localStorage.getItem(PROTECT_STORAGE_KEY);
+            if (saved !== null) {
+                document.getElementById('protectHighTier').checked = saved === '1';
+            }
+        }
+
+        // 현재 시뮬레이터 상태를 localStorage에 저장
+        function saveState() {
+            try {
+                localStorage.setItem(STATE_STORAGE_KEY, JSON.stringify({
+                    cardEffects: cardEffects,
+                    cardLockStates: cardLockStates,
+                    moduleCount: moduleCount
+                }));
+            } catch (e) {
+                // 저장 실패(용량 초과 등)는 무시
+            }
+        }
+
+        // 저장된 상태를 복원 (const 배열 내용을 덮어씀)
+        function loadState() {
+            let saved;
+            try {
+                saved = JSON.parse(localStorage.getItem(STATE_STORAGE_KEY));
+            } catch (e) {
+                return;
+            }
+            if (!saved) return;
+
+            for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
+                for (let j = 0; j < CONSTANTS.SLOT_COUNT; j++) {
+                    const e = saved.cardEffects && saved.cardEffects[i] ? saved.cardEffects[i][j] : null;
+                    cardEffects[i][j] = (e && typeof e.name === 'string') ? e : null;
+                    cardLockStates[i][j] = !!(saved.cardLockStates && saved.cardLockStates[i] && saved.cardLockStates[i][j]);
+                }
+            }
+            if (typeof saved.moduleCount === 'number' && saved.moduleCount >= 0) {
+                moduleCount = saved.moduleCount;
+            }
+        }
+
         // 자물쇠 아이콘 클릭 이벤트 핸들러
         function toggleLock(cardIndex, slotIndex) {
             const currentState = cardLockStates[cardIndex][slotIndex];
@@ -1647,8 +1994,7 @@
                 if (!isCustomMode) {
                     const currentLockedCount = cardLockStates[cardIndex].filter(state => state).length;
                     const cost = CONSTANTS.LOCK_COSTS[currentLockedCount];
-                    moduleCount += cost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(cost);
                 }
 
                 cardLockStates[cardIndex][slotIndex] = true;
@@ -1661,8 +2007,10 @@
             if (isCustomMode) {
                 attachSelectChangeListeners();
             }
+
+            saveState();
         }
-        
+
         // 카드 내에서 사용 중인 효과 목록 가져오기
         function getUsedEffectsInCard(cardIndex, excludeSlotIndex = -1) {
             const usedEffects = [];
@@ -1738,7 +2086,8 @@
 
                     // 자물쇠 아이콘 추가
                     const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
-                    selectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                    const lockLabel = isLocked ? t.unlockOption : t.lockOption;
+                    selectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" role="button" tabindex="0" aria-label="${lockLabel}" alt="">`;
 
                     textLines[i].innerHTML = selectHTML;
                     textLines[i].style.backgroundColor = 'var(--input-bg)';
@@ -1757,9 +2106,7 @@
                         const style = getTierStyle(effect.tier);
 
                         let effectHTML = '';
-                        if (effect.tier === CONSTANTS.MAX_TIER) {
-                            effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
-                        } else if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
+                        if (effect.tier >= CONSTANTS.HIGH_TIER_MIN) {
                             effectHTML = `<span style="color: ${style.nameColor};">${effectName}&nbsp;</span><span style="color: ${style.valueColor};">${formattedValue}%</span>`;
                         } else {
                             effectHTML = `<span style="color: ${style.nameColor};">${effectName} ${formattedValue}%</span>`;
@@ -1768,7 +2115,8 @@
 
                         // 자물쇠 아이콘 추가
                         const lockImage = isLocked ? 'images/lock.png' : 'images/unlock.png';
-                        effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" alt="${isLocked ? 'locked' : 'unlocked'}">`;
+                        const lockLabel = isLocked ? t.unlockOption : t.lockOption;
+                        effectHTML += `<img class="lock-icon ${isLocked ? 'locked' : ''}" src="${lockImage}" onclick="toggleLock(${cardIndex}, ${i})" role="button" tabindex="0" aria-label="${lockLabel}" alt="">`;
                         textLines[i].innerHTML = effectHTML;
 
                         // 텍스트 길이에 따른 폰트 크기 조정
@@ -1839,13 +2187,19 @@
                 updateEffectDisplay(index);
                 updateModuleCounter();
                 updateOptionSummary();
+                saveState();
             });
         });
 
         // 효과 변경 버튼 이벤트
         document.querySelectorAll('.effect-btn').forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (!checkHighTierProtection(index)) {
+            button.addEventListener('click', async () => {
+                // 변경 가능한 슬롯이 없으면(모두 잠김) 모듈을 소모하지 않고 중단
+                if (!hasUnlockedSlots(index)) {
+                    return;
+                }
+
+                if (!(await checkHighTierProtection(index))) {
                     return;
                 }
 
@@ -1876,18 +2230,23 @@
                 updateModuleCounter();
 
                 if (additionalCost > 0) {
-                    moduleCount += additionalCost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(additionalCost);
                 }
 
                 updateOptionSummary();
+                saveState();
             });
         });
 
         // 수치 재설정 버튼 이벤트
         document.querySelectorAll('.reset-btn').forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (!checkHighTierProtection(index)) {
+            button.addEventListener('click', async () => {
+                // 재설정 가능한(잠기지 않고 효과가 있는) 슬롯이 없으면 모듈을 소모하지 않고 중단
+                if (!hasResettableSlots(index)) {
+                    return;
+                }
+
+                if (!(await checkHighTierProtection(index))) {
                     return;
                 }
 
@@ -1917,14 +2276,14 @@
                 updateModuleCounter();
 
                 if (additionalCost > 0) {
-                    moduleCount += additionalCost;
-                    document.getElementById('moduleCount').textContent = moduleCount;
+                    addModules(additionalCost);
                 }
 
                 updateOptionSummary();
+                saveState();
             });
         });
-        
+
         // 초기화 버튼 이벤트
         document.getElementById('resetAllBtn').addEventListener('click', () => {
             for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
@@ -1946,34 +2305,11 @@
             }
 
             updateOptionSummary();
-        });
-        
-        // 초기화 버튼 호버 효과
-        document.getElementById('resetAllBtn').addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#c82333';
+            saveState();
         });
 
-        document.getElementById('resetAllBtn').addEventListener('mouseleave', function() {
-            this.style.backgroundColor = '#dc3545';
-        });
+        // (호버 효과는 CSS의 .btn-reset:hover / .btn-custom:hover 로 처리)
 
-        // 커스텀 버튼 호버 효과
-        document.getElementById('customModeBtn').addEventListener('mouseenter', function() {
-            if (isCustomMode) {
-                this.style.backgroundColor = '#c82333'; // 빨간색 호버
-            } else {
-                this.style.backgroundColor = '#1e7e34'; // 녹색 호버
-            }
-        });
-
-        document.getElementById('customModeBtn').addEventListener('mouseleave', function() {
-            if (isCustomMode) {
-                this.style.backgroundColor = '#dc3545'; // 빨간색
-            } else {
-                this.style.backgroundColor = '#28a745'; // 녹색
-            }
-        });
-        
         // 언어 선택기 이벤트 리스너
         document.querySelectorAll('.language-flag').forEach(flag => {
             flag.addEventListener('click', () => {
@@ -2006,6 +2342,17 @@
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#007bff');
                 localStorage.setItem('nikkeTheme', 'light');
             }
+
+            updateThemeToggleLabel();
+        }
+
+        // 테마 토글 버튼의 aria-label을 현재 테마/언어에 맞게 갱신
+        function updateThemeToggleLabel() {
+            const t = translations[currentLanguage];
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.querySelectorAll('.theme-toggle').forEach(el => {
+                el.setAttribute('aria-label', isDark ? t.themeToLight : t.themeToDark);
+            });
         }
 
         function toggleTheme() {
@@ -2014,11 +2361,41 @@
             applyTheme(newTheme);
         }
 
-        // 다크모드 토글 버튼 이벤트 (데스크탑)
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        // 다크모드 토글 버튼 이벤트 (데스크탑/모바일) + 키보드 접근성
+        document.querySelectorAll('.theme-toggle').forEach(toggle => {
+            toggle.setAttribute('role', 'button');
+            toggle.setAttribute('tabindex', '0');
+            toggle.addEventListener('click', toggleTheme);
+            toggle.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+            });
+        });
 
-        // 다크모드 토글 버튼 이벤트 (모바일)
-        document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
+        // 언어 플래그 키보드 접근성 (role/tabindex/aria-label/키보드 조작)
+        document.querySelectorAll('.language-flag').forEach(flag => {
+            flag.setAttribute('role', 'button');
+            flag.setAttribute('tabindex', '0');
+            const label = flag.getAttribute('title');
+            if (label) flag.setAttribute('aria-label', label);
+            flag.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flag.click();
+                }
+            });
+        });
+
+        // 자물쇠 아이콘 키보드 조작 (이벤트 위임: Enter/Space → 클릭)
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'Enter' || e.key === ' ') &&
+                e.target.classList && e.target.classList.contains('lock-icon')) {
+                e.preventDefault();
+                e.target.click();
+            }
+        });
 
         // 카드 상태 업데이트 함수 (버튼 표시 제어)
         function updateCardState(cardIndex) {
@@ -2047,13 +2424,8 @@
             const btn = document.getElementById('customModeBtn');
             const t = translations[currentLanguage];
 
-            if (isCustomMode) {
-                btn.style.backgroundColor = '#dc3545';
-                btn.textContent = t.customModeOff;
-            } else {
-                btn.style.backgroundColor = '#28a745';
-                btn.textContent = t.customModeOn;
-            }
+            btn.classList.toggle('active', isCustomMode);
+            btn.textContent = isCustomMode ? t.customModeOff : t.customModeOn;
 
             for (let i = 0; i < CONSTANTS.CARD_COUNT; i++) {
                 updateEffectDisplay(i);
@@ -2097,6 +2469,7 @@
                             updateCardState(cardIndex);
 
                             updateOptionSummary();
+                            saveState();
                         }
                     } else {
                         cardEffects[cardIndex][slotIndex] = null;
@@ -2111,6 +2484,7 @@
                         updateCardState(cardIndex);
 
                         updateOptionSummary();
+                        saveState();
                     }
                 });
             });
@@ -2136,6 +2510,7 @@
                             applyTierStyleToSelect(this, selectedTier);
                             updateCardState(cardIndex);
                             updateOptionSummary();
+                            saveState();
                         }
                     } else {
                         this.style.backgroundColor = 'var(--input-bg)';
@@ -2148,10 +2523,22 @@
         // 커스텀 모드 버튼 이벤트
         document.getElementById('customModeBtn').addEventListener('click', toggleCustomMode);
 
+        // 상위 티어 보호 체크박스 직접 변경 시에도 설정 저장
+        document.getElementById('protectHighTier').addEventListener('change', saveProtectSetting);
+
         // 페이지 로드 시 언어 설정 불러오기 및 초기화
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             loadSavedLanguage();
+            loadProtectSetting();
+
+            // 저장된 시뮬레이터 상태 복원
+            loadState();
+            document.getElementById('moduleCount').textContent = moduleCount;
+            for (let cardIndex = 0; cardIndex < CONSTANTS.CARD_COUNT; cardIndex++) {
+                updateCardState(cardIndex);
+            }
+
             updateAllTexts();
             updateContentSections();
         });
