@@ -660,6 +660,13 @@
             text-align: center;
         }
 
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
         .modal-box p {
             font-size: 16px;
             line-height: 1.6;
@@ -701,13 +708,14 @@
             transition: background-color 0.2s ease;
         }
 
-        .modal-btn-confirm {
-            background-color: #007bff;
+        /* 파괴적 동작(옵션 변경 등) 확인 버튼 — 위험을 색으로 표시 */
+        .modal-btn-danger {
+            background-color: #dc3545;
             color: white;
         }
 
-        .modal-btn-confirm:hover {
-            background-color: #0056b3;
+        .modal-btn-danger:hover {
+            background-color: #c82333;
         }
 
         .modal-btn-cancel {
@@ -1038,7 +1046,7 @@
 
             <h3 id="guideFeaturesSectionTitle">주요 기능</h3>
             <ul>
-                <li id="guideFeatures1Text">상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.</li>
+                <li id="guideFeatures1Text">상위 티어 옵션 보호: 12티어 이상 옵션이 있을 때 효과 변경/수치 재설정 시 확인 창을 표시합니다. 확인 창에서 "다시 묻지 않기"를 선택하면 보호를 끌 수 있습니다.</li>
                 <li id="guideFeatures2Text">다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.</li>
                 <li id="guideFeatures3Text">다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.</li>
                 <li id="guideFeatures4Text">옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.</li>
@@ -1115,16 +1123,17 @@
     </div>
 
     <!-- 확인 모달 -->
-    <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmModalText" style="display: none;">
+    <div id="confirmModal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-describedby="confirmModalText" style="display: none;">
         <div class="modal-box">
+            <h3 id="confirmModalTitle" class="modal-title"></h3>
             <p id="confirmModalText"></p>
             <label class="modal-protect">
-                <input type="checkbox" id="modalProtectHighTier" checked>
-                <span id="modalProtectLabel">상위 티어 옵션 보호</span>
+                <input type="checkbox" id="modalDontAskAgain">
+                <span id="modalDontAskLabel">다시 묻지 않기</span>
             </label>
             <div class="modal-actions">
                 <button id="confirmModalCancel" type="button" class="modal-btn modal-btn-cancel"></button>
-                <button id="confirmModalConfirm" type="button" class="modal-btn modal-btn-confirm"></button>
+                <button id="confirmModalConfirm" type="button" class="modal-btn modal-btn-danger"></button>
             </div>
         </div>
     </div>
@@ -1142,9 +1151,11 @@
                 optionTotal: '현재 옵션 총합',
                 effectNotObtained: '효과 미획득',
                 noActiveOptions: '활성화된 옵션이 없습니다',
-                confirmHighTier: '현재 잠겨져 있지 않은 옵션 중 상위 티어 옵션이 존재합니다. 실행하시겠습니까?',
-                confirmYes: '실행',
+                confirmTitle: '옵션 변경 확인',
+                confirmHighTier: '잠기지 않은 옵션 중 상위 티어(12티어 이상) 옵션이 있습니다. 계속 진행하면 해당 옵션이 변경될 수 있습니다.',
+                confirmYes: '계속 진행',
                 confirmNo: '취소',
+                dontAskAgain: '다시 묻지 않기',
                 lockOption: '옵션 잠금',
                 unlockOption: '옵션 잠금 해제',
                 themeToDark: '다크 모드로 전환',
@@ -1178,7 +1189,7 @@
                 guideCustom3: '커스텀 모드에서는 모듈이 소모되지 않으며, 다양한 옵션 조합을 자유롭게 테스트할 수 있습니다.',
                 guideCustom4: '같은 장비 내에서 중복된 효과는 선택할 수 없습니다.',
                 guideFeaturesTitle: '주요 기능',
-                guideFeatures1: '상위 티어 옵션 보호: 12-15티어 옵션이 있을 때 효과 변경/수치 재설정 시 확인 메시지를 표시합니다.',
+                guideFeatures1: '상위 티어 옵션 보호: 12티어 이상 옵션이 있을 때 효과 변경/수치 재설정 시 확인 창을 표시합니다. 확인 창에서 "다시 묻지 않기"를 선택하면 보호를 끌 수 있습니다.',
                 guideFeatures2: '다크 모드: 좌측 상단의 달/해 아이콘으로 테마를 전환할 수 있습니다.',
                 guideFeatures3: '다국어 지원: 한국어, 일본어, 번체 중국어, 영어를 지원합니다.',
                 guideFeatures4: '옵션 총합: 모든 장비의 효과가 자동으로 합산되어 표시됩니다.',
@@ -1209,9 +1220,11 @@
                 optionTotal: '総合',
                 effectNotObtained: '効果未取得',
                 noActiveOptions: 'アクティブなオプションがありません',
-                confirmHighTier: 'ロックされていないオプションの中に上位ティアオプションが存在します。実行しますか？',
-                confirmYes: '実行',
+                confirmTitle: 'オプション変更の確認',
+                confirmHighTier: 'ロックされていないオプションに上位ティア（12ティア以上）のオプションがあります。続行すると該当オプションが変更される可能性があります。',
+                confirmYes: '続行',
                 confirmNo: 'キャンセル',
+                dontAskAgain: '今後表示しない',
                 lockOption: 'オプションをロック',
                 unlockOption: 'ロック解除',
                 themeToDark: 'ダークモードに切り替え',
@@ -1245,7 +1258,7 @@
                 guideCustom3: 'カスタムモードではモジュールを消費せず、様々なオプションの組み合わせを自由にテストできます。',
                 guideCustom4: '同じ装備内で重複した効果は選択できません。',
                 guideFeaturesTitle: '主な機能',
-                guideFeatures1: '上位ティアオプション保護: 12-15ティアオプションがある場合、効果変更/数値再設定時に確認メッセージが表示されます。',
+                guideFeatures1: '上位ティアオプション保護: 12ティア以上のオプションがある場合、効果変更/数値再設定時に確認ダイアログが表示されます。「今後表示しない」を選択すると保護をオフにできます。',
                 guideFeatures2: 'ダークモード: 左上の月/太陽アイコンでテーマを切り替えられます。',
                 guideFeatures3: '多言語対応: 韓国語、日本語、繁体字中国語、英語に対応しています。',
                 guideFeatures4: 'オプション合計: すべての装備の効果が自動的に合算されて表示されます。',
@@ -1276,9 +1289,11 @@
                 optionTotal: '當前選項總和',
                 effectNotObtained: '未獲得效果',
                 noActiveOptions: '沒有啟用的選項',
-                confirmHighTier: '目前未鎖定的選項中存在高階選項。是否要執行？',
-                confirmYes: '執行',
+                confirmTitle: '選項變更確認',
+                confirmHighTier: '未鎖定的選項中包含高階（12階級以上）選項。繼續執行可能會變更該選項。',
+                confirmYes: '繼續執行',
                 confirmNo: '取消',
+                dontAskAgain: '不再詢問',
                 lockOption: '鎖定選項',
                 unlockOption: '解除鎖定',
                 themeToDark: '切換至深色模式',
@@ -1312,7 +1327,7 @@
                 guideCustom3: '在自訂模式中不會消耗模組，可自由測試各種選項組合。',
                 guideCustom4: '同一裝備內無法選擇重複的效果。',
                 guideFeaturesTitle: '主要功能',
-                guideFeatures1: '高階選項保護: 當有12-15階級選項時，效果變更/數值重設時會顯示確認訊息。',
+                guideFeatures1: '高階選項保護: 有12階級以上選項時，效果變更/數值重設時會顯示確認視窗。勾選「不再詢問」即可關閉保護。',
                 guideFeatures2: '深色模式: 可透過左上角的月亮/太陽圖示切換主題。',
                 guideFeatures3: '多語言支援: 支援韓語、日語、繁體中文、英語。',
                 guideFeatures4: '選項總和: 所有裝備的效果會自動加總顯示。',
@@ -1343,9 +1358,11 @@
                 optionTotal: 'Total Options',
                 effectNotObtained: 'Effect Not Obtained',
                 noActiveOptions: 'No active options',
-                confirmHighTier: 'There are high-tier options among the unlocked options. Do you want to proceed?',
-                confirmYes: 'Proceed',
+                confirmTitle: 'Confirm Option Change',
+                confirmHighTier: 'Unlocked options include high-tier (Tier 12+) options. Continuing may change these options.',
+                confirmYes: 'Continue',
                 confirmNo: 'Cancel',
+                dontAskAgain: 'Don\'t ask again',
                 lockOption: 'Lock option',
                 unlockOption: 'Unlock option',
                 themeToDark: 'Switch to dark mode',
@@ -1379,7 +1396,7 @@
                 guideCustom3: 'In custom mode, modules are not consumed, allowing you to freely test various option combinations.',
                 guideCustom4: 'Duplicate effects cannot be selected within the same equipment.',
                 guideFeaturesTitle: 'Key Features',
-                guideFeatures1: 'High-Tier Option Protection: Displays a confirmation message when changing effects/resetting values if 12-15 tier options exist.',
+                guideFeatures1: 'High-Tier Option Protection: Displays a confirmation dialog when changing effects/resetting values if Tier 12+ options exist. Check "Don\'t ask again" in the dialog to turn off protection.',
                 guideFeatures2: 'Dark Mode: Switch themes using the moon/sun icon in the top left corner.',
                 guideFeatures3: 'Multi-language Support: Supports Korean, Japanese, Traditional Chinese, and English.',
                 guideFeatures4: 'Option Totals: Effects from all equipment are automatically summed and displayed.',
@@ -1425,53 +1442,94 @@
         // Helper 함수들
 
         // 커스텀 확인 모달 (Promise<boolean> 반환)
+        // 표준 "다시 묻지 않기" 패턴:
+        // - 체크박스는 열 때마다 해제 상태로 시작
+        // - "계속 진행"을 눌렀을 때만 적용 (취소하면 무시) → 보호 설정을 끄고 저장
+        // - 파괴적 동작이므로 기본 포커스는 취소 버튼, Esc = 취소
+        // - 포커스 트랩: Tab/Shift+Tab이 모달 내부(체크박스→취소→계속)만 순환 (배경 조작·재진입 차단)
+        // - 닫힐 때 모달을 연 요소로 포커스 복원
         function showConfirmModal(message) {
             return new Promise(resolve => {
                 const overlay = document.getElementById('confirmModal');
+
+                // 재진입 가드: 이미 열려 있으면 새 요청은 취소로 처리
+                if (overlay.style.display === 'flex') {
+                    resolve(false);
+                    return;
+                }
+
                 const text = document.getElementById('confirmModalText');
+                const title = document.getElementById('confirmModalTitle');
                 const okBtn = document.getElementById('confirmModalConfirm');
                 const cancelBtn = document.getElementById('confirmModalCancel');
-                const protectBox = document.getElementById('modalProtectHighTier');
-                const protectLabel = document.getElementById('modalProtectLabel');
-                const mainProtectBox = document.getElementById('protectHighTier');
+                const dontAskBox = document.getElementById('modalDontAskAgain');
+                const dontAskLabel = document.getElementById('modalDontAskLabel');
                 const t = translations[currentLanguage];
+                const opener = document.activeElement; // 닫을 때 포커스 복원용
 
+                title.textContent = t.confirmTitle;
                 text.textContent = message;
                 okBtn.textContent = t.confirmYes;
                 cancelBtn.textContent = t.confirmNo;
-                protectLabel.textContent = t.protectHighTier;
-                // 모달의 체크박스는 현재 보호 설정 상태를 반영
-                protectBox.checked = mainProtectBox.checked;
+                dontAskLabel.textContent = t.dontAskAgain;
+                dontAskBox.checked = false;
                 overlay.style.display = 'flex';
-                okBtn.focus();
+                cancelBtn.focus();
 
-                // 모달에서 보호를 끄면 메인 체크박스에도 즉시 반영
-                function onProtectChange() {
-                    mainProtectBox.checked = protectBox.checked;
-                }
+                // 오버레이 클릭 취소는 mousedown도 오버레이에서 시작된 경우만 인정
+                // (모달 안 텍스트를 드래그로 선택하다 바깥에서 마우스를 떼는 오탐 방지)
+                let pressStartedOnOverlay = false;
 
                 function cleanup(result) {
                     overlay.style.display = 'none';
                     okBtn.removeEventListener('click', onOk);
                     cancelBtn.removeEventListener('click', onCancel);
                     overlay.removeEventListener('click', onOverlay);
+                    overlay.removeEventListener('mousedown', onPress);
                     document.removeEventListener('keydown', onKey);
-                    protectBox.removeEventListener('change', onProtectChange);
+                    // 모달을 연 요소(효과 변경/수치 재설정 버튼 등)로 포커스 복원
+                    if (opener && typeof opener.focus === 'function' && document.contains(opener)) {
+                        opener.focus();
+                    }
                     resolve(result);
                 }
-                function onOk() { cleanup(true); }
+                function onOk() {
+                    // "다시 묻지 않기"는 진행을 확정했을 때만 반영
+                    if (dontAskBox.checked) {
+                        document.getElementById('protectHighTier').checked = false;
+                        saveProtectSetting();
+                    }
+                    cleanup(true);
+                }
                 function onCancel() { cleanup(false); }
-                function onOverlay(e) { if (e.target === overlay) cleanup(false); }
+                function onPress(e) { pressStartedOnOverlay = (e.target === overlay); }
+                function onOverlay(e) {
+                    if (e.target === overlay && pressStartedOnOverlay) cleanup(false);
+                }
                 function onKey(e) {
-                    if (e.key === 'Escape') cleanup(false);
-                    else if (e.key === 'Enter') cleanup(true);
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cleanup(false);
+                    } else if (e.key === 'Tab') {
+                        // 포커스 트랩: 모달 내부 요소만 순환
+                        const focusables = [dontAskBox, cancelBtn, okBtn];
+                        const idx = focusables.indexOf(document.activeElement);
+                        e.preventDefault();
+                        let next;
+                        if (e.shiftKey) {
+                            next = idx <= 0 ? focusables[focusables.length - 1] : focusables[idx - 1];
+                        } else {
+                            next = (idx === -1 || idx === focusables.length - 1) ? focusables[0] : focusables[idx + 1];
+                        }
+                        next.focus();
+                    }
                 }
 
                 okBtn.addEventListener('click', onOk);
                 cancelBtn.addEventListener('click', onCancel);
                 overlay.addEventListener('click', onOverlay);
+                overlay.addEventListener('mousedown', onPress);
                 document.addEventListener('keydown', onKey);
-                protectBox.addEventListener('change', onProtectChange);
             });
         }
 
@@ -1872,6 +1930,23 @@
         ];
 
         const STATE_STORAGE_KEY = 'nikkeState';
+        const PROTECT_STORAGE_KEY = 'nikkeProtectHighTier';
+
+        // 상위 티어 보호 설정 저장/복원 ("다시 묻지 않기"가 새로고침 후에도 유지되도록)
+        function saveProtectSetting() {
+            try {
+                localStorage.setItem(PROTECT_STORAGE_KEY, document.getElementById('protectHighTier').checked ? '1' : '0');
+            } catch (e) {
+                // 저장 실패는 무시
+            }
+        }
+
+        function loadProtectSetting() {
+            const saved = localStorage.getItem(PROTECT_STORAGE_KEY);
+            if (saved !== null) {
+                document.getElementById('protectHighTier').checked = saved === '1';
+            }
+        }
 
         // 현재 시뮬레이터 상태를 localStorage에 저장
         function saveState() {
@@ -2448,10 +2523,14 @@
         // 커스텀 모드 버튼 이벤트
         document.getElementById('customModeBtn').addEventListener('click', toggleCustomMode);
 
+        // 상위 티어 보호 체크박스 직접 변경 시에도 설정 저장
+        document.getElementById('protectHighTier').addEventListener('change', saveProtectSetting);
+
         // 페이지 로드 시 언어 설정 불러오기 및 초기화
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             loadSavedLanguage();
+            loadProtectSetting();
 
             // 저장된 시뮬레이터 상태 복원
             loadState();
